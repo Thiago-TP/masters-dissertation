@@ -35,7 +35,7 @@
     % -- Selecione o estilo de numeração de figuras, tabelas, etc.
     numb=chap, % Numeração por capítulo
     %numb=abnt, % Numeração para o documento inteiro
-    ]{unbtex}
+]{unbtex}
 
 % ---
 % Pacotes básicos (Adicione outros pacotes necessários para o seu trabalho)
@@ -43,12 +43,14 @@
 \usepackage{lscape} % Pacote para rotacionar tabelas (e outros objetos)
 %\usepackage{pdflscape} % Pacote para rotacionar objetos e também a página do arquivo pdf
 \usepackage{afterpage} % Evita quebra de página quando inserir uma tabela (ou outro objeto) rotacionada
+\usepackage{blindtext}
+\usepackage{epigraph} % Pacote para adicionar frases de efeito após títulos de capítulos
 % ---
 
 % ---
 % Compila a nomenclatura
 % ---
-\makenomenclature
+% \makenomenclature
 % ---
 
 % ---
@@ -65,63 +67,55 @@
 % ---
 % Título
 % ---
-\titulo{Thesis title} % No idioma principal do texto
+\titulo{Adaptive Model Aggregation Applied\\ to Reservoir Optimization} % No idioma principal do texto
 % Insira \\ caso queira forçar quebras de linha no título
 % Não utilize caixa alta para o título do trabalho e nem das seções (com exceção de siglas)
 % ---
-\tituloestrangeiro{Título da dissertação} % Escreva aqui título em português se o trabalho for escrito em inglês (caso contrário, deixe vazio)
+\tituloestrangeiro{Agregação de Modelos Adaptativa\\ Aplicada a Otimização de Reservatórios} % Escreva aqui título em português se o trabalho for escrito em inglês (caso contrário, deixe vazio)
 % ---
 
 % ---
 % Autores
 % ---
 \autori[]{Thiago Tomás de}{Paula} % \autori[]{Nome}{Sobrenome}
-% No caso de nomes como Carlos de Souza, utilize \autori[]{Carlos de}{Souza} (e não \autori[]{Carlos}{de Souza})
-% ---
-\autorii[]{Deus da}{Silva} % Deixe os argumentos vazios se não tiver segundo autor
+\autorii[]{}{} % Deixe os argumentos vazios se não tiver segundo autor
 % ---
 
 % ---
 % Código Cutter para a ficha catalográfica
 % Gerado a partir da entrada <Sobrenome, Nome> (do primeiro autor) no site https://www.tabelacutter.com/
 % ---
-\numerocutter{324} % Para não imprimir o código na ficha catalográfica, deixe o argumento vazio
-%\numerocutter{769} % Prencher o argumento do comando apenas com os números gerados
+\numerocutter{324} % Para não imprimir o código na ficha catalográfica, deixe o argumento vazio. Prencher o argumento do comando apenas com os números gerados
 % ---
 
 % ---
 % Orientadores
 % ---
-\orientador[Orientador]{Prof. Dr.}{Eugênio Libório Feitosa}{Fortaleza} % Para alterar o gênero, basta trocar Orientador por Orientadora
-%\orientador[Orientadora]{Profa. Dra.}{Sylla Helena}{Ortegosa da Cunha}
+\orientador[Orientador]{Prof. Dr.}{Eugênio Libório Feitosa}{Fortaleza} 
 % ---
-\coorientador[Coorientador]{Prof. Dr.}{}{} % Deixe os argumentos para nome e sobrenome vazios se não tiver coorientador 
+\coorientador[Coorientador]{}{}{} % Deixe os argumentos para nome e sobrenome vazios se não tiver coorientador 
 % ---
 
 % ---
 % Informações do curso
 % ---
 \tipotrabalho{Dissertação de Mestrado} % Dissertação de Mestrado; Tese de Doutorado (em português, mesmo que o trabalho seja em inglês)
-%\tipotrabalho{Tese de Doutorado}
 % ---
 \tipocurso{Programa de Pós-Graduação em Ciências Mecânicas} % Nome do curso de graduação ou do programa de pós-graduação, em português
-%\tipocurso{Programa de Pós-Graduação em Engenharia Elétrica}
 % ---
 % Texto que aparece na folha de rosto e na folha de aprovação
 \preambulo{Dissertação de Mestrado submetida ao Programa de Pós-Graduação em Ciências Mecânicas como requisito parcial para obtenção do grau de Mestre.} 
-%\preambulo{Tese de Doutorado submetida ao Programa de Pós-Graduação em Engenharia Elétrica da Universidade de Brasília como parte dos requisitos necessários para obtenção do grau de Doutor.}
 % Consulte a secretaria/coordenação do curso para saber o que deve ser escrito no preâmbulo. Use português mesmo que o trabalho seja em inglês.
 % ---
 % Informação adicional para ser impressa na folha de rosto
-\publicacao{Teste} % Deixe o argumento vazio caso não haja
+\publicacao{} % Deixe o argumento vazio caso não haja
 %\publicacao{Publicação PPGEE 201/23} % Também imprime as informações do trabalho no topo da página da ficha catalográfica
 % ---
 
 % ---
 % Instituição
 % ---
-%\instituicao[Universidade de Brasília]{Faculdade de Tecnologia}{} % Use português mesmo que o trabalho seja em inglês
-\instituicao[Universidade de Brasília]{Faculdade de Tecnologia}{Departamento de Engenharia Mecânica} % Caso queira incluir o departamento da unidade acadêmica
+\instituicao[Universidade de Brasília]{Faculdade de Tecnologia}{Departamento de Engenharia Mecânica} % Use português mesmo que o trabalho seja em inglês
 % ---
 
 % ---
@@ -138,47 +132,56 @@
 % ---
 \membrodabancai{Prof. Dr. Eugênio Libório Feitosa Fortaleza\\ UnB/FT/ENM} % Membro 1 - Geralmente é o orientador
 \membrodabancaifuncao{Orientador} % Em português, mesmo que o trabalho seja em inglês.
+
 \membrodabancaii{} % Membro 2
 \membrodabancaiifuncao{Examinador interno}
+
 \membrodabancaiii{} % Membro 3
 \membrodabancaiiifuncao{Examinador interno}
+
 \membrodabancaiv{} % Deixe vazio se não tiver o quarto membro
 \membrodabancaivfuncao{Examinador externo}
+
 \membrodabancav{} % Deixe vazio se não tiver o quinto membro
 \membrodabancavfuncao{Examinador externo}
-% Comprimento da linha da assinatura (ajuste conforme necessidade)
-\signlinewidth{9cm}
-% ---
 
-% ---
-% Resumo em português
-% ---
-\begin{Resumo}
-Este documento exemplifica a elaboração de trabalho acadêmico (trabalho de conclusão de curso, dissertação e tese) a partir da classe UnB\TeX, uma extensão da classe \abnTeX\ para a Universidade de Brasília (UnB). Além de apresentar comandos básico de \LaTeX\ para inclusão de equações, tabelas e figuras, o documento mostra como utilizar pacotes adotados pela classe UnB\TeX\ para gerar referências bibliográficas, listas símbolos, caixas para teoremas e algoritmos, dentre outros elementos úteis ou obrigatórios para trabalhos acadêmicos. Espera-se que este documento facilite o uso da classe UnB\TeX\ na elaboração de trabalhos de alta qualidade gráfica mesmo por usuários com pouca experiência em \LaTeX.
-\end{Resumo}
+% Comprimento da linha da assinatura (ajuste conforme necessidade)
+\signlinewidth{10cm}
 % ---
 
 % ---
 % Resumo em inglês
 % ---
 \begin{Abstract}
-This document demonstrates the preparation of academic works (such as final papers, dissertations, and theses) using the UnB\TeX\ class, an extension of the \abnTeX\ class developed for the University of Brasília (UnB). In addition to introducing basic \LaTeX\ commands for the inclusion of equations, tables, and figures, the document shows how to utilize packages integrated with the UnB\TeX\ class to generate bibliographic references, lists of symbols, and formatted boxes for theorems and algorithms, among other essential or useful elements for academic writing. The goal is to simplify the use of the UnB\TeX\ class, enabling even users with minimal \LaTeX\ experience to produce visually high-quality academic documents.
+    \blindtext[1]
 \end{Abstract}
+% ---
+
+% ---
+% Resumo em português
+% ---
+\begin{Resumo}
+    \blindtext[1]
+\end{Resumo}
 % ---
 
 % ---
 % Palavras-chave (defina no mínimo 3 e no máximo 5)
 % ---
-\pchavei{palavra-chave 1}
-\kwordi{keyword 1}
-\pchaveii{palavra-chave 2}
-\kwordii{keyword 2}
-\pchaveiii{palavra-chave 3}
-\kwordiii{keyword 3}
-\pchaveiv{palavra-chave 4} % Deixe vazio se não tiver
-\kwordiv{keyword 4} % Deixe vazio se não tiver
-\pchavev{} % Deixe vazio se não tiver
-\kwordv{} % Deixe vazio se não tiver
+\pchavei{aprendizado de máquina}
+\kwordi{machine learning}
+
+\pchaveii{controle de reservatório}
+\kwordii{reservoir control}
+
+\pchaveiii{otimização}
+\kwordiii{optimization}
+
+\pchaveiv{predição de produção} % Deixe vazio se não tiver
+\kwordiv{production forecasting} % Deixe vazio se não tiver
+
+\pchavev{valor presente líquido} % Deixe vazio se não tiver
+\kwordv{net present value} % Deixe vazio se não tiver
 % ---
 
 % ---
@@ -189,19 +192,10 @@ This document demonstrates the preparation of academic works (such as final pape
 \idiomaagradecimentos{english}
 
 \begin{otherlanguage*}{\acklang}
-
-% Primeiro autor
-\begin{AgradecimentosAutorI}
-Agradecemos ao Dr. Lauro César Araujo e equipe que desenvolveram a classe \abnTeX\ para escrita de trabalhos acadêmicos condizentes as normas da ABNT. A classe UnB\TeX\ a toma como base para atender necessidades específicas de cursos de graduação e pós-graduação da Universidade de Brasília.
-
-Agradecemos também ao Prof. Dr. Leonardo Luiz e Castro pelo modelo em \LaTeX\ para livro para editora UnB, que teve alguns recursos adaptados para o UnB\TeX.
-\end{AgradecimentosAutorI}
-
-% Segundo autor
-\begin{AgradecimentosAutorII}
-Agradecimentos do segundo autor.
-\end{AgradecimentosAutorII}
-
+    % Primeiro autor
+    \begin{AgradecimentosAutorI}
+        The list ever grows...
+    \end{AgradecimentosAutorI}
 \end{otherlanguage*}
 % ---
 
@@ -211,14 +205,8 @@ Agradecimentos do segundo autor.
 
 % Primeiro autor
 \begin{DedicatoriaAutorI}
-Este trabalho é dedicado às crianças adultas que,\\
-quando pequenas, sonharam em se tornar cientistas.
+    To all fascinated with almost understanding things
 \end{DedicatoriaAutorI}
-
-% Segundo autor
-\begin{DedicatoriaAutorII}
-Dedicatória do segundo autor.
-\end{DedicatoriaAutorII}
 % ---
 
 % ---
@@ -227,13 +215,12 @@ Dedicatória do segundo autor.
 \begin{Epigrafe}
 \vspace*{\fill}
 \begin{flushright}
-    \textit{``If you find that you're spending almost all your time on theory,\\
-    start turning some attention to practical things;\\
-    it will improve your theories.\\
-    If you find that you're spending almost all your time on practice,\\
-    start turning some attention to theoretical things;\\
-    it will improve your practice.''\\
-    (Donald Knuth)}
+    \textit{
+        ``Engineers use science to solve their problems if the science is available.\\ 
+        But available or not, the problem must be solved,\\
+        and whatever form the solution takes under these conditions\\
+        is called engineering.''\\
+    (from Shigley's Mechanical Engineering Design)}
 \end{flushright}
 \end{Epigrafe}
 % ---
@@ -276,22 +263,22 @@ Dedicatória do segundo autor.
 \imprimirresumos
 
 % Insere lista de figuras
-\imprimirlistadefiguras
+% \imprimirlistadefiguras
 
 % Insere lista de quadros
 %\imprimirlistadequadros
 
 % Insere lista de tabelas
-\imprimirlistadetabelas
+% \imprimirlistadetabelas
 
 % Insere lista de algoritmos
-\imprimirlistadealgoritmos
+% \imprimirlistadealgoritmos
 
 % Insere lista de códigos
-\imprimirlistadecodigos
+% \imprimirlistadecodigos
 
 % Insere a lista de abreviaturas e siglas e a lista de símbolos
-\imprimirlistadesiglasesimbolos
+% \imprimirlistadesiglasesimbolos
 
 % Insere o sumário
 \imprimirsumario
@@ -338,31 +325,26 @@ Dedicatória do segundo autor.
 % ---
 % Apêndices
 % ---
-\begin{apendicesenv}
-
-% Imprime uma página indicando o início dos apêndices
-\partapendices
-
-\include{chapters/appendix-a}
-
-\include{chapters/appendix-b}
-
-\include{chapters/appendix-c}
-
-\end{apendicesenv}
+% \begin{apendicesenv}
+%     % Imprime uma página indicando o início dos apêndices
+%     \partapendices
+%     \include{chapters/appendix-a}
+%     \include{chapters/appendix-b}
+%     \include{chapters/appendix-c}
+% \end{apendicesenv}
 % ---
-
+ 
 % ---
 % Anexos
 % ---
-\begin{anexosenv}
-
-% Imprime uma página indicando o início dos anexos
-\partanexos
-
-\include{chapters/annex-a}
-
-\end{anexosenv}
+% \begin{anexosenv}
+%     % Imprime uma página indicando o início dos anexos
+%     \partanexos
+%     \include{chapters/annex-a}
+% \end{anexosenv}
 % ---
+
+    % Random citation so references isn't empty
+    \cite{schaum1956}
 
 \end{document}
