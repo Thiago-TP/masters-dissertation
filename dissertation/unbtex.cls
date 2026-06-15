@@ -30,8 +30,8 @@
 % ---
 % Opção para definição de idioma principal
 % ---
-\def\idioma{brazil} % Português, por default
-\DeclareOption{idioma=brazil}{\def\idioma{brazil}}
+\def\idioma{brazilian} % Português, por default
+\DeclareOption{idioma=brazilian}{\def\idioma{brazilian}}
 \DeclareOption{idioma=english}{\def\idioma{english}}
 % ---
 
@@ -64,7 +64,7 @@
 \DeclareOption*{
     \PassOptionsToClass{\CurrentOption}{abntex2}
 }
-\PassOptionsToPackage{english,brazil}{babel}
+\PassOptionsToPackage{english,brazilian}{babel}
 \ProcessOptions\relax
 \LoadClass[12pt,a4paper]{abntex2}
 % ---
@@ -159,8 +159,8 @@
 % ---
 % Pacotes para figuras
 % ---
-\RequirePackage[captionskip=8pt]{subfig} % Permite fazer subfiguras
-%\RequirePackage[skip=8pt]{subcaption} % Permite fazer subfiguras
+%\RequirePackage[captionskip=8pt]{subfig} % Permite fazer subfiguras
+\RequirePackage[skip=8pt]{subcaption} % Permite fazer subfiguras
 % ---
 
 % ---
@@ -201,7 +201,7 @@
 % ---
 % Pacotes para algoritmos
 % ---
-\IfStrEq{\idioma}{brazil}
+\IfStrEq{\idioma}{brazilian}
 {\usepackage[algochapter,linesnumbered,boxed,portuguese,onelanguage]{algorithm2e}
 \SetAlgorithmName{Algoritmo}{algoritmo}{Lista de algoritmos}}
 {\usepackage[algochapter,linesnumbered,boxed,english,onelanguage]{algorithm2e}
@@ -471,7 +471,7 @@
 % ---
 % Pacote para remissões internas
 % ---
-\IfStrEq{\idioma}{brazil}
+\IfStrEq{\idioma}{brazilian}
 {\RequirePackage[nameinlink,noabbrev,brazilian]{cleveref}}
 {\RequirePackage[nameinlink,noabbrev,english]{cleveref}}
 \crefname{annex}{\anexoname}{\anexosname}
@@ -537,7 +537,7 @@
 % ---
 % Lista na bibliografia o número das páginas em que cada referência é citada
 \IfStrEq{\refpage}{off}{}{
-\IfStrEq{\idioma}{brazil}
+\IfStrEq{\idioma}{brazilian}
 {\RequirePackage[hyperpageref,brazilian]{backref}}{\RequirePackage[hyperpageref,english]{backref}}
 \renewcommand*{\backref}[1]{}
 \renewcommand*{\backrefalt}[4]{\ifcase#1\nocitation\or\citedp~#2.\else\citedpp~#2.\fi}
@@ -554,7 +554,7 @@
 \IfStrEq{\bibsty}{alf}{% Estilo autor-data
 \RequirePackage[alf,abnt-etal-list=0,abnt-etal-cite=3,abnt-emphasize=bf,abnt-missing-year=sd,bibjustif]{abntex2cite}
 \renewcommand{\@biblabel}[1]{}%
-\IfStrEq{\idioma}{brazil} % Seleciona o arquivo de estilo de citação
+\IfStrEq{\idioma}{brazilian} % Seleciona o arquivo de estilo de citação
 {\bibliographystyle{unbtexcite/unbtex-alf-pt}}{\bibliographystyle{unbtexcite/unbtex-alf-en}}
 }{%
 \IfStrEq{\bibsty}{num}{% Estilo numérico
@@ -576,7 +576,7 @@
 }}%
 \renewcommand{\citeonline}[2][] % Redefine \citeonline como \cite
 {\ifthenelse{\equal{#1}{}}{\cite{#2}}{\cite[#1]{#2}}}
-\IfStrEq{\idioma}{brazil} % Seleciona o arquivo de estilo de citação
+\IfStrEq{\idioma}{brazilian} % Seleciona o arquivo de estilo de citação
 {\bibliographystyle{unbtexcite/unbtex-num-pt}}{\bibliographystyle{unbtexcite/unbtex-num-en}}
 }}
 % ---
@@ -584,7 +584,7 @@
 % ---
 % Listas de abreviaturas/siglas/símbolos
 % ---
-\IfStrEq{\idioma}{brazil}
+\IfStrEq{\idioma}{brazilian}
 {\RequirePackage[portuguese]{nomencl}}{\RequirePackage[english]{nomencl}}
 %\RequirePackage[refpage]{nomencl} % Para imprimir página onde o símbolo foi registrado
 %\def\pagedeclaration#1{\dotfill\hyperlink{page.#1}{\nobreakspace#1}\par}
@@ -744,8 +744,8 @@
 \renewcommand{\nomCname}{Greek letters}
 }
 \AtBeginDocument{
-\IfStrEq{\idioma}{brazil}
-{\selectlanguage{brazil}}{\selectlanguage{english}}
+\IfStrEq{\idioma}{brazilian}
+{\selectlanguage{brazilian}}{\selectlanguage{english}}
 }
 % ---
 
@@ -881,7 +881,7 @@
     \begin{flushright}
     \begin{minipage}{.5\textwidth}
     {\SingleSpacing
-    \begin{otherlanguage*}{brazil}
+    \begin{otherlanguage*}{brazilian}
     \imprimirpreambulo
     \end{otherlanguage*}}
     \end{minipage}%
@@ -905,7 +905,7 @@
 \ifthenelse{\equal{\imprimirpublicacao}{}}{}{
 \begin{OnehalfSpace}
 {\noindent\sffamily\large REFERÊNCIA BIBLIOGRÁFICA}\par
-\noindent\MakeUppercase\autorisobrenome, \autorinome \ifthenelse{\equal{\autoriinome}{}}{.}{;~\MakeUppercase\autoriisobrenome, \autoriinome.} {\bfseries\StrDel{\imprimirtitulo}{\\}}. \begin{otherlanguage*}{brazil}\imprimirtipotrabalho\ (\imprimircurso)\ifthenelse{\equal{\imprimirpublicacao}{}}{}{,~\imprimirpublicacao} -- \ifthenelse{\equal{\instituicaoiii}{}}{}{\instituicaoiii,~}\instituicaoii, \instituicaoi, \imprimirlocal, \thelastpage~p. \imprimirano.\end{otherlanguage*}
+\noindent\MakeUppercase\autorisobrenome, \autorinome \ifthenelse{\equal{\autoriinome}{}}{.}{;~\MakeUppercase\autoriisobrenome, \autoriinome.} {\bfseries\StrDel{\imprimirtitulo}{\\}}. \begin{otherlanguage*}{brazilian}\imprimirtipotrabalho\ (\imprimircurso)\ifthenelse{\equal{\imprimirpublicacao}{}}{}{,~\imprimirpublicacao} -- \ifthenelse{\equal{\instituicaoiii}{}}{}{\instituicaoiii,~}\instituicaoii, \instituicaoi, \imprimirlocal, \thelastpage~p. \imprimirano.\end{otherlanguage*}
 \end{OnehalfSpace}}
 \IfInteger{\imprimircutter}{\setlength{\fboxsep}{10pt}}{\setlength{\fboxsep}{18pt}}
 \vspace*{\fill}
@@ -917,13 +917,13 @@
 \IfInteger{\imprimircutter}{\begin{tabular}{p{1.25cm} p{10.25cm}}}{} \cutter
 \autorisobrenome, \autorinome. \\
 \IfInteger{\imprimircutter}{\StrChar{\autorisobrenome}{1}\imprimircutter\StrChar{\imprimirtitulo}{1}[\SUBtemp]\MakeLowercase{\SUBtemp}}{} \cutter
-\hspace*{2em}\noindent \StrDel{\imprimirtitulo}{\\} ~/ \begin{otherlanguage*}{brazil}{\autorinome\ \autorisobrenome; \ifthenelse{\equal{\autoriinome}{}}{}{\autoriinome\ \autoriisobrenome;} \MakeLowercase\orientname\ \orientnome\ \orientsobrenome \ifthenelse{\equal{\coorientnome}{}}{.}{;~\MakeLowercase\coorientname\ \coorientnome\ \coorientsobrenome.} \texttt{-{}-} \imprimirlocal, \imprimirano.}\end{otherlanguage*} \\ \cutter
+\hspace*{2em}\noindent \StrDel{\imprimirtitulo}{\\} ~/ \begin{otherlanguage*}{brazilian}{\autorinome\ \autorisobrenome; \ifthenelse{\equal{\autoriinome}{}}{}{\autoriinome\ \autoriisobrenome;} \MakeLowercase\orientname\ \orientnome\ \orientsobrenome \ifthenelse{\equal{\coorientnome}{}}{.}{;~\MakeLowercase\coorientname\ \coorientnome\ \coorientsobrenome.} \texttt{-{}-} \imprimirlocal, \imprimirano.}\end{otherlanguage*} \\ \cutter
 \hspace*{2em}\noindent \thelastpage~p. \\ \cutter
 \\ \cutter
-\hspace*{2em}\noindent\begin{otherlanguage*}{brazil}\imprimirtipotrabalho\ (\imprimircurso)\ \texttt{-{}-} \instituicaoi, \imprimirano.\end{otherlanguage*} \\ \cutter
+\hspace*{2em}\noindent\begin{otherlanguage*}{brazilian}\imprimirtipotrabalho\ (\imprimircurso)\ \texttt{-{}-} \instituicaoi, \imprimirano.\end{otherlanguage*} \\ \cutter
 \\ \cutter
-\hspace*{2em}\noindent\IfStrEq{\idioma}{brazil}{1. \expandafter\MakeUppercase\pchaveinome. 2. \expandafter\MakeUppercase\pchaveiinome. 3. \expandafter\MakeUppercase\pchaveiiinome. \ifthenelse{\equal{\pchaveivnome}{}}{}{4. \expandafter\MakeUppercase\pchaveivnome. \ifthenelse{\equal{\pchavevnome}{}}{}{5. \expandafter\MakeUppercase\pchavevnome.~}}}{1. \expandafter\MakeUppercase\kwordinome. 2. \expandafter\MakeUppercase\kwordiinome. 3. \expandafter\MakeUppercase\kwordiiinome. \ifthenelse{\equal{\kwordivnome}{}}{}{4. \expandafter\MakeUppercase\kwordivnome. \ifthenelse{\equal{\kwordvnome}{}}{}{5. \expandafter\MakeUppercase\kwordvnome.~}}}%
-\begin{otherlanguage*}{brazil}{\ifthenelse{\equal{\autoriinome}{}}{\ifthenelse{\equal{\coorientnome}{}}{I. \orientsobrenome, \orientnome, orient. II. Título.}{I. \orientsobrenome, \orientnome, orient. II. \coorientsobrenome, \coorientnome, coorient. III. Título.}}{\ifthenelse{\equal{\coorientnome}{}}{I. \autoriisobrenome, \autoriinome. II. \orientsobrenome, \orientnome, orient. III. Título.}{I. \autoriisobrenome, \autoriinome. II. \orientsobrenome, \orientnome, orient. III. \coorientsobrenome, \coorientnome, coorient. IV. Título.}}}\end{otherlanguage*}
+\hspace*{2em}\noindent\IfStrEq{\idioma}{brazilian}{1. \expandafter\MakeUppercase\pchaveinome. 2. \expandafter\MakeUppercase\pchaveiinome. 3. \expandafter\MakeUppercase\pchaveiiinome. \ifthenelse{\equal{\pchaveivnome}{}}{}{4. \expandafter\MakeUppercase\pchaveivnome. \ifthenelse{\equal{\pchavevnome}{}}{}{5. \expandafter\MakeUppercase\pchavevnome.~}}}{1. \expandafter\MakeUppercase\kwordinome. 2. \expandafter\MakeUppercase\kwordiinome. 3. \expandafter\MakeUppercase\kwordiiinome. \ifthenelse{\equal{\kwordivnome}{}}{}{4. \expandafter\MakeUppercase\kwordivnome. \ifthenelse{\equal{\kwordvnome}{}}{}{5. \expandafter\MakeUppercase\kwordvnome.~}}}%
+\begin{otherlanguage*}{brazilian}{\ifthenelse{\equal{\autoriinome}{}}{\ifthenelse{\equal{\coorientnome}{}}{I. \orientsobrenome, \orientnome, orient. II. Título.}{I. \orientsobrenome, \orientnome, orient. II. \coorientsobrenome, \coorientnome, coorient. III. Título.}}{\ifthenelse{\equal{\coorientnome}{}}{I. \autoriisobrenome, \autoriinome. II. \orientsobrenome, \orientnome, orient. III. Título.}{I. \autoriisobrenome, \autoriinome. II. \orientsobrenome, \orientnome, orient. III. \coorientsobrenome, \coorientnome, coorient. IV. Título.}}}\end{otherlanguage*}
 \IfInteger{\imprimircutter}{\end{tabular}}{}
 \end{minipage}}
 \end{center}
@@ -957,7 +957,7 @@
     \begin{flushright}
     \begin{minipage}{.5\textwidth}
     {\SingleSpacing
-    \begin{otherlanguage*}{brazil}
+    \begin{otherlanguage*}{brazilian}
     \imprimirpreambulo
     \end{otherlanguage*}}
     \end{minipage}%
@@ -1015,7 +1015,7 @@
 \newcommand{\idiomaagradecimentos}[1]{\def\acklang{#1}}
 \newcommand{\imprimiragradecimentos}{
 % Define o título da seção de agradecimentos
-\IfStrEq{\acklang}{brazil}{
+\IfStrEq{\acklang}{brazilian}{
 \renewcommand{\agradecimentosname}{Agradecimentos}
 }{% Caso os agradecimentos sejam escritos em inglês
 \renewcommand{\agradecimentosname}{Acknowledgements}}
@@ -1058,7 +1058,7 @@
 \newenvsc{Resumo}[store-env=resumo]
 \newcommand{\imprimirresumo}{
 \begin{resumo}[Resumo]
-\begin{otherlanguage*}{brazil}
+\begin{otherlanguage*}{brazilian}
 \getstored{resumo}\par
 \vspace{\baselineskip}
 {\sffamily\bfseries Palavras-chave:} \pchaveinome; \pchaveiinome; \pchaveiiinome\ifthenelse{\equal{\pchaveivnome}{}}{.}{;~\pchaveivnome\ifthenelse{\equal{\pchavevnome}{}}{.}{;~\pchavevnome.}}
@@ -1080,7 +1080,7 @@
 }
 % Insere resumo e abstract
 \newcommand{\imprimirresumos}{
-\IfStrEq*{\idioma}{brazil}
+\IfStrEq*{\idioma}{brazilian}
 {\imprimirresumo
 \imprimirabstract}
 {\imprimirabstract
@@ -1221,7 +1221,7 @@
                 \csname HyLang@#2\endcsname
 }
 \HyLang@DeclareLang{english}{english}{}
-\HyLang@DeclareLang{brazil}{portuges}{}
+\HyLang@DeclareLang{brazilian}{portuges}{}
 \HyLang@DeclareLang{brazilian}{portuges}{}
 \HyLang@DeclareLang{portuguese}{portuges}{}
 % ---

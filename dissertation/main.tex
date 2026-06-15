@@ -26,7 +26,7 @@
     % -- Opção da classe abntex2 -- https://www.ctan.org/pkg/abntex2
     sumario=tradicional, % Remova esta opção para sumário padrão ABNT
     % -- Selecione o idioma no qual o trabalho será escrito
-    % idioma=brazil, % Para texto principal em português
+    % idioma=brazilian, % Para texto principal em português
     idioma=english, % Para texto principal em inglês  
     % -- Opções para as referências bibliográficas
     bib=alf, % Bibliografia nas normas da ABNT, estilo autor-data
@@ -46,6 +46,29 @@
 \usepackage{blindtext}
 \usepackage{epigraph} % Pacote para adicionar frases de efeito após títulos de capítulos
 % ---
+
+%--
+% Comandos adicionados
+%---
+\newcommand{\chapteroutline}[1]{%
+    \section{Chapter outline}
+        \begin{mdframed}[style=defnSty,innertopmargin=8pt] % azul
+        % \begin{mdframed}[style=plainSty,innertopmargin=8pt] % verde
+            {\center \textbf{\sffamily Aims and structure} \par}
+            \noindent 
+            #1
+        \end{mdframed}
+}
+\newcommand{\chaptersummary}[1]{%
+    \section{Chapter summary}
+        %\begin{mdframed}[style=defnSty,innertopmargin=8pt] % azul
+        \begin{mdframed}[style=plainSty,innertopmargin=8pt] % verde
+            {\center \textbf{\sffamily Key takeaways} \par}
+            \noindent 
+            #1
+        \end{mdframed}
+}
+%---
 
 % ---
 % Compila a nomenclatura
@@ -67,7 +90,7 @@
 % ---
 % Título
 % ---
-\titulo{Adaptive Model Aggregation Applied\\ to Reservoir Optimization} % No idioma principal do texto
+\titulo{Gated Data-Space Inversion for Reservoir Prediction} % No idioma principal do texto
 % Insira \\ caso queira forçar quebras de linha no título
 % Não utilize caixa alta para o título do trabalho e nem das seções (com exceção de siglas)
 % ---
@@ -168,35 +191,35 @@
 % ---
 % Palavras-chave (defina no mínimo 3 e no máximo 5)
 % ---
-\pchavei{aprendizado de máquina}
-\kwordi{machine learning}
+\pchavei{}
+\kwordi{}
 
-\pchaveii{controle de reservatório}
-\kwordii{reservoir control}
+\pchaveii{}
+\kwordii{}
 
-\pchaveiii{otimização}
-\kwordiii{optimization}
+\pchaveiii{}
+\kwordiii{}
 
-\pchaveiv{predição de produção} % Deixe vazio se não tiver
-\kwordiv{production forecasting} % Deixe vazio se não tiver
+\pchaveiv{} % Deixe vazio se não tiver
+\kwordiv{} % Deixe vazio se não tiver
 
-\pchavev{valor presente líquido} % Deixe vazio se não tiver
-\kwordv{net present value} % Deixe vazio se não tiver
+\pchavev{} % Deixe vazio se não tiver
+\kwordv{} % Deixe vazio se não tiver
 % ---
 
 % ---
 % Agradecimentos
 % ---
 % Idioma usado nos agradecimentos (pode ser em português, mesmo que o trabalho seja em inglês)
-% \idiomaagradecimentos{brazil}
+% \idiomaagradecimentos{brazilian}
 \idiomaagradecimentos{english}
 
-\begin{otherlanguage*}{\acklang}
-    % Primeiro autor
-    \begin{AgradecimentosAutorI}
-        The list ever grows...
-    \end{AgradecimentosAutorI}
-\end{otherlanguage*}
+% \begin{otherlanguage*}{\acklang}
+%     % Primeiro autor
+%     \begin{AgradecimentosAutorI}
+%         The list ever grows...
+%     \end{AgradecimentosAutorI}
+% \end{otherlanguage*}
 % ---
 
 % ---
@@ -204,25 +227,25 @@
 % ---
 
 % Primeiro autor
-\begin{DedicatoriaAutorI}
-    To all fascinated with almost understanding things
-\end{DedicatoriaAutorI}
+% \begin{DedicatoriaAutorI}
+%     To all fascinated with almost understanding things
+% \end{DedicatoriaAutorI}
 % ---
 
 % ---
 % Epígrafe
 % ---
-\begin{Epigrafe}
-\vspace*{\fill}
-\begin{flushright}
-    \textit{
-        ``Engineers use science to solve their problems if the science is available.\\ 
-        But available or not, the problem must be solved,\\
-        and whatever form the solution takes under these conditions\\
-        is called engineering.''\\
-    (from Shigley's Mechanical Engineering Design)}
-\end{flushright}
-\end{Epigrafe}
+% \begin{Epigrafe}
+% \vspace*{\fill}
+% \begin{flushright}
+%     \textit{
+%         ``Engineers use science to solve their problems if the science is available.\\ 
+%         But available or not, the problem must be solved,\\
+%         and whatever form the solution takes under these conditions\\
+%         is called engineering.''\\
+%     (from Shigley's Mechanical Engineering Design)}
+% \end{flushright}
+% \end{Epigrafe}
 % ---
 
 % ------------------------------------------------------------------------
@@ -251,13 +274,13 @@
 \imprimirfolhadeaprovacao
 
 % Insere dedicatória (elemento opcional)
-\imprimirdedicatoria
+% \imprimirdedicatoria
 
 % Insere agradecimentos (elemento opcional)
-\imprimiragradecimentos
+% \imprimiragradecimentos
 
 % Insere epígrafe (elemento opcional)
-\imprimirepigrafe
+% \imprimirepigrafe
 
 % Insere resumos
 \imprimirresumos
@@ -293,20 +316,13 @@
 % Imprime uma página para agrupar um conjunto de capítulos (parte)
 %\part{Nome da parte}
 
-% Capítulo de introdução
-\include{chapters/chapter_1}
-
-% Capítulo de fundamentos teóricos ou técnicos
-\include{chapters/chapter_2}
-
-% Capítulo com a proposta desenvolvida
-\include{chapters/chapter_3}
-
-% Capítulo de resultados
-\include{chapters/chapter_4}
-
-% Capítulo de conclusões
-\include{chapters/chapter_5}
+\include{chapters/1_introduction}
+\include{chapters/2_literature_review}
+\include{chapters/3_theory_framework}
+\include{chapters/4_methods}
+\include{chapters/5_results}
+\include{chapters/6_discussion}
+\include{chapters/7_conclusion}
 
 % ------------------------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
