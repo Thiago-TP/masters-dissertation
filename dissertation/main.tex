@@ -43,13 +43,13 @@
 \usepackage{lscape} % Pacote para rotacionar tabelas (e outros objetos)
 %\usepackage{pdflscape} % Pacote para rotacionar objetos e também a página do arquivo pdf
 \usepackage{afterpage} % Evita quebra de página quando inserir uma tabela (ou outro objeto) rotacionada
-\usepackage{blindtext}
 \usepackage{epigraph} % Pacote para adicionar frases de efeito após títulos de capítulos
 % ---
 
 %--
 % Comandos adicionados
 %---
+\definecolor{darkred}{HTML}{CA3A27}
 \newcommand{\chapteroutline}[1]{%
     \section{Chapter outline}
         \begin{mdframed}[style=defnSty,innertopmargin=8pt] % azul
@@ -176,7 +176,17 @@
 % Resumo em inglês
 % ---
 \begin{Abstract}
-    \blindtext[1]
+    {\color{darkred}
+        Guiding questions
+        \begin{itemize}
+            \item What is the reason for writing the thesis?
+            \item What are the current approaches and gaps in the literature?
+            \item What are your research question(s) and aims?
+            \item Which methodology have you used?
+            \item What are the main findings?
+            \item What are the main conclusions and implications?
+        \end{itemize}
+    }
 \end{Abstract}
 % ---
 
@@ -184,7 +194,17 @@
 % Resumo em português
 % ---
 \begin{Resumo}
-    \blindtext[1]
+    {\color{darkred}
+        Perguntas orientadoras
+        \begin{itemize}
+            \item Qual é a motivação para escrever a dissertação?
+            \item Quais são as abordagens atuais e lacunas na literatura?
+            \item Quais são as suas perguntas de pesquisa e objetivos?
+            \item Qual metodologia você utilizou?
+            \item Quais são os principais resultados?
+            \item Quais são as principais conclusões e implicações?
+        \end{itemize}
+    }
 \end{Resumo}
 % ---
 
