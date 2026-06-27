@@ -68,6 +68,16 @@
             #1
         \end{mdframed}
 }
+% 1 = modo debug com perguntas orientadoras/comentários
+% 0 = modo normal sem perguntas orientadoras/comentários
+\newcommand{\debugmode}{1}
+\newcommand{\debug}[1]{%
+    \if\debugmode1
+        \color{darkred}
+        \noindent #1
+        \color{black}
+    \fi%
+}
 %---
 
 % ---
@@ -176,17 +186,33 @@
 % Resumo em inglês
 % ---
 \begin{Abstract}
-    {\color{darkred}
-        Guiding questions
-        \begin{itemize}
-            \item What is the reason for writing the thesis?
-            \item What are the current approaches and gaps in the literature?
-            \item What are your research question(s) and aims?
-            \item Which methodology have you used?
-            \item What are the main findings?
-            \item What are the main conclusions and implications?
-        \end{itemize}
+    \debug{%
+    Guiding questions
+    \begin{itemize}
+        \item What is the reason for writing the thesis?
+        \item What are the current approaches and gaps in the literature?
+        \item What are your research question(s) and aims?
+        \item Which methodology have you used?
+        \item What are the main findings?
+        \item What are the main conclusions and implications?
+    \end{itemize}
     }
+    Accurate prediction of reservoir performance under uncertainty is essential for decision-making in geological reservoir management.
+    Data-Space Inversion (DSI) \cite{Sun:2017} provides an attractive alternative to traditional history matching by updating ensemble forecasts directly in data space, thereby avoiding repeated subsurface simulations.
+    Recently, \citeonline{Lima:2020} introduced DSI-ESMDA, an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, achieving significant computational efficiency while maintaining competitive posterior forecasts.
+    Despite these advantages, DSI-ESMDA, like other ensemble smoothers, remains susceptible to excessive variance loss, which can lead to underestimation of posterior uncertainty.
+    Methods such as covariance localization help to ameliorate this issue, but variance underestimation is still observed in practical applications.
+    One contributing factor to this progressive loss of variance is that small production mismatches, often dominated by measurement noise or sampling effects, may trigger repeated micro-updates that reduce ensemble diversity without improving predictive skill.
+    This work introduces an extension to DSI-ESMDA that modifies the effective influence of each observation through a nonlinear, misfit-dependent weighting of the innovation vector.
+    The proposed formulation can be interpreted as introducing a smoothing influence function into the Kalman-type update, computed from normalized innovations using an error-function-based gating operator.
+    In contrast to covariance localization, which acts on second-order statistics, innovation gating acts directly on the update term, selectively suppressing corrections associated with sufficiently-matched observations while preserving the full impact of significant mismatches.
+    Match quality is thresholded by a gating parameter during innovation normalization.
+    The gating methodology is inspired by adaptive filtering developed to mitigate actuator wear in
+    closed-loop control systems \cite{Fortaleza:2022} and is conceptually related to smooth shrinkage and noise-gating strategies in signal processing \cite{Donoho:1994,Donoho:1995}.
+    Although the present work focuses on DSI, the proposed formulation is general and can be applied to standard ensemble-based model-space inversion methods, including ES-MDA and related iterative smoothers.
+    The approach is evaluated on multiple synthetic reservoirs and one real field application using production rates from producers and injectors.
+    Results show that innovation-gated DSI-ESMDA reduces variance loss during and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
+    Furthermore, for moderate gating parameters, posterior forecasts remain close to those obtained with standard DSI-ESMDA, indicating that the proposed method acts as a stabilizing extension rather than a replacement.
 \end{Abstract}
 % ---
 
@@ -194,17 +220,6 @@
 % Resumo em português
 % ---
 \begin{Resumo}
-    {\color{darkred}
-        Perguntas orientadoras
-        \begin{itemize}
-            \item Qual é a motivação para escrever a dissertação?
-            \item Quais são as abordagens atuais e lacunas na literatura?
-            \item Quais são as suas perguntas de pesquisa e objetivos?
-            \item Qual metodologia você utilizou?
-            \item Quais são os principais resultados?
-            \item Quais são as principais conclusões e implicações?
-        \end{itemize}
-    }
 \end{Resumo}
 % ---
 
@@ -355,7 +370,10 @@
 % ---
 % Arquivo com as referências bibliográficas
 \bibhang{2.2em} % Recuo da margem esquerda da lista de referências
-\bibliography{chapters/references} % O estilo de citação é selecionado automaticamente
+\bibliography{% O estilo de citação é selecionado automaticamente
+    chapters/references/main,%
+    chapters/references/donoho%
+} 
 % ---
 
 % ---
@@ -379,8 +397,5 @@
 %     \include{chapters/annex-a}
 % \end{anexosenv}
 % ---
-
-    % Random citation so references isn't empty
-    \cite{schaum1956}
 
 \end{document}
