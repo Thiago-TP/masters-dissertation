@@ -52,6 +52,9 @@
 %--
 % Comandos adicionados
 %---
+% x10^{number} for cientific notation
+\providecommand{\e}[1]{\ensuremath{~\times~\text{10}^\text{#1}}}
+% Dark red color for debug mode
 \definecolor{darkred}{HTML}{CA3A27}
 \newcommand{\chapteroutline}[1]{%
     \section{Chapter outline}
@@ -435,6 +438,7 @@
 \bibhang{2.2em} % Recuo da margem esquerda da lista de referências
 \bibliography{% O estilo de citação é selecionado automaticamente
     chapters/references/main,%
+    chapters/references/reservoir_characterization,%
     chapters/references/donoho%
 } 
 % ---

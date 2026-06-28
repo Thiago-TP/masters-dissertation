@@ -63,6 +63,7 @@ DSI-ESMDA updates the ensemble outputs by iterating a Kalman-like data assimilat
     =
     \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
     (\mathbf{d}_\text{obs} + \sqrt{\alpha_k}\mathbf{e}_j^k - \mathbf{d}_{h,\ j}^k),
+\label{eq:iteration_dsiesmda}
 \end{equation}
 
 with $1 \leq k \leq N_a$, $N_a$ the number of assimilations DSI-ESMDA must do.
@@ -197,7 +198,7 @@ the more lax the localization, allowing more weakly correlated changes to hold m
 %
 \begin{figure}[htbp]
     \centering
-    % \includegrpahics[width=0.6\textwidth]{figures/schematic_localization.png}
+    % \includegrpahics[width=0.6\textwidth]{schematic_localization.png}
     \caption{
         Illustration of the localization applied in several different measurements.
         \textit{Left panel:} Localization between measurements from the same well but from different times.
@@ -244,8 +245,14 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
 
 \begin{figure}[htbp]
     \centering
+    \caption{%
+        Important functions for understanding the proposed Data-Space Inversion algorithm.
+    }
+    \label{fig:erf_and_alpha}
     \begin{subfigure}{0.49\textwidth}
         \centering
+        \caption{Special error function $\mathrm{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2}\ dt$}
+        \label{fig:erf}
         \begin{tikzpicture}[> = latex]
             \draw[->] (-3, 0) -- node[at end, right] {$z$} (3, 0);
             \draw[->] (0, -1) -- node[at end, above] {$\mathrm{erf}(z)$} (0, 1.5);
@@ -261,14 +268,15 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
                 (0, 1) node [left] {$1$} --++ (3, 0)
                 (0, -1) node [right] {$-1$} --++ (-3, 0)
             ;
-
             \draw [very thick, verdeunb] plot[domain=-3:3, samples=200] (\x, {erf(\x)});
         \end{tikzpicture}
-        \caption{Special error function $\mathrm{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2}\ dt$}
     \end{subfigure}
     %
     \begin{subfigure}{0.49\textwidth}
         \centering
+        \caption{Values of $\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$
+        for $q \in \{0.5, 1, 1.5, 2, 2.5\}$}
+        \label{fig:alpha}
         \begin{tikzpicture}[> = latex]
             \def \s {1.1} % y axis scale
             \draw [->] (0, 0) -- node[at end, right] {$\lambda$} (5.3, 0); 
@@ -296,12 +304,8 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
             }
             \draw (0, 1) node [left] {$1$};
         \end{tikzpicture}
-        \caption{Values of $\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$
-        for $q \in \{0.5, 1, 1.5, 2, 2.5\}$}
     \end{subfigure}
-    \caption{
-        Important functions for understanding the proposed Data-Space Inversion algorithm.
-    }
+    \fonte{Self-elaboration.}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -315,10 +319,15 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
         \textit{Right panel}: DSI-ESMDA with $\lambda=5$ filtering.
         Posterior gains variance as $\lambda$ grows.
     }
+    \fonte{Self-elaboration.}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
+    \caption{%
+        Outline of the proposed Data-Space Inversion algorithm. 
+    }
+    \label{fig:flowchart-gated}
     \begin{tikzpicture}[> = latex]
         % Blocks
         \node [startstop] (start) 
@@ -352,12 +361,9 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
         \draw [->] (dsiesmda) -- (posterior);
         \draw [->] (posterior) -- (stop);
     \end{tikzpicture}
-    \caption{
-        Outline of the proposed Data-Space Inversion algorithm. 
-    }
+    \fonte{Self-elaboration.}
 \end{figure}
 
-    
 
 % Takeaways
 \chaptersummary{}
