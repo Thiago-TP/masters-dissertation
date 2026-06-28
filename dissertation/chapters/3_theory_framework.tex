@@ -35,12 +35,328 @@ That means that a theory framework can take different forms:
         
 
     \subsection{Reservoir simulation}
-        
+
 
 \section{Kalman Filtering}
     
 
 \section{Data-Space Inversion}
+
+Let $\mathbf{d}$ denote the true production data vector of a reference reservoir across time,
+and let $\mathbf{d}_j$ denote the production data vector produced by 
+simulating a realization of the reference reservoir using model parameters $\mathbf{m}_j$.
+For an ensemble of $N_e$ realizations, we have $N_e$ different such vectors, each of which dependent on its own parameters vector.
+All data vectors are assumed whole, i.e., without missing entries, as well as sinchronized.
+
+Of the original reference data vector, only part of it is used in the history matching process.
+Denote this vector by $\mathbf{d}_h$. 
+Following the same pattern, $\mathbf{d}_{h,\ j}$ denotes the history match period data output by member $j$ of the ensemble.
+Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim N(\mathbf{0}, \mathbf{C}_e)$,
+where $\mathbf{C}_e$ is the noise covariance matrix.
+The resulting vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
+%
+DSI-ESMDA updates the ensemble outputs by iterating a Kalman-like data assimilation, shown below
+\cite{Lima:2020}:
+%
+\begin{equation}
+    \mathbf{d}_j^{k+1} 
+    =
+    \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
+    (\mathbf{d}_\text{obs} + \sqrt{\alpha_k}\mathbf{e}_j^k - \mathbf{d}_{h,\ j}^k),
+\end{equation}
+
+with $1 \leq k \leq N_a$, $N_a$ the number of assimilations DSI-ESMDA must do.
+Thus, $\mathbf{d}_j^k$ for $k=1$ is the ensemble prior $\mathbf{d}_j$, and $\mathbf{d}_j^{Na+1}$, the posterior.
+Vector $\mathbf{e}_j^k\sim N(\mathbf{0}, \mathbf{C}_e)$ is a random disturbance,
+and $\alpha_k$ coefficients are positive constants that satisfy $\sum_k 1/\alpha_k = 1$. 
+
+Matrices $\mathbf{R}$ and $\mathbf{K}$ are the localization and the modified Kalman gain, respectively.
+$\mathbf{K}$ is defined as
+%
+\begin{equation}
+    \mathbf{K}^k = 
+    \Delta\mathbf{D}^k (\Delta\mathbf{D}_h^k)^\top
+    \left(
+        \Delta\mathbf{D}_h^k (\Delta\mathbf{D}_h^k)^\top
+        +
+        \alpha_k\mathbf{C}_e
+    \right)^{-1},
+\end{equation}
+%
+with 
+%
+\begin{align}
+    \Delta\mathbf{D} &= \frac{1}{\sqrt{N_e-1}} 
+    \begin{bmatrix}
+        \mathbf{d}_1 - \overline{\mathbf{d}} &
+        \cdots &
+        \mathbf{d}_{N_e} - \overline{\mathbf{d}}
+    \end{bmatrix}, 
+    \\
+    \overline{\mathbf{d}} &= \frac{1}{N_e} 
+    \sum_{j=1}^{N_e} \mathbf{d}_j,
+\end{align}
+a matrix that quantifies the spread of the ensemble. 
+$\Delta \mathbf{D}_h$ is defined analogously by constraining the above equations to the history matching period:
+%
+\begin{align}
+    \Delta\mathbf{D}_h &= \frac{1}{\sqrt{N_e-1}} 
+    \begin{bmatrix}
+        \mathbf{d}_{h, 1} - \overline{\mathbf{d}}_h &
+        \cdots &
+        \mathbf{d}_{h, N_e} - \overline{\mathbf{d}}_h
+    \end{bmatrix}, 
+    \\
+    \overline{\mathbf{d}}_h &= \frac{1}{N_e} 
+    \sum_{j=1}^{N_e} \mathbf{d}_{h, j}.
+\end{align}
+
+$\mathbf{R}$ adjusts the Kalman gain, 
+preserving correlated measures while 
+diminishing the impact of spuriously correlated measures. 
+As such, its entries lie in $[0, 1]$, and pointwisely multiply $\mathbf{K}$.
+Intuitively, a correlation is strong if measures of a same quantity were taken closer in space and/or in time, and weaker otherwise. 
+Denoting this ``distance'' by $\delta_{uv}$, 
+where $u$ is an index from $\mathbf{d}_j$ and 
+$v$ an index from $\mathbf{d}_h$, 
+$\mathbf{R}$ is given by
+%
+\begin{align}
+    R_{uv} &= r(\delta_{uv}), 
+    \\
+    r(\delta) &= \begin{cases}
+        -\frac{1}{4}\delta^5 + \frac{1}{2}\delta^4 + \frac{5}{8}\delta^3 -\frac{5}{3}\delta^2 + 1,
+        & 0 \leq \delta \leq 1 \\
+        \frac{1}{12}\delta^5 - \frac{1}{2}\delta^4 + \frac{5}{8}\delta^3 +\frac{5}{3}\delta^2 -5\delta + 4 - \frac{2}{3}\delta^{-1},
+        & 1 < \delta \leq 2 \\
+        0,
+        & \delta > 2 
+    \end{cases},
+    \\
+    \delta_{uv} &= 
+    \sqrt{
+        \left(\frac{\Delta x'_{uv}}{L_{x'}}\right)^2 + 
+        \left(\frac{\Delta y'_{uv}}{L_{y'}}\right)^2 + 
+        \left(\frac{\Delta t_{uv}}{T_c}\right)^2
+    }, \\
+    \begin{bmatrix}
+        \Delta x'_{uv} \\ \Delta y'_{uv}
+    \end{bmatrix}
+    &= 
+    \begin{bmatrix}
+        \cos\theta & -\sin\theta \\ 
+        \sin\theta & \cos\theta
+    \end{bmatrix}
+    \begin{bmatrix}
+        \Delta x_{uv} \\ \Delta y_{uv}
+    \end{bmatrix}
+\end{align}
+
+$\Delta x_{uv}$ and $\Delta y_{uv}$ are the $x$ and $y$ differences, respectively, 
+between the points in space from where measure $u$ and $v$ were taken.
+In this context, measurements always come from a well, and so these differences are always distances between wells.
+%
+$\Delta t_{uv}$ is the difference between the time when measurement $u$ was taken, and the time when $v$ was taken.
+Note that while $v$ is restrained to the history matching period by definition, $u$ is not.
+The inclusion of $\Delta t_{uv}$ guarantees that measurements far apart in time will hold little correlation,
+even if taken from the same well.
+
+A rotation by $\theta$ is applied to take into account the anisotropy of reservoir permeability,
+and are $L_{x'}$, $L_{y'}$, $T_c$ positive constants that regulate the critical points of differences in $x$, $y$ and $t$ separately.
+By critical, it is understood the inflection point $\delta=1$ in $r(\delta)$.
+The greater the critical value, 
+the more lax the localization, allowing more weakly correlated changes to hold more impact.
+%
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[> = latex]
+        \draw [<->] (0, 1.5) node [above] {$r(\delta)$} |- (2.25, 0) node [right] {$\delta$};
+        \draw (0, 0) node [below] {$0$};
+        
+        \draw [very thick, verdeunb, domain=0:1, samples=100, variable={\x}] plot 
+            ({\x}, {-0.25*\x*\x*\x*\x*\x + 0.5*\x*\x*\x*\x + 0.625*\x*\x*\x - 1.666*\x*\x + 1});
+        
+        \draw [very thick, verdeunb, domain=1:2, samples=100, variable={\x}] plot
+            ({\x}, {0.0833*\x*\x*\x*\x*\x - 0.5*\x*\x*\x*\x + 0.625*\x*\x*\x + 1.666*\x*\x - 5*\x + 4 - 0.666/\x});
+        
+        \draw [very thick, verdeunb, domain=2:2.25, variable={\x}] plot
+            ({\x}, {0});
+
+        \draw [dashed] 
+            (1, 0) node [below] {$1$} -- 
+            (1, -0.25 + 0.5 + 0.625- 1.666 + 1) --++ 
+            (-1, 0) node [left] {$\approx 0.21$}
+        ;
+        \draw (0, 1) node [left] {$1$};
+        \fill [verdeunb] (0, 1) circle (0.06);
+    \end{tikzpicture}
+    \caption{
+        Compact correlation function $r$ used to build the localization matrix $\mathbf{R}$.
+    }
+\end{figure}
+%
+\begin{figure}[htbp]
+    \centering
+    % \includegrpahics[width=0.6\textwidth]{figures/schematic_localization.png}
+    \caption{
+        Illustration of the localization applied in several different measurements.
+        \textit{Left panel:} Localization between measurements from the same well but from different times.
+        \textit{Center panel:} Localization between measurements from the different wells but at the same times.
+        \textit{Right panel:} Localization between measurements from the different wells at different times.
+    }
+\end{figure}
+
+Localization greatly improves the quality of the posterior, 
+but if the prior zeroes in on an average that is too different from the reference,
+it is hard to adjust it in order to inject some variance on the collapsed curves.
+This is partly the reason behind the random disturbance in: injecting variance on the ensemble fit.
+
+Even when the localization $\mathbf{R}$ is well tuned (i.e., $\theta$, $L_{x'}$, $L_{y'}$ and $T_c$ generate adequate posteriors), 
+DSI-ESMDA may suffer the inherent history matching problem of making poor predictions despite good fit to past data.
+%
+The ensemble posterior narrows around a curve that is not representative of the reservoir.
+
+The inherent problem of history matching may be impossible to solve, but it may be mitigated by allowing the posterior to spread more.
+We propose doing so by adaptively adjusting the importance of the history mismatch when running the update iterations:
+%
+\begin{align}
+    \mathbf{d}_j^{k+1} 
+    &=
+    \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
+    [
+    \bm{\alpha}_j^k \circ 
+    (\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)], 
+\label{eq:iteration_gated}
+    \\
+    \alpha_{j,\ v}^k 
+    &= \mathrm{erf}
+    \left(
+        \frac{1}{\lambda \sqrt{2\sigma_v^2}} 
+        |(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v|
+    \right)
+\label{eq:alpha_lambda}
+\end{align}
+%
+The equation above is based on the work of \cite{Fortaleza:2022}, and a detailed derivation is provided in \cref{chap:deriving-alpha}.
+The smaller the mismatch of a measurement relative to the noise at that measure, the smaller the update.
+Constant $\lambda\geq 1$ inflates the deviation, further softening the Kalman-like update.
+At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^k$), $\bm{\alpha}_j^k = \mathbf{0}$ and the DSI update is fully undone. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \begin{tikzpicture}[> = latex]
+            \draw[->] (-3, 0) -- node[at end, right] {$z$} (3, 0);
+            \draw[->] (0, -1) -- node[at end, above] {$\mathrm{erf}(z)$} (0, 1.5);
+            
+            \draw
+                (-1, 0) node [below] {$-1$}
+                (1, 0) node [below] {$1$}
+                (0, 0) node [below right] {$0$}
+                (-2, 0) node [below] {$-2$}
+                (2, 0) node [below] {$2$}
+            ;
+            \draw [dashed] 
+                (0, 1) node [left] {$1$} --++ (3, 0)
+                (0, -1) node [right] {$-1$} --++ (-3, 0)
+            ;
+
+            \draw [very thick, verdeunb] plot[domain=-3:3, samples=200] (\x, {erf(\x)});
+        \end{tikzpicture}
+        \caption{Special error function $\mathrm{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2}\ dt$}
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \begin{tikzpicture}[> = latex]
+            \def \s {1.1} % y axis scale
+            \draw [->] (0, 0) -- node[at end, right] {$\lambda$} (5.3, 0); 
+            \draw [->] (0, 0) -- node[at end, above] {$\mathrm{erf}(q/\lambda\sqrt{2})$} (0, \s*1.3);
+            
+            \draw [very thick, verdeunb, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(0.5/(\x*sqrt(2)))});
+            \draw [very thick, verdeunb] plot[domain=1:5, samples=200] (\x, {\s*erf(0.5/(\x*sqrt(2)))});
+            
+            \draw [very thick, verdeunb!80, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(1/(\x*sqrt(2)))});
+            \draw [very thick, verdeunb!80] plot[domain=1:5, samples=200] (\x, {\s*erf(1/(\x*sqrt(2)))});
+            
+            \draw [very thick, verdeunb!60, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(1.5/(\x*sqrt(2)))});
+            \draw [very thick, verdeunb!60] plot[domain=1:5, samples=200] (\x, {\s*erf(1.5/(\x*sqrt(2)))});
+            
+            \draw [very thick, verdeunb!40, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(2/(\x*sqrt(2)))});
+            \draw [very thick, verdeunb!40] plot[domain=1:5, samples=200] (\x, {\s*erf(2/(\x*sqrt(2)))});
+            
+            \draw [very thick, verdeunb!20, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(2.5/(\x*sqrt(2)))});
+            \draw [very thick, verdeunb!20] plot[domain=1:5, samples=200] (\x, {\s*erf(2.5/(\x*sqrt(2)))});
+
+            \draw [azulunb, ->, dashdotted, thick] (1.5, 0.1) --++ (45:1.75) node [above] {$q$};
+
+            \foreach \x in {0, 1, 2, 3, 4, 5}{
+                \draw (\x, 0) node [below] {$\x$};
+            }
+            \draw (0, 1) node [left] {$1$};
+        \end{tikzpicture}
+        \caption{Values of $\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$
+        for $q \in \{0.5, 1, 1.5, 2, 2.5\}$}
+    \end{subfigure}
+    \caption{
+        Important functions for understanding the proposed Data-Space Inversion algorithm.
+    }
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    % \includegraphics[width=0.6\textwidth]{}
+    \caption{
+        Illustration of the effect of $\lambda$ on the posterior ensemble for fixed $\mathbf{R}$ and $N_a$.
+        Yellow lines are the values of $\alpha_{j}^{N_a+1}$ across time.
+        \textit{Left panel}: DSI-ESMDA prior and posterior ensembles.
+        \textit{Center panel}: DSI-ESMDA with $\lambda=1$ filtering.
+        \textit{Right panel}: DSI-ESMDA with $\lambda=5$ filtering.
+        Posterior gains variance as $\lambda$ grows.
+    }
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[> = latex]
+        % Blocks
+        \node [startstop] (start) 
+            {Start};
+
+        \node [io, below=0.5 of start] (data) 
+            {
+                Receive $\mathbf{d}_\text{obs}$, 
+                $\{\mathbf{d}_j\}_{1\leq j\leq N_e}$,
+                $\mathbf{C}_e$, 
+                $L_x'$, $L_y'$, $T_c$, $\theta$ and 
+                $N_a$
+            };
+
+        \node [process, below=0.5 of data] (localization) 
+            {Compute $\mathbf{R}$};
+
+        \node [process, below=0.5 of localization] (dsiesmda) 
+            {Fix $\lambda$ and run \cref{eq:iteration_gated} from $k=1$ to $k=N_a$};
+
+        \node [io, below=0.5 of dsiesmda] (posterior) 
+            {Return $\mathbf{d}^{N_a+1}_j$, $1\leq j\leq N_e$, the posterior};
+
+        \node [startstop, below=0.5 of posterior] (stop) 
+            {Stop};
+
+        % Arrows
+        \draw [->] (start) -- (data);
+        \draw [->] (data) -- (localization);
+        \draw [->] (localization) -- (dsiesmda);
+        \draw [->] (dsiesmda) -- (posterior);
+        \draw [->] (posterior) -- (stop);
+    \end{tikzpicture}
+    \caption{
+        Outline of the proposed Data-Space Inversion algorithm. 
+    }
+\end{figure}
+
     
 
 % Takeaways

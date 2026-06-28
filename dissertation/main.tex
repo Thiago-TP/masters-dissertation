@@ -44,6 +44,9 @@
 %\usepackage{pdflscape} % Pacote para rotacionar objetos e também a página do arquivo pdf
 \usepackage{afterpage} % Evita quebra de página quando inserir uma tabela (ou outro objeto) rotacionada
 \usepackage{epigraph} % Pacote para adicionar frases de efeito após títulos de capítulos
+\usepackage{tikz}
+    % Useful libs (TiKz and Dvipsnames packages are assumed loaded)
+    \usetikzlibrary{shapes, positioning}
 % ---
 
 %--
@@ -70,7 +73,7 @@
 }
 % 1 = modo debug com perguntas orientadoras/comentários
 % 0 = modo normal sem perguntas orientadoras/comentários
-\newcommand{\debugmode}{1}
+\newcommand{\debugmode}{0}
 \newcommand{\debug}[1]{%
     \if\debugmode1
         \color{darkred}
@@ -78,6 +81,66 @@
         \color{black}
     \fi%
 }
+% Erf special function rough approximation
+\makeatletter
+    \pgfmathdeclarefunction{erf}{1}{%
+        \begingroup
+            \pgfmathparse{#1 > 0 ? 1 : -1}%
+            \edef\sign{\pgfmathresult}%
+            \pgfmathparse{abs(#1)}%
+            \edef\x{\pgfmathresult}%
+            \pgfmathparse{1/(1+0.3275911*\x)}%
+            \edef\t{\pgfmathresult}%
+            \pgfmathparse{%
+            1 - (((((1.061405429*\t -1.453152027)*\t) + 1.421413741)*\t 
+            -0.284496736)*\t + 0.254829592)*\t*exp(-(\x*\x))}%
+            \edef\y{\pgfmathresult}%
+            \pgfmathparse{(\sign)*\y}%
+            \pgfmath@smuggleone\pgfmathresult%
+        \endgroup
+    }
+\makeatother
+
+% Flowchart blocks
+\definecolor{cheddar}{HTML}{FFA300}
+\tikzstyle{startstop} = [
+    rectangle, 
+    rounded corners, 
+    minimum width=2cm, 
+    minimum height=1cm,
+    text centered, 
+    draw=black, 
+    fill=azulunb!60,
+    text=white,
+]
+\tikzstyle{process} = [
+    rectangle, 
+    minimum width=2cm, 
+    minimum height=1cm, 
+    text centered, 
+    draw=black, 
+    fill=verdeunb!50,
+    trapezium stretches=true,
+]
+\tikzstyle{io} = [
+    trapezium, 
+    trapezium left angle=70, 
+    trapezium right angle=110, 
+    minimum width=2cm, 
+    minimum height=1cm, 
+    text centered, 
+    draw=black, 
+    fill=cheddar!50,
+    trapezium stretches=true,
+]
+\tikzstyle{decision} = [
+    diamond, 
+    minimum width=1cm, 
+    minimum height=1cm, 
+    text centered, 
+    draw=black, 
+    fill=darkred!50,
+]
 %---
 
 % ---
@@ -104,7 +167,7 @@
 % Insira \\ caso queira forçar quebras de linha no título
 % Não utilize caixa alta para o título do trabalho e nem das seções (com exceção de siglas)
 % ---
-\tituloestrangeiro{Agregação de Modelos Adaptativa\\ Aplicada a Otimização de Reservatórios} % Escreva aqui título em português se o trabalho for escrito em inglês (caso contrário, deixe vazio)
+\tituloestrangeiro{Previsão de Reservatórios usando Inversão do Espaço de Dados Ponderada} % Escreva aqui título em português se o trabalho for escrito em inglês (caso contrário, deixe vazio)
 % ---
 
 % ---
@@ -379,13 +442,13 @@
 % ---
 % Apêndices
 % ---
-% \begin{apendicesenv}
-%     % Imprime uma página indicando o início dos apêndices
-%     \partapendices
-%     \include{chapters/appendix-a}
-%     \include{chapters/appendix-b}
-%     \include{chapters/appendix-c}
-% \end{apendicesenv}
+\begin{apendicesenv}
+    % Imprime uma página indicando o início dos apêndices
+    \partapendices
+    \include{chapters/a_deducing_alpha}
+    % \include{chapters/appendix-b}
+    % \include{chapters/appendix-c}
+\end{apendicesenv}
 % ---
  
 % ---
