@@ -1,59 +1,54 @@
-\begin{tabular}{c cc c cc c}
-    \toprule
-        \multirow{2}{*}{
-            \begin{minipage}{3cm}
-                \centering
-                Groundtruth\\
-                realization
-            \end{minipage}
-        } & 
-        \multicolumn{2}{c}{Observation coverages (\%)} & 
-        \multirow{2}{*}{
-            \begin{minipage}{3cm}
-                \centering
-                Mean Squared\\
-                Error
-            \end{minipage}
-        } & 
-        \multicolumn{2}{c}{Data mismatch} 
-        &
-        \multirow{2}{*}{Localized}
-    \\ \cmidrule{2-3}\cmidrule{5-6}
-        & History & Validation & & Avg. & Std. Dev. & 
-    \\ \midrule
-    \multirow{2}{*}{10}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{20}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{30}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{40}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{50}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{60}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{70}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{80}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{90}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \multirow{2}{*}{100}
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \midrule 
-    \multirow{2}{*}{Average} 
-    & & & & & & Yes \\
-    & & & & & & No \\
-    \bottomrule
+\begin{tabular}{cccccccccccc}
+\toprule
+\multirow{3}{*}{
+    \begin{minipage}{2.5cm}
+        \centering
+        Groundtruth\\
+        realization
+    \end{minipage}
+}
+&
+\multirow{3}{*}{Loc.} 
+& 
+\multicolumn{4}{c}{Observation coverages} & 
+\multicolumn{2}{c}{\multirow{2}{*}{
+    MSE
+}} & 
+\multicolumn{4}{c}{Data mismatch} 
+\\
+& & \multicolumn{2}{c}{History} & \multicolumn{2}{c}{Validation} &     &     & \multicolumn{2}{c}{Avg.} & \multicolumn{2}{c}{Std. Dev.}
+\\
+& & Pr. & Po.                   & Pr. & Po.                      & Pr. & Po. & Pr. & Po.                & Pr. & Po.
+\\
+\midrule
+\multirow{2}{*}{5} & No & 0.89 & 0.28 & 0.96 & 0.26 & 2.90 & 2.70 & 21597697.52 & 1.42 & 26726853.22 & 0.01 \\
+ & Yes & 0.89 & 0.66 & 0.96 & 0.76 & 2.90 & 2.29 & 21597697.52 & 17.80 & 26726853.22 & 18.21 \\
+\midrule
+\multirow{2}{*}{10} & No & 0.93 & 0.40 & 0.97 & 0.59 & 2.10 & 1.83 & 1584.40 & 0.98 & 1746.01 & 0.02 \\
+ & Yes & 0.93 & 0.59 & 0.97 & 0.85 & 2.10 & 1.56 & 1584.40 & 1.30 & 1746.01 & 0.29 \\
+\midrule
+\multirow{2}{*}{15} & No & 0.96 & 0.41 & 0.97 & 0.26 & 2.71 & 2.05 & 325.51 & 1.10 & 273.67 & 0.02 \\
+ & Yes & 0.96 & 0.70 & 0.97 & 0.89 & 2.71 & 1.75 & 325.51 & 1.49 & 273.67 & 0.33 \\
+\midrule
+\multirow{2}{*}{20} & No & 0.83 & 0.42 & 0.88 & 0.63 & 1.41 & 1.11 & 62.06 & 0.62 & 43.78 & 0.02 \\
+ & Yes & 0.83 & 0.57 & 0.88 & 0.86 & 1.41 & 1.09 & 62.06 & 0.72 & 43.78 & 0.06 \\
+\midrule
+\multirow{2}{*}{25} & No & 0.96 & 0.36 & 0.97 & 0.27 & 1.81 & 1.64 & 9474346993.14 & 0.89 & 12035935454.92 & 0.02 \\
+ & Yes & 0.96 & 0.71 & 0.97 & 0.91 & 1.81 & 1.41 & 9474346993.14 & 5.49 & 12035935454.92 & 4.78 \\
+\midrule
+\multirow{2}{*}{30} & No & 0.89 & 0.43 & 0.96 & 0.78 & 1.37 & 1.15 & 416.13 & 0.63 & 432.36 & 0.01 \\
+ & Yes & 0.89 & 0.60 & 0.96 & 0.87 & 1.37 & 1.10 & 416.13 & 0.75 & 432.36 & 0.09 \\
+\midrule
+\multirow{2}{*}{35} & No & 0.89 & 0.42 & 0.92 & 0.45 & 1.73 & 1.49 & 293.01 & 0.81 & 266.32 & 0.01 \\
+ & Yes & 0.89 & 0.59 & 0.92 & 0.92 & 1.73 & 1.34 & 293.01 & 1.05 & 266.32 & 0.18 \\
+\midrule
+\multirow{2}{*}{40} & No & 0.96 & 0.45 & 0.97 & 0.56 & 1.52 & 1.41 & 640.42 & 0.77 & 502.35 & 0.01 \\
+ & Yes & 0.96 & 0.72 & 0.97 & 0.88 & 1.52 & 1.24 & 640.42 & 1.76 & 502.35 & 0.74 \\
+\midrule
+\multirow{2}{*}{45} & No & 0.92 & 0.39 & 0.93 & 0.34 & 2.37 & 2.07 & 567.02 & 1.10 & 524.09 & 0.01 \\
+ & Yes & 0.92 & 0.64 & 0.93 & 0.93 & 2.37 & 1.82 & 567.02 & 1.99 & 524.09 & 0.73 \\
+\midrule
+\multirow{2}{*}{50} & No & 0.95 & 0.45 & 0.96 & 0.61 & 1.35 & 1.18 & 314.09 & 0.65 & 253.71 & 0.01 \\
+ & Yes & 0.95 & 0.70 & 0.96 & 0.91 & 1.35 & 1.12 & 314.09 & 1.05 & 253.71 & 0.23 \\
+\bottomrule
 \end{tabular}
