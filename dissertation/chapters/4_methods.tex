@@ -276,7 +276,7 @@ Your reader should be able to answer the following questions when they're done r
     only essential information is provided.
 
     The real field is a mature reservoir located in the Brazilian pre-salt,
-    with a production history spanning over 25 years.
+    with a production history spanning over 20 years.
     It is comprised of 8 injector wells, labeled I$1$ to I$8$, and 16 producer wells, labeled P$1$ to P$16$.
     Producers produce oil and water, but not gas.
 
@@ -285,8 +285,10 @@ Your reader should be able to answer the following questions when they're done r
     Importantly, observed data has a time vector that is not identical to the simulation's but is a subset of it.
 
 \section{Evaluation workflow and parameters}
+\label{sec:evaluation-workflow-parameters}
 
     \subsection{Evaluation workflow}
+    \label{subsec:evaluation-workflow}
     While the outline of both DSI-ESMDA and the proposed Gated DSI-ESMDA methods have been presented in \cref{chap:theory-framework},
     it remains to be explained how the error covariance matrix $\mathbf{C}_e$ is constructed,
     what parameters are used, and what metrics will be used to evaluate the performance of the methods.
@@ -393,10 +395,16 @@ Your reader should be able to answer the following questions when they're done r
     \end{align}
     %
     where index $j$ denotes the realization, $f$ denotes the production data feature, and the tilde indicates normalization.
-    This process is repeated for all features and realizations to improve the conditioning of the data and facilitate noise modeling, as shown next.
-    An important caveat is that the normalization in 
-    \cref{eq:normalize_realization,eq:normalize_groundtruth} 
-    will not work if the groundtruth feature is constant, so such features are removed if detected.
+    This process is repeated for all features%
+    \footnote{%
+        An important caveat is that the normalization in 
+        \cref{eq:normalize_realization,eq:normalize_groundtruth} 
+        will not work if the groundtruth feature is constant, so such features are removed if detected.
+    }
+    and realizations to improve the conditioning of the data and facilitate noise modeling, as shown next.
+
+    \subsection{Noise modeling}
+    \label{subsec:noise-modeling}
     %
     The error covariance matrix $\mathbf{C}_e$ is assumed to be diagonal, 
     with its non-zero entries uniformly sampled from $(0, 1]$ and scaled by a constant $\nu > 0$.
@@ -493,29 +501,41 @@ Your reader should be able to answer the following questions when they're done r
 
 \subsection{Evaluation parameters}
 \label{sec:evaluation-parameters}
-    % The parameters used in this work are presented here in two groups: 
-    % parameters that are common to all three reservoirs, 
-    % and parameters that are specific to each reservoir.
-    % %
-    % Shared parameters are summarized in \cref{tab:common-parameters}, 
-    % while reservoir-specific parameters are detailed in 
-    % \cref{tab:egg-parameters,tab:olympus-parameters,tab:real-field-parameters}.
+    While a straightforward application of DSI-ESMDA requires knowledge of the error covariance matrix 
+    (addressed in \cref{subsec:noise-modeling}) and the number of Kalman-like iterations $N_a$,
+    the amount of parameters to tune balloon if localization is utilized.
+    %
+    The proposed Gated DSI-ESMDA method introduces an additional hyperparameter, the gating intensity $\lambda$.
+    In practice, the gating is introduced after the standard DSI-ESMDA has been applied and tuned, 
+    making the tuning of $\lambda$ incremental and independent of the other parameters.
+
+    \Cref{tab:simulation-parameters-time} compares the time-related simulation parameters and features across reservoirs, 
+    while \cref{tab:simulation-parameters-localization} compares the localization-related parameters.
+    Finally, \cref{tab:evaluation-parameters} lists the main hyperparameters: 
+    number of iterations, 
+    noise magnitude, and
+    gating intensity.
+
+    Experiments were performed on a small array of noise magnitudes and gating intensities,
+    with the number of iterations fixed at $N_a = 1$ for all experiments. 
 
     \begin{table}[htbp]
     \IBGEtab{%
         \caption{Time-related simulation parameters per reservoir.}
         \label{tab:simulation-parameters-time}
     }{
-        \begin{tabular}{c C{2cm} C{2cm} C{2cm} C{2cm} C{2cm}}
+        \begin{tabular}{c R{2cm} R{2cm} C{2.75cm} rr L{1.5cm}}
             \toprule
-            Reservoir  & Number of realizations & Number of time steps & Time step size & Simulation life & History split \\ \midrule
-            Egg        & 100                    & 120                  & 30 days        & 10 years        & 60\%\\
-            Olympus    & 49                     & 20                   & 1 year         & 20 years        & 60\%\\
-            Real field & 200                    & 510                  & 60 days        & 30 years        & 60\%\\
+            Reservoir  & Number of realizations & Number of time steps & Time step size       & \multicolumn{2}{c}{Simulation life} & History split \\ \midrule
+            Egg        & 100                    & 120                  & 30 days              & 3600 days  & (9.8 years)            & 60\%\\
+            Olympus    & 49                     & 20                   & 1 calendar year      & 7305 days  & (20 years)             & 60\%\\
+            Real field & 200                    & 510                  & 1 calendar month$^*$ & 12785 days & (35 years)             & 60\%$^{**}$\\
             \bottomrule
         \end{tabular}
     }{%
         \fonte{Self-elaboration.}
+        \nota[$^*$]{The very first time step, with 274 days, is the only exception.}
+        \nota[$^{**}$]{Real data time vectors aren't synchronized across features, so 60\% of a feature may lead to a shorter time scope than another feature.}
     }
     \end{table}
 
@@ -524,7 +544,7 @@ Your reader should be able to answer the following questions when they're done r
         \caption{Localization-related simulation parameters per reservoir.}
         \label{tab:simulation-parameters-localization}
     }{
-        \begin{tabular}{c C{2cm} C{2cm} C{2cm} C{2cm}}
+        \begin{tabular}{c C{2cm} C{2cm} r C{2cm}}
             \toprule
             Reservoir  & Critical length in $x$ & Critical length in $y$ & Critical time & Anisotropy angle \\ \midrule
             Egg        & 100                    & 100                    & 3000 days     & 0\textdegree \\
@@ -534,6 +554,7 @@ Your reader should be able to answer the following questions when they're done r
         \end{tabular}
     }{%
         \fonte{Self-elaboration.}
+        \nota{Critical lengths are in amount of gridblocks, and are therefore dimensionless.}
     }
     \end{table}
 
@@ -542,12 +563,12 @@ Your reader should be able to answer the following questions when they're done r
         \caption{Evaluation hyperparameters.}
         \label{tab:evaluation-parameters}
     }{
-        \begin{tabular}{c C{2cm} C{2cm} C{2cm} C{2cm}}
+        \begin{tabular}{c C{2cm} C{2cm} C{2cm} c}
             \toprule
-            Parameter & Symbol & Value & Unit \\ \midrule
+            Parameter & Symbol & Value(s) & Unit \\ \midrule
             Kalman-like iterations & $N_a$ & 1 & - \\
-            Noise magnitudes & $\nu$ & $\{0.001, 0.01\}$ & - \\
-            Gating intensities & $\lambda$ & $\{1, 2, 4, 8, 16\}$ & - \\
+            Noise magnitude & $\nu$ & $\{0.001, 0.01\}$ & - \\
+            Gating intensity & $\lambda$ & $\{1, 2, 4, 8, 16\}$ & - \\
             \bottomrule
         \end{tabular}
     }{%
