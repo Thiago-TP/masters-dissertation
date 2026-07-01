@@ -37,7 +37,7 @@ Your reader should be able to answer the following questions when they're done r
     the Egg and Olympus ensembles are widely used in the literature for benchmarking purposes (with the Olympus ensemble being the more complex of the two),
     while the real field provides a practical application scenario for the methods developed in this work.
 
-    Simulations of the Egg and Olympus ensembles to create the associated priors 
+    Simulations of the Egg and Olympus ensembles to generate the associated priors 
     were performed using the JutulDarcy.jl simulator \cite{Moyner:2025}.
 
     \subsection{Egg ensemble}
@@ -216,7 +216,7 @@ Your reader should be able to answer the following questions when they're done r
         Each was upscaled for flow simulations using the flow-based upscaling method, 
         featuring a total of 18 wells in each realization, of which 11 are producers and 7 are injectors. 
         %
-        Each realizations includes 7 injector wells, labeled INJ-$1$ to INJ-$7$, and 11 producer wells, labeled PROD-$1$ to PROD-$11$.
+        Each realization includes 7 injector wells, labeled INJ-$1$ to INJ-$7$, and 11 producer wells, labeled PROD-$1$ to PROD-$11$.
         Producers produce oil and water, but not gas.
         % 
         \Cref{fig:olympus-realizations} illustrates the permeability in the $x$ direction for selected realizations, 
@@ -284,7 +284,7 @@ Your reader should be able to answer the following questions when they're done r
     Producers produce oil and water, but not gas.
 
     An ensemble of 200 realizations was generated from observed production data, 
-    with a total of 510 simulation time steps of roughly 60 days each.
+    with a total of 510 simulation time steps of roughly 30 days each.
     Importantly, observed data has a time vector that is not identical to the simulation's but is a subset of it.
 
 \section{Evaluation workflow and parameters}
@@ -489,7 +489,7 @@ Your reader should be able to answer the following questions when they're done r
         $\min(\mathbf{Y})_i$ is the minimum value in the ensemble at datum $i$, 
     
         \item 
-        $\Delta\mathbf{Y}$ is the deviation of the predicted data from its mean, see \cref{eq:delta-d}.
+        $\Delta\mathbf{Y}$ is the deviation of the predicted data from its mean (see \cref{eq:delta-d}),
 
         \item $\mathbb{1}: \{0, 1\} \to \{0, 1\}$ returns $1$ if the condition in its argument is true and $0$ otherwise.
     \end{itemize} 
