@@ -476,6 +476,8 @@
 {\RequirePackage[nameinlink,noabbrev,english]{cleveref}}
 \crefname{annex}{\anexoname}{\anexosname}
 \Crefname{annex}{\Anexoname}{\Anexosname}
+\crefname{assumption}{assumption}{assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
 \crefname{listing}{\codigoname}{\codigosname}
 \Crefname{listing}{\Codigoname}{\Codigosname}
 \crefname{subsection}{\subsectionname}{\subsectionsname}
