@@ -83,7 +83,7 @@
 % Cover watermark for version submitted for review
 \if\isreview1
 \RequirePackage{background}
-    \backgroundsetup{contents={--- Versão submetida para revisão \imprimirdia~de \imprimirmes~de \imprimirano~---}, color=gray, opacity=0.3, position=current page.west, scale=2, angle=90, vshift=-.5cm}
+    \backgroundsetup{contents={Submetido \imprimirdia~de \imprimirmes~de \imprimirano~para revisão da banca}, color=gray, opacity=0.3, position=current page.west, scale=2, angle=90, vshift=-.6cm}
 \fi
 
 % ---
@@ -1064,7 +1064,11 @@
     \end{flushright}
 }%
 \vspace{24pt}
-\raggedright{Trabalho em revisão. \imprimirlocal, \imprimirdia\ de \imprimirmes\ de \imprimirano:}
+\if\isreview1%
+  \raggedright{Trabalho em revisão. \imprimirlocal, \imprimirdia\ de \imprimirmes\ de \imprimirano:}
+\else%
+  \raggedright{Trabalho aprovado. \imprimirlocal, \imprimirdia\ de \imprimirmes\ de \imprimirano:}
+\fi
 {%
     \assinatura{\textbf{\membrodabancainome} \\ \membrodabancaifuncaonome} 
     \assinatura{\textbf{\membrodabancaiinome} \\ \membrodabancaiifuncaonome} 
@@ -1136,6 +1140,11 @@
 \cleardoublepage
 }
 % ---
+
+% ---
+% Imprime nota sobre uso de inteligência artificial
+% ---
+\newenvsc{notaia}[store-env=notaia, print-env=true]
 
 % ---
 % Imprime epígrafe
