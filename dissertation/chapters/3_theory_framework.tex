@@ -53,7 +53,7 @@ Let $\mathbf{d}$ denote the true production data vector of a reference reservoir
 and let $\mathbf{d}_j$ denote the production data vector produced by 
 simulating a realization of the reference reservoir using model parameters $\mathbf{m}_j$.
 For an ensemble of $N_e$ realizations, we have $N_e$ different such vectors, each of which dependent on its own parameters vector.
-All data vectors are assumed whole, i.e., without missing entries, as well as sinchronized.
+All data vectors are assumed whole, i.e., without missing entries, and realization data is assumed sinchronized.
 
 Of the original reference data vector, only part of it is used in the history matching process.
 Denote this vector by $\mathbf{d}_h$. 
@@ -169,6 +169,17 @@ $\Delta t_{uv}$ is the difference between the time when measurement $u$ was take
 Note that while $v$ is restrained to the history matching period by definition, $u$ is not.
 The inclusion of $\Delta t_{uv}$ guarantees that measurements far apart in time will hold little correlation,
 even if taken from the same well.
+
+\begin{note}[Index $v$]
+    Data vectors stack time series of a fields' measurements vertically, 
+    so index $v$ in this chapter's equations specify a datum in place and time simultaneously.
+    %
+    For example, if DSI is being applied on the oil production of two wells of a field, 
+    each with a simulation time vector of 100 elements, 
+    then for any $1\leq j\leq N_e$ $\mathbf{d}_j$ would be 200$\times$1, 
+    with elements $v=1$ through $v=100$ the oil production history of the first well,
+    and elements $v=101$ through $v=200$ the oil production history of the second well.
+\end{note}
 
 A rotation by $\theta$ is applied to take into account the anisotropy of reservoir permeability,
 and are $L_{x'}$, $L_{y'}$, $T_c$ positive constants that regulate the critical points of differences in $x$, $y$ and $t$ separately.
