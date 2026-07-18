@@ -51,6 +51,13 @@
 % ---
 
 % ---
+% Opção para indicar se o manuscrito é submetido para avaliação (para inserir marca d'água)
+% ---
+\def\isreview{0} % Desabilitada, por default
+\DeclareOption{review=true}{\def\isreview{1}}
+% ---
+
+% ---
 % Opção para definição de estilo de numeração de figuras, tabelas, etc
 % ---
 \def\numb{chap} % Numeração por capítulo, por default
@@ -72,6 +79,12 @@
 % ------------------------------------------------------------------------
 % Configurações básicas
 % ------------------------------------------------------------------------
+
+% Cover watermark for version submitted for review
+\if\isreview1
+\RequirePackage{background}
+    \backgroundsetup{contents={--- Versão submetida para revisão \imprimirdia~de \imprimirmes~de \imprimirano~---}, color=gray, opacity=0.3, position=current page.west, scale=2, angle=90, vshift=-.5cm}
+\fi
 
 % ---
 % Pacotes matemáticos
@@ -809,28 +822,111 @@
 % Imprime capa e contracapa
 % ---
 \RequirePackage{pdfpages}
+% Componentes da logo
+\definecolor{darkred}{HTML}{CA3A27}
+\definecolor{steelblue}{HTML}{6EA4BF}
+\definecolor{highlight}{HTML}{FFA300}
+\definecolor{logoupperhalf}{HTML}{0B0A52}
+\colorlet{logolowerhalf}{logoupperhalf}
+\colorlet{logobackground}{highlight}
+\newcommand{\metadeInferiorEsquerda}{
+    \fill [logolowerhalf] 
+        (0.0, 0.0) -- (5.8614865625, 0.0) -- (5.8614865625, 2.3445178958)
+        .. controls (5.20715875, 2.3448645) and (4.540329375, 2.4273113125) .. (3.9880725208, 2.6515959583)
+        .. controls (3.5508221042, 2.8291737083) and (2.9326548958, 3.1342885625) .. (2.5469320833, 3.3810575) 
+        -- (1.8939483542, 3.8130823958) 
+        .. controls (1.6817789792, 3.9586296875) and (1.4774915417, 4.1177739167) .. (1.2634568542, 4.2677767917)
+        .. controls (1.05102025, 4.4166604792) and (0.8413935208, 4.5698780417) .. (0.63338075, 4.7229103958)
+        .. controls (0.5291031667, 4.7996263333) and (0.4253838542, 4.8741965) .. (0.3178122083, 4.9501133958)
+        .. controls (0.2134129167, 5.0237972083) and (0.1069948542, 5.1124273333) .. (0.0, 5.1762739375) 
+        -- cycle
+    ;
+}
+\newcommand{\metadeSuperiorEsquerda}{
+    \fill [logoupperhalf] 
+        (0.0, 5.5895822083)
+        .. controls (0.0919744583, 5.5394807083) and (1.4143963542, 4.5699256667) .. (1.5915983958, 4.4451137708) 
+        -- (2.2288923333, 3.9873052292)
+        .. controls (2.687685125, 3.6601029583) and (3.472926125, 3.2197886667) .. (3.995562875, 3.0108948333)
+        .. controls (4.60555975, 2.7670839375) and (5.13508625, 2.6802291667) .. (5.8614733333, 2.6802291667) 
+        -- (5.8614733333, 6.0288857917) -- (0.0, 6.0288857917)
+        -- cycle
+    ;
+}
+\newcommand{\imprimirlogo}{
+    \fill [logobackground] 
+        (0.0, 0.0) rectangle (2*5.8614865625 + 0.335, 6.0288857917)
+        -- cycle
+    ;
+    \metadeInferiorEsquerda
+    \metadeSuperiorEsquerda
+    \begin{scope}[shift={(0.335+2*5.861, 0)}, xscale=-1]
+        \metadeInferiorEsquerda
+        \metadeSuperiorEsquerda
+    \end{scope}
+}
+\newcommand{\artedacapa}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \def\escalaLogo{1.75}
+    \draw
+        (current page.north) ++ (-6.028973333*\escalaLogo, -6.0288857917*\escalaLogo) node (logo) {}
+    ;
+    % Logozinha da UnB pá
+    % https://www.overleaf.com/latex/templates/unb-logo/tmmmpnzkkrqq
+    \begin{scope}[shift={(logo)}, scale=\escalaLogo]
+        \imprimirlogo
+    \end{scope}
+    %
+    \fill [logolowerhalf] 
+        (logo) ++ (0, 0.01) rectangle (current page.south east)
+    ;
+  \end{tikzpicture}
+}
+\newcommand{\artedacontracapa}{
+  \colorlet{logoupperhalf}{logolowerhalf}
+  \colorlet{logobackground}{steelblue}
+  \begin{tikzpicture}[remember picture, overlay]
+    \def\escalaLogo{1.75}
+    \draw
+        (current page.north) ++ (-6.028973333*\escalaLogo, -6.0288857917*\escalaLogo) node (logo) {}
+    ;
+    % Logozinha da UnB pá
+    % https://www.overleaf.com/latex/templates/unb-logo/tmmmpnzkkrqq
+    \begin{scope}[shift={(logo)}, scale=\escalaLogo]
+        \imprimirlogo
+    \end{scope}
+    %
+    \fill [logolowerhalf] 
+        (logo) ++ (0, 0.01) rectangle (current page.south east)
+    ;
+    \draw (current page.south) ++ (0.335, 0) node (anchor) {};
+    \fill [logobackground] (current page.north) ++ (-0.335, 0) rectangle (anchor);
+  \end{tikzpicture}
+}
 % Imprime capa
 \renewcommand{\imprimircapa}{%
 \hypersetup{pageanchor=false}
 \begin{adjustwidth}{0cm}{1cm}
   \begin{capa}%
     \begin{center}
-    \AddToShipoutPictureBG*{\includegraphics[height=\paperheight]{unbtexcover/capa.pdf}}
+    % \AddToShipoutPictureBG*{\includegraphics[height=\paperheight]{unbtexcover/capa.pdf}}
+    \artedacapa
+    \color{white}
     \vspace*{7.5cm}
-    {\LARGE\sffamily\bfseries\instituicaoi \\ \instituicaoii \\
+    
+    {\Large\sffamily\instituicaoi \\ \instituicaoii \\
     \abntex@ifnotempty{\instituicaoiii}{\instituicaoiii}\par}
     \vfill
-    \begin{center}
-    % Define o tamanho da fonte do título
-    \autotitle[4]{\bfseries\imprimirtitulo}
-    \titleformat\bfseries \imprimirtitulo\par
-    \end{center}
+    \color{highlight}
+    {\autotitle[4]{\bfseries\imprimirtitulo}
+    \titleformat\bfseries \imprimirtitulo\par}
     \normalfont
     \vfill
-    {\Large\autorinome\ \autorisobrenome \\
+    {\sffamily\Large\autorinome\ \autorisobrenome \\
     \abntex@ifnotempty{\autoriinome}{\autoriinome\ \autoriisobrenome}\par}
-    \vfill\vfill
-    \color{white}{\sffamily\large\MakeUppercase \imprimirtipotrabalho \\[2pt]
+    \vfill
+    \color{white}
+    {\sffamily\large\MakeUppercase \imprimirtipotrabalho \\[2pt]
     \MakeUppercase\imprimircurso \\
     % Define o espaçamento vertical entre o nome do curso e o local (Brasília)
     \autotitle[1]{\MakeUppercase\imprimircurso}
@@ -840,6 +936,8 @@
   \end{capa}
 % Reestabelece as margens
 \end{adjustwidth}
+
+%
 \cleardoublepage
 \hypersetup{pageanchor=true}
 \AtEndDocument{\imprimircontracapa}
@@ -856,7 +954,7 @@
 \fi
 \hypersetup{pageanchor=false}
 \newpage
-\includepdf[height=\paperheight]{unbtexcover/contracapa.pdf}
+\artedacontracapa
 \hypersetup{pageanchor=true}
 }
 % ---
@@ -966,7 +1064,7 @@
     \end{flushright}
 }%
 \vspace{24pt}
-\raggedright{Trabalho aprovado. \imprimirlocal, \imprimirdia\ de \imprimirmes\ de \imprimirano:}
+\raggedright{Trabalho em revisão. \imprimirlocal, \imprimirdia\ de \imprimirmes\ de \imprimirano:}
 {%
     \assinatura{\textbf{\membrodabancainome} \\ \membrodabancaifuncaonome} 
     \assinatura{\textbf{\membrodabancaiinome} \\ \membrodabancaiifuncaonome} 
@@ -976,6 +1074,7 @@
 }
 \end{center}
 \end{folhadeaprovacao}
+%
 \cleardoublepage
 }
 % ---
