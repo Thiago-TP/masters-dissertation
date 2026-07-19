@@ -3,6 +3,14 @@
 \label{cap:introduction}
 % ----------------------------------------------------------
 
+\textit{%
+    This document is the author's mater's dissertation submitted to the 
+    Mechanical Sciences Graduate Program at University of Brasília as a 
+    partial requisite in acquiring the master's degree.
+    %
+    Remaining requisites the author has satisfied are presented in \cref{chap:academic-productions}.
+}
+
 \debug{%
 Guiding questions
 \begin{itemize}
@@ -58,23 +66,36 @@ Once you have finished your thesis, ask yourself the following questions:
     \end{itemize}
     }
 
-    The economic success of oil and gas fields is increasingly contingent on the quality of reservoir management decisions, which are made under uncertainty and based on limited data.
+    The economic success of oil and gas fields is increasingly contingent on the quality of reservoir management decisions, 
+    which are made under uncertainty and based on limited data.
+    %
     Kalman-based ensemble methods are widely used to quantify uncertainty in reservoir forecasts by adjusting reservoir models to match production data, 
     but require vast computational resources to perform repeated reservoir simulations.
-    In an effort to reduce the computational burden, Data-Space Inversion (DSI) \cite{Sun:2017} was introduced as an alternative to traditional history matching by updating ensemble forecasts directly in data space, 
+    %
+    In an effort to reduce the computational burden, Data-Space Inversion (DSI) 
+    \cite{Sun:2017}
+    was introduced as an alternative to traditional history matching by updating ensemble forecasts directly in data space, 
     thereby avoiding repeated subsurface simulations.
     
     \citeonline{Lima:2020} introduced DSI-ESMDA, an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
-    to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, achieving significant computational efficiency while maintaining competitive posterior forecasts.
-    However, DSI-ESMDA, like related ensemble smoothers, remains susceptible to excessive variance loss, which can lead to underestimation of posterior uncertainty.
+    to replace the Randomized Maximum Likelihood (RML) minimizations of the original formulation with an iterative Kalman-type update, 
+    achieving significant computational efficiency while maintaining competitive posterior forecasts.
+    However, DSI-ESMDA, like related ensemble smoothers, remains susceptible to excessive variance loss, 
+    which can lead to underestimation of posterior uncertainty.
     
-    This work introduces an extension to DSI-ESMDA that modifies the effective influence of each observation through a nonlinear, misfit-dependent weighting of the innovation vector.
-    The proposed formulation can be interpreted as introducing a smoothing influence function into the Kalman-type update, computed from normalized innovations using an error-function-based gating operator.
-    Findings on both synthetic and real reservoirs show that Gated DSI-ESMDA reduces variance loss during and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
+    This work introduces an extension to DSI-ESMDA that modifies the effective influence of each observation through a
+    nonlinear, misfit-dependent weighting of the innovation vector.
+    %
+    The proposed formulation can be interpreted as introducing a smoothing influence function into the Kalman-type update,
+    computed from normalized innovations using an error-function-based gating operator.
+    %
+    Findings on both synthetic and real reservoirs show that Gated DSI-ESMDA reduces variance loss during 
+    and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
     
     Gated DSI-ESMDA acts as a stabilizing extension rather than a replacement, 
     and can be applied to standard ensemble-based model-space inversion methods, including ES-MDA and related iterative smoothers.
-    The power of this contribution is that it provides a simple, yet effective means of improving the robustness of ensemble-based inversion methods without requiring additional simulations or complex modifications to existing workflows.
+    The power of this contribution is that it provides a simple yet effective mean of improving the robustness of ensemble-based inversion methods 
+    without requiring additional simulations or complex modifications to existing workflows.
     
 \section{Background context}
     \debug{%
@@ -85,45 +106,63 @@ Once you have finished your thesis, ask yourself the following questions:
     \end{itemize}
     }
 
-    The economic viability of oil and gas operations depends critically on sound reservoir management, 
-    where decisions must be made under significant uncertainty and with inherently limited subsurface data. 
-    Accurate characterization of this uncertainty is essential: 
-    overconfident forecasts can lead to poor investment decisions, 
-    while excessively uncertain ones impede operational planning. 
-    History matching — the process of calibrating reservoir models to observed production data — has long been central to reducing forecast uncertainty, 
-    and ensemble-based methods have become the dominant paradigm for performing this calibration at scale.
+    Prediction of future behavior of a geological reservoir given past data is a difficult inverse problem
+    \cite{Oliver:2011} 
+    since satisfactorily matching a reservoir model production to past production 
+    does not guarantee future data will also be satisfactorily matched.
+    %
+    In such cases, readjustments of model parameters is often performed,
+    leading to further simulations and analysis.
+    %
+    \Cref{fig:flowchart-history-matching} gives the general outline of a standard history matching strategy applied to a single model.
 
-    Kalman-based ensemble methods, such as the Ensemble Smoother with Multiple Data Assimilation (ES-MDA), 
-    address this problem by maintaining an ensemble of plausible reservoir models and updating them iteratively as production data are assimilated. 
-    By propagating uncertainty through an ensemble rather than relying on a single deterministic model, 
-    these methods provide a principled framework for quantifying forecast uncertainty. 
-    However, they carry a substantial computational cost: 
-    each update cycle requires running full reservoir simulations for every ensemble member, 
-    making large-scale uncertainty quantification expensive and, in practice, often infeasible.
+    \begin{figure}[htbp]
+        \centering
+        \input{figures/flowchart-history-matching.tikz}
+        \caption{Overview of a standard history matching strategy applied to a single model.}
+        \label{fig:flowchart-history-matching}
+    \end{figure}
+    % \vspace{-0.5cm}
 
-    Data-Space Inversion (DSI), introduced by Sun and Durlofsky (2017), 
-    was proposed as a computationally efficient alternative to traditional model-space history matching. 
-    Rather than updating subsurface model parameters and re-running simulations, 
-    DSI operates directly on the ensemble of simulated production forecasts — working entirely in data space. 
-    This eliminates the need for repeated reservoir simulations during the assimilation process, 
-    dramatically reducing the computational burden while still yielding calibrated posterior forecast distributions.
+    % The economic viability of oil and gas operations depends critically on sound reservoir management, 
+    % where decisions must be made under significant uncertainty and with inherently limited subsurface data. 
+    % Accurate characterization of this uncertainty is essential: 
+    % overconfident forecasts can lead to poor investment decisions, 
+    % while excessively uncertain ones impede operational planning. 
+    % History matching — the process of calibrating reservoir models to observed production data — has long been central to reducing forecast uncertainty, 
+    % and ensemble-based methods have become the dominant paradigm for performing this calibration at scale.
 
-    Building on this foundation, Lima, Emerick, and Ortiz (2020) developed DSI-ESMDA, 
-    which replaces the Randomized Maximum Likelihood minimizations of the original DSI formulation with an iterative ES-MDA-style Kalman update. 
-    This modification brings further gains in computational efficiency and produces competitive posterior forecasts, 
-    establishing DSI-ESMDA as a practical and attractive framework for reservoir uncertainty quantification.
+    % Kalman-based ensemble methods, such as the Ensemble Smoother with Multiple Data Assimilation (ES-MDA), 
+    % address this problem by maintaining an ensemble of plausible reservoir models and updating them iteratively as production data are assimilated. 
+    % By propagating uncertainty through an ensemble rather than relying on a single deterministic model, 
+    % these methods provide a principled framework for quantifying forecast uncertainty. 
+    % However, they carry a substantial computational cost: 
+    % each update cycle requires running full reservoir simulations for every ensemble member, 
+    % making large-scale uncertainty quantification expensive and, in practice, often infeasible.
 
-    Despite these advances, DSI-ESMDA inherits a well-known vulnerability of ensemble smoother methods: 
-    excessive variance loss during data assimilation. 
-    When observations strongly constrain the ensemble, the spread of forecasts can collapse beyond what is physically justified, 
-    leading to an underestimation of posterior uncertainty. 
-    This phenomenon is particularly problematic in reservoir forecasting, where robust uncertainty envelopes are essential for risk-aware decision-making. 
-    The issue is compounded in data-space methods, where the ensemble is not replenished through new simulations and the initial ensemble spread is the only source of diversity throughout the assimilation process.
+    % Data-Space Inversion (DSI), introduced by Sun and Durlofsky (2017), 
+    % was proposed as a computationally efficient alternative to traditional model-space history matching. 
+    % Rather than updating subsurface model parameters and re-running simulations, 
+    % DSI operates directly on the ensemble of simulated production forecasts — working entirely in data space. 
+    % This eliminates the need for repeated reservoir simulations during the assimilation process, 
+    % dramatically reducing the computational burden while still yielding calibrated posterior forecast distributions.
 
-    Mitigating variance collapse without sacrificing data match quality or introducing additional computational overhead remains an open challenge. 
-    Existing remedies — such as inflation schemes and localization — typically require careful tuning and may not transfer cleanly to the data-space setting. 
-    This motivates the development of a principled, lightweight mechanism that can stabilize the Kalman update in DSI-ESMDA, 
-    preserving ensemble diversity and producing more reliable uncertainty quantification across a range of reservoir scenarios.
+    % Building on this foundation, Lima, Emerick, and Ortiz (2020) developed DSI-ESMDA, 
+    % which replaces the Randomized Maximum Likelihood minimizations of the original DSI formulation with an iterative ES-MDA-style Kalman update. 
+    % This modification brings further gains in computational efficiency and produces competitive posterior forecasts, 
+    % establishing DSI-ESMDA as a practical and attractive framework for reservoir uncertainty quantification.
+
+    % Despite these advances, DSI-ESMDA inherits a well-known vulnerability of ensemble smoother methods: 
+    % excessive variance loss during data assimilation. 
+    % When observations strongly constrain the ensemble, the spread of forecasts can collapse beyond what is physically justified, 
+    % leading to an underestimation of posterior uncertainty. 
+    % This phenomenon is particularly problematic in reservoir forecasting, where robust uncertainty envelopes are essential for risk-aware decision-making. 
+    % The issue is compounded in data-space methods, where the ensemble is not replenished through new simulations and the initial ensemble spread is the only source of diversity throughout the assimilation process.
+
+    % Mitigating variance collapse without sacrificing data match quality or introducing additional computational overhead remains an open challenge. 
+    % Existing remedies — such as inflation schemes and localization — typically require careful tuning and may not transfer cleanly to the data-space setting. 
+    % This motivates the development of a principled, lightweight mechanism that can stabilize the Kalman update in DSI-ESMDA, 
+    % preserving ensemble diversity and producing more reliable uncertainty quantification across a range of reservoir scenarios.
 
 \section{Research problem}
     \debug{%
@@ -160,14 +199,29 @@ Once you have finished your thesis, ask yourself the following questions:
     \end{itemize}
     }
 
-    This work introduces an extension to DSI-ESMDA that modifies the effective influence of each observation through a nonlinear, misfit-dependent weighting of the innovation vector.
-    The proposed formulation can be interpreted as introducing a smoothing influence function into the Kalman-type update, computed from normalized innovations using an error-function-based gating operator.
-    In contrast to covariance localization, which acts on second-order statistics, innovation gating acts directly on the update term, selectively suppressing corrections associated with sufficiently-matched observations while preserving the full impact of significant mismatches.
+    This work introduces an extension to DSI-ESMDA that modifies the effective influence of each observation 
+    through a nonlinear, misfit-dependent weighting of the innovation vector.
+    %
+    The proposed formulation can be interpreted as introducing a smoothing influence function into the Kalman-type update, 
+    computed from normalized innovations using an error-function-based gating operator.
+    %
+    In contrast to covariance localization, which acts on second-order statistics, innovation gating acts directly on the update term, 
+    selectively suppressing corrections associated with sufficiently-matched observations
+    while preserving the full impact of significant mismatches.
+    %
     Match quality is thresholded by a gating parameter during innovation normalization.
-    The gating methodology is inspired by adaptive filtering developed to mitigate actuator wear in
-    closed-loop control systems \cite{Fortaleza:2022} and is conceptually related to smooth shrinkage and noise-gating strategies in signal processing \cite{Donoho:1994,Donoho:1995}.
-    Although the present work focuses on DSI, the proposed formulation is general and can be applied to standard ensemble-based model-space inversion methods, including ES-MDA and related iterative smoothers.
-    The proposed method inherits the computational efficiency of DSI-ESMDA while providing a robust, easily tunable mechanism for modulating posterior distribution variance,
+    %
+    The gating methodology is inspired by adaptive filtering developed to mitigate actuator wear in closed-loop control systems 
+    \cite{Fortaleza:2022} 
+    and is conceptually related to smooth shrinkage and noise-gating strategies in signal processing 
+    \cite{Donoho:1994,Donoho:1995}.
+    %
+    Although the present work focuses on DSI, the proposed formulation 
+    is general and can be applied to standard ensemble-based model-space inversion methods, 
+    including ES-MDA and related iterative smoothers.
+    %
+    The proposed method inherits the computational efficiency of DSI-ESMDA while providing a robust, 
+    easily tunable mechanism for modulating posterior distribution variance,
     setting it as a practical and effective tool for uncertainty quantification in reservoir forecasting.
     
 \section{Methodology overview}
@@ -180,12 +234,23 @@ Once you have finished your thesis, ask yourself the following questions:
     \end{itemize}
     }
 
-    The approach is evaluated against the original DSI-ESMDA on two synthetic reservoirs and one real field application using production rates from producers and injectors.
-    The synthetic reservoirs are the Egg and Olympus ensembles, which are widely used in the literature to benchmark history matching and uncertainty quantification methods,
+    The approach is evaluated against the original DSI-ESMDA on two synthetic reservoirs 
+    and one real field application using measurements from producers and injectors.
+    %
+    The synthetic reservoirs are the Egg and Olympus ensembles, which are widely used in the literature to 
+    benchmark history matching and uncertainty quantification methods,
     while the real field application is a mature oil field in the Brazilian Post-Salt.
-    Posterior and prior ensembles are compared across several metrics, including observation coverage and mean squared error, to assess the impact of innovation gating on variance loss and uncertainty quantification.
-    Results show that innovation-gated DSI-ESMDA reduces variance loss during and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
-    Furthermore, for moderate gating parameters, posterior forecasts remain close to those obtained with standard DSI-ESMDA, indicating that the proposed method acts as a stabilizing extension rather than a replacement.
+    %
+    Posterior and prior ensembles are compared across several metrics, 
+    including observation coverage and mean squared error
+    \cite[subsection 9.4.2]{Emerick:2025}, 
+    to assess the impact of innovation gating on variance loss and uncertainty quantification.
+    %
+    Results show that innovation-gated DSI-ESMDA reduces variance loss during and produces 
+    more robust uncertainty envelopes in the prediction phase without significantly degrading the data match.
+    %
+    Furthermore, for moderate gating parameters, posterior forecasts remain close to those obtained with standard DSI-ESMDA, 
+    indicating that the proposed method acts as a stabilizing extension rather than a replacement.
 
 \section{Dissertation outline}
     \debug{%
@@ -199,7 +264,11 @@ Once you have finished your thesis, ask yourself the following questions:
     %
     \Cref{chap:theory-framework}
     introduces the theoretical framework underpinning the proposed methodology, 
-    from the relevant elements of reservoir engineering as a whole to the mathematical formulation of DSI-ESMDA and the innovation gating mechanism.
+    from the relevant elements of reservoir engineering 
+    (reservoir formation, reservoir production, and subsurface simulation), 
+    to the formulation of ensemble Kalman filtering,
+    to the presentation compact correlation functions, 
+    and finally the mathematical formulation of DSI-ESMDA and the innovation gating mechanism.
     %
     \Cref{chap:methodology}
     details the methods used to evaluate the proposed approach, including descriptions of the synthetic and real reservoir case studies, data collection, and analysis techniques.

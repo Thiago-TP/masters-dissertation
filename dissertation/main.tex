@@ -83,7 +83,6 @@
         \color{black}
     \fi%
 }
-
 % Erf special function rough approximation
 \makeatletter
     \pgfmathdeclarefunction{erf}{1}{%
@@ -103,6 +102,11 @@
         \endgroup
     }
 \makeatother
+% Flowchart colors
+\colorlet{startstopcolor}{highlight!50}
+\colorlet{processcolor}{steelblue!50}
+\colorlet{iocolor}{verdeunb!30}
+\colorlet{decisioncolor}{steelblue!80}
 % Flowchart blocks
 \tikzstyle{startstop} = [
     rectangle, 
@@ -111,8 +115,7 @@
     minimum height=1cm,
     text centered, 
     draw=black, 
-    fill=azulunb!60,
-    text=white,
+    fill=startstopcolor,
 ]
 \tikzstyle{process} = [
     rectangle, 
@@ -120,7 +123,7 @@
     minimum height=1cm, 
     text centered, 
     draw=black, 
-    fill=verdeunb!50,
+    fill=processcolor,
     trapezium stretches=true,
 ]
 \tikzstyle{io} = [
@@ -131,7 +134,7 @@
     minimum height=1cm, 
     text centered, 
     draw=black, 
-    fill=highlight!50,
+    fill=iocolor,
     trapezium stretches=true,
 ]
 \tikzstyle{decision} = [
@@ -140,7 +143,7 @@
     minimum height=1cm, 
     text centered, 
     draw=black, 
-    fill=darkred!50,
+    fill=decisioncolor,
 ]
 %---
 
@@ -467,6 +470,7 @@
 \bibhang{2.2em} % Recuo da margem esquerda da lista de referências
 \bibliography{% O estilo de citação é selecionado automaticamente
     chapters/references/main,%
+    chapters/references/literature_review.bib,%
     chapters/references/reservoir_characterization,%
     chapters/references/donoho%
 } 
@@ -478,8 +482,8 @@
 \begin{apendicesenv}
     % Imprime uma página indicando o início dos apêndices
     \partapendices
-    \include{chapters/a_deducing_alpha}
-    \include{chapters/b_productions}
+    \include{chapters/a_productions}
+    \include{chapters/b_deducing_alpha}
     % \include{chapters/appendix-c}
 \end{apendicesenv}
 % ---

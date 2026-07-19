@@ -82,8 +82,13 @@
 
 % Cover watermark for version submitted for review
 \if\isreview1
-\RequirePackage{background}
-    \backgroundsetup{contents={Submetido \imprimirdia~de \imprimirmes~de \imprimirano~para revisão da banca}, color=gray, opacity=0.3, position=current page.west, scale=2, angle=90, vshift=-.6cm}
+\RequirePackage[
+  firstpageonly=false,
+  angle=90,
+  fontsize=20pt,
+  text={\normalfont Submetido 24 de julho de 2026 para revisão da banca},
+  pos={1cm, 0.5\paperheight},
+]{draftwatermark}
 \fi
 
 % ---

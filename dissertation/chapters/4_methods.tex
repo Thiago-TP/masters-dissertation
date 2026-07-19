@@ -295,9 +295,8 @@ Your reader should be able to answer the following questions when they're done r
     While the outline of both DSI-ESMDA and the proposed Gated DSI-ESMDA methods have been presented in \cref{chap:theory-framework},
     it remains to be explained how the error covariance matrix $\mathbf{C}_e$ is constructed,
     what parameters are used, and what metrics will be used to evaluate the performance of the methods.
-
-    \Cref{fig:flowchart-evaluation} illustrates the workflow of the Evaluation process 
-    by detailing \cref{fig:flowchart-gated} in \cref{chap:theory-framework}.
+    %
+    \Cref{fig:flowchart-evaluation} illustrates the workflow of the evaluation process.
 
     \begin{figure}[htbp]
         \centering
@@ -323,7 +322,7 @@ Your reader should be able to answer the following questions when they're done r
     \footnote{%
         An important caveat is that the normalization in 
         \cref{eq:normalize_realization,eq:normalize_groundtruth} 
-        will not work if the groundtruth feature is constant, so such features are removed if detected.
+        will not work if the groundtruth feature is constant, in which case prediction would be trivial anyway.
     }
     and realizations to improve the conditioning of the data and facilitate noise modeling, as shown next.
 
