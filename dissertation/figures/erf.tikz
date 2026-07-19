@@ -1,0 +1,14 @@
+\begin{tikzpicture}[> = latex]
+    \draw[->] (0, 0) -- node[at end, right] {$z$} (2.5, 0);
+    \draw[->] (0, 0) -- node[at end, above] {$\mathrm{erf}(z)$} (0, 1.5);
+    
+    \draw
+        (1, 0) node [below] {$1$}
+        (0, 0) node [below] {$0$}
+        (2, 0) node [below] {$2$}
+    ;
+    \draw [dashed] 
+        (0, 1) node [left] {$1$} -- (2.5, 1)
+    ;
+    \draw [very thick, verdeunb] plot[domain=0:2.5, samples=200] (\x, {erf(abs(\x))});
+\end{tikzpicture}

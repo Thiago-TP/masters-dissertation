@@ -1,0 +1,113 @@
+\begin{tikzpicture}[> = latex]
+    % Blocks
+    \node [startstop] (start) 
+        {Start};
+
+    %% Common trunk: data loading and covariance setting
+    \node [io, below=0.5 of start] (data2) 
+        {%
+            Receive
+            $N_a$
+        };
+
+    \node [io, left=1 of data2] (data1) 
+        {%
+            Receive 
+            $\nu$,
+            $\mathbf{d}$, 
+            $\{\mathbf{d}_j\}_{1\leq j\leq N_e}$
+        };
+
+    \node [io, right=1 of data2] (data3) 
+        {%
+            Receive
+            $L_x'$, $L_y'$, $T_c$, $\theta$
+        };
+
+    \node [process, below=0.5 of data1] (covariance) 
+        {Set $\mathbf{C}_e = \nu \mathbf{I}$};
+
+    \node [process, left=1 of covariance] (normalization) 
+        {%
+            \begin{minipage}{2cm}
+            \centering
+                Normalize\\
+                features
+            \end{minipage}
+        };
+
+    \node [process, right=1 of covariance] (d_obs) 
+        {%
+            Set $\mathbf{d}_\text{obs} = \mathbf{d}_h + \mathcal{N}(\mathbf{0}, \mathbf{C}_e)$
+        };
+
+    \node [process, below=0.5 of data3] (localization) 
+        {Compute $\mathbf{R}$};
+
+    %% DSI-ESMDA and proposal blocks
+    \node [process, below=6.5 of start] (evaluation) 
+        {%
+            \begin{minipage}{4cm}
+            \centering
+                Evaluate priors and posteriors on selected metrics
+            \end{minipage}
+        };
+    \node [process, right=1 of evaluation] (gated_dsiesmda) 
+        {%
+            \begin{minipage}{3cm}
+            \centering
+                Run \cref{eq:iteration_gated}\\ for $1\leq k \leq N_a$
+            \end{minipage}
+        };
+    \node [io, above=0.5 of gated_dsiesmda] (gating_intensity) 
+        {Receive $\lambda$};
+    \node [process, left=1 of evaluation] (dsiesmda) 
+        {%
+            \begin{minipage}{3cm}
+            \centering
+                Run \cref{eq:iteration_dsiesmda}\\ for $1\leq k\leq N_a$
+            \end{minipage}
+        };
+
+    \node [startstop, below=0.5 of evaluation] (stop) 
+        {Stop};
+
+    % Arrows
+    \draw [->] (start) -| (data1);
+    \draw [->] (start) -- (data2);
+    \draw [->] (start) -| (data3);
+    \draw [->] (data1.west) -| (normalization.north);
+    \draw [->] (data3) -- (localization);
+    \draw [->] (normalization) -- (covariance);
+    \draw [->] (covariance) -- (d_obs);
+    
+    \draw [->] (gating_intensity) -- (gated_dsiesmda);
+    \draw [->] (gated_dsiesmda) -- (evaluation);
+    \draw [->] (dsiesmda) -- (evaluation);
+    \draw [->] (evaluation) -- (stop);
+
+    \draw [<-] (gating_intensity.north) ++ (0, .25) --++ (0, 1.45);
+    \draw [<-] (dsiesmda.north) ++ (0, .25) --++ (0, 2.95);
+
+    % Boxes and annotations
+    %% Data loading and pre-processing box 
+    \draw [dashed] ($(data3.north east)+(1.9, 0.25)$) rectangle ($(normalization.south west)+(-0.25, -0.25)$);
+    \node [below=0.25 of d_obs.south] {
+        \begin{minipage}{7cm}
+            \centering
+            \bfseries
+            Data loading and pre-processing,\\
+            Covariance and localization setting
+        \end{minipage}
+    };
+    %% DSI-ESMDA box
+    \draw [dashed] ($(dsiesmda.north west)+(-0.25, 0.25)$) rectangle ($(dsiesmda.south east)+(0.25, -0.25)$);
+    \node [below=0.25 of dsiesmda.south] {
+        \textbf{DSI-ESMDA}
+    };
+    %% Gated DSI-ESMDA box
+    \draw [dashed] ($(gating_intensity.north west)+(-1.35, 0.25)$) rectangle ($(gated_dsiesmda.south east)+(0.25, -0.25)$);
+    \node [below=0.2 of gated_dsiesmda.south] {
+        \textbf{Proposal}
+    };
+\end{tikzpicture}

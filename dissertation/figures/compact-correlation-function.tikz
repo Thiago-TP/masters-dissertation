@@ -1,0 +1,21 @@
+\begin{tikzpicture}[> = latex]
+    \draw [<->] (0, 1.5) node [above] {$r(\delta)$} |- (2.25, 0) node [right] {$\delta$};
+    \draw (0, 0) node [below] {$0$};
+    
+    \draw [very thick, verdeunb, domain=0:1, samples=100, variable={\x}] plot 
+        ({\x}, {-0.25*\x*\x*\x*\x*\x + 0.5*\x*\x*\x*\x + 0.625*\x*\x*\x - 1.666*\x*\x + 1});
+    
+    \draw [very thick, verdeunb, domain=1:2, samples=100, variable={\x}] plot
+        ({\x}, {0.0833*\x*\x*\x*\x*\x - 0.5*\x*\x*\x*\x + 0.625*\x*\x*\x + 1.666*\x*\x - 5*\x + 4 - 0.666/\x});
+    
+    \draw [very thick, verdeunb, domain=2:2.25, variable={\x}] plot
+        ({\x}, {0});
+
+    \draw [dashed] 
+        (1, 0) node [below] {$1$} -- 
+        (1, -0.25 + 0.5 + 0.625- 1.666 + 1) node [above right] {$\approx 0.21$}
+        --++ (-1, 0)
+    ;
+    \draw (0, 1) node [left] {$1$};
+    \fill [verdeunb] (0, 1) circle (0.06);
+\end{tikzpicture}

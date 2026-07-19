@@ -53,7 +53,6 @@ Let $\mathbf{d}$ denote the true production data vector of a reference reservoir
 and let $\mathbf{d}_j$ denote the production data vector produced by 
 simulating a realization of the reference reservoir using model parameters $\mathbf{m}_j$.
 For an ensemble of $N_e$ realizations, we have $N_e$ different such vectors, each of which dependent on its own parameters vector.
-All data vectors are assumed whole, i.e., without missing entries, and realization data is assumed sinchronized.
 
 Of the original reference data vector, only part of it is used in the history matching process.
 Denote this vector by $\mathbf{d}_h$. 
@@ -171,7 +170,7 @@ The inclusion of $\Delta t_{uv}$ guarantees that measurements far apart in time 
 even if taken from the same well.
 
 \begin{note}[Index $v$]
-    Data vectors stack time series of a fields' measurements vertically, 
+    Data vectors stack time series of a fields' measurements, 
     so index $v$ in this chapter's equations specify a datum in place and time simultaneously.
     %
     For example, if DSI is being applied on the oil production of two wells of a field, 
@@ -181,39 +180,46 @@ even if taken from the same well.
     and elements $v=101$ through $v=200$ the oil production history of the second well.
 \end{note}
 
+\begin{note}[Time vectors]
+    Note that all realization data vectors are implicitly assumed to have a synchronized time vector.
+    Ultimately, this means simulation scheduling was the same for all realizations. 
+    %
+    Reference data, however, is under no obligation to follow this scheduling.
+    %
+    As such, in order for \cref{eq:iteration_dsiesmda} to work,
+    the history period of the realization data is constrained to match the observed data's.
+    %
+    This leads to an important practical requirement of the algorithm:
+    for simulations to cover the time vector of observed data.
+    %
+    \Cref{fig:time-vector-illustration} illustrates this process 
+    for data vectors with a single feature (e.g., field oil production total). 
+    %
+    \begin{center}
+        \captionof{figure}{Synchronization between realization data vector and reference data.}
+        \label{fig:time-vector-illustration}
+        \input{figures/time-vector-illustration.tikz}
+        \fonte{Self-elaboration.}
+    \end{center}
+\end{note}
+
 A rotation by $\theta$ is applied to take into account the anisotropy of reservoir permeability,
 and are $L_{x'}$, $L_{y'}$, $T_c$ positive constants that regulate the critical points of differences in $x$, $y$ and $t$ separately.
+%
 By critical, it is understood the inflection point $\delta=1$ in $r(\delta)$.
-The greater the critical value, 
+%
+As illustrated by \cref{fig:compact-correlation-function}, the greater the critical value, 
 the more lax the localization, allowing more weakly correlated changes to hold more impact.
 %
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}[> = latex]
-        \draw [<->] (0, 1.5) node [above] {$r(\delta)$} |- (2.25, 0) node [right] {$\delta$};
-        \draw (0, 0) node [below] {$0$};
-        
-        \draw [very thick, verdeunb, domain=0:1, samples=100, variable={\x}] plot 
-            ({\x}, {-0.25*\x*\x*\x*\x*\x + 0.5*\x*\x*\x*\x + 0.625*\x*\x*\x - 1.666*\x*\x + 1});
-        
-        \draw [very thick, verdeunb, domain=1:2, samples=100, variable={\x}] plot
-            ({\x}, {0.0833*\x*\x*\x*\x*\x - 0.5*\x*\x*\x*\x + 0.625*\x*\x*\x + 1.666*\x*\x - 5*\x + 4 - 0.666/\x});
-        
-        \draw [very thick, verdeunb, domain=2:2.25, variable={\x}] plot
-            ({\x}, {0});
-
-        \draw [dashed] 
-            (1, 0) node [below] {$1$} -- 
-            (1, -0.25 + 0.5 + 0.625- 1.666 + 1) --++ 
-            (-1, 0) node [left] {$\approx 0.21$}
-        ;
-        \draw (0, 1) node [left] {$1$};
-        \fill [verdeunb] (0, 1) circle (0.06);
-    \end{tikzpicture}
-    \caption{
-        Compact correlation function $r$ used to build the localization matrix $\mathbf{R}$.
-    }
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \caption{
+%         Compact correlation function $r$.
+%     }
+%     \label{fig:compact-correlation-function}
+%     \input{figures/compact-correlation-function.tikz}
+%     \fonte{Self-elaboration.}
+% \end{figure}
 %
 \begin{figure}[htbp]
     \centering
@@ -257,7 +263,7 @@ We propose doing so by adaptively adjusting the importance of the history mismat
 \label{eq:alpha_lambda}
 \end{align}
 %
-The equation above is based on the work of \cite{Fortaleza:2022}, and a detailed derivation is provided in \cref{chap:deriving-alpha}.
+The equation above is based on the work of \citeonline{Fortaleza:2022}, and a detailed derivation is provided in \cref{chap:deriving-alpha}.
 The smaller the mismatch of a measurement relative to the noise at that measure, the smaller the update.
 Constant $\lambda\geq 1$ inflates the deviation, further softening the Kalman-like update.
 At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^k$), $\bm{\alpha}_j^k = \mathbf{0}$ and the DSI update is fully undone. 
@@ -268,61 +274,25 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
         Important functions for understanding the proposed Data-Space Inversion algorithm.
     }
     \label{fig:erf_and_alpha}
-    \begin{subfigure}{0.49\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \centering
-        \caption{Special error function $\mathrm{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2}\ dt$}
+        \caption{Special error function.}
         \label{fig:erf}
-        \begin{tikzpicture}[> = latex]
-            \draw[->] (-3, 0) -- node[at end, right] {$z$} (3, 0);
-            \draw[->] (0, -1) -- node[at end, above] {$\mathrm{erf}(z)$} (0, 1.5);
-            
-            \draw
-                (-1, 0) node [below] {$-1$}
-                (1, 0) node [below] {$1$}
-                (0, 0) node [below right] {$0$}
-                (-2, 0) node [below] {$-2$}
-                (2, 0) node [below] {$2$}
-            ;
-            \draw [dashed] 
-                (0, 1) node [left] {$1$} --++ (3, 0)
-                (0, -1) node [right] {$-1$} --++ (-3, 0)
-            ;
-            \draw [very thick, verdeunb] plot[domain=-3:3, samples=200] (\x, {erf(\x)});
-        \end{tikzpicture}
+        \input{figures/erf.tikz}
     \end{subfigure}
     %
-    \begin{subfigure}{0.49\textwidth}
+    \begin{subfigure}[b]{0.36\textwidth}
         \centering
-        \caption{Values of $\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$
-        for $q \in \{0.5, 1, 1.5, 2, 2.5\}$}
+        \caption{$\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$.}
         \label{fig:alpha}
-        \begin{tikzpicture}[> = latex]
-            \def \s {1.1} % y axis scale
-            \draw [->] (0, 0) -- node[at end, right] {$\lambda$} (5.3, 0); 
-            \draw [->] (0, 0) -- node[at end, above] {$\mathrm{erf}(q/\lambda\sqrt{2})$} (0, \s*1.3);
-            
-            \draw [very thick, verdeunb, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(0.5/(\x*sqrt(2)))});
-            \draw [very thick, verdeunb] plot[domain=1:5, samples=200] (\x, {\s*erf(0.5/(\x*sqrt(2)))});
-            
-            \draw [very thick, verdeunb!80, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(1/(\x*sqrt(2)))});
-            \draw [very thick, verdeunb!80] plot[domain=1:5, samples=200] (\x, {\s*erf(1/(\x*sqrt(2)))});
-            
-            \draw [very thick, verdeunb!60, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(1.5/(\x*sqrt(2)))});
-            \draw [very thick, verdeunb!60] plot[domain=1:5, samples=200] (\x, {\s*erf(1.5/(\x*sqrt(2)))});
-            
-            \draw [very thick, verdeunb!40, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(2/(\x*sqrt(2)))});
-            \draw [very thick, verdeunb!40] plot[domain=1:5, samples=200] (\x, {\s*erf(2/(\x*sqrt(2)))});
-            
-            \draw [very thick, verdeunb!20, dashed] plot[domain=0.05:1, samples=200] (\x, {\s*erf(2.5/(\x*sqrt(2)))});
-            \draw [very thick, verdeunb!20] plot[domain=1:5, samples=200] (\x, {\s*erf(2.5/(\x*sqrt(2)))});
-
-            \draw [azulunb, ->, dashdotted, thick] (1.5, 0.1) --++ (45:1.75) node [above] {$q$};
-
-            \foreach \x in {0, 1, 2, 3, 4, 5}{
-                \draw (\x, 0) node [below] {$\x$};
-            }
-            \draw (0, 1) node [left] {$1$};
-        \end{tikzpicture}
+        \input{figures/gating-intensities.tikz}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \caption{Compact correlation function.}
+        \label{fig:compact-correlation-function}
+        \input{figures/compact-correlation-function.tikz}
     \end{subfigure}
     \fonte{Self-elaboration.}
 \end{figure}
@@ -347,39 +317,7 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
         Outline of the proposed Data-Space Inversion algorithm. 
     }
     \label{fig:flowchart-gated}
-    \begin{tikzpicture}[> = latex]
-        % Blocks
-        \node [startstop] (start) 
-            {Start};
-
-        \node [io, below=0.5 of start] (data) 
-            {
-                Receive $\mathbf{d}_\text{obs}$, 
-                $\{\mathbf{d}_j\}_{1\leq j\leq N_e}$,
-                $\mathbf{C}_e$, 
-                $L_x'$, $L_y'$, $T_c$, $\theta$ and 
-                $N_a$
-            };
-
-        \node [process, below=0.5 of data] (localization) 
-            {Compute $\mathbf{R}$};
-
-        \node [process, below=0.5 of localization] (dsiesmda) 
-            {Fix $\lambda$ and run \cref{eq:iteration_gated} from $k=1$ to $k=N_a$};
-
-        \node [io, below=0.5 of dsiesmda] (posterior) 
-            {Return $\mathbf{d}^{N_a+1}_j$, $1\leq j\leq N_e$, the posterior};
-
-        \node [startstop, below=0.5 of posterior] (stop) 
-            {Stop};
-
-        % Arrows
-        \draw [->] (start) -- (data);
-        \draw [->] (data) -- (localization);
-        \draw [->] (localization) -- (dsiesmda);
-        \draw [->] (dsiesmda) -- (posterior);
-        \draw [->] (posterior) -- (stop);
-    \end{tikzpicture}
+    \input{figures/flowchart-gated.tikz}
     \fonte{Self-elaboration.}
 \end{figure}
 

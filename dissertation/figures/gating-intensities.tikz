@@ -1,0 +1,26 @@
+\begin{tikzpicture}[> = latex]
+    \draw [->] (0, 0) -- node[at end, right] {$\lambda$} (4.3, 0); 
+    \draw [->] (0, 0) -- node[at end, above] {$\alpha$} (0, 1.6);
+    
+    \draw [very thick, verdeunb, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(0.5/(\x*sqrt(2)))});
+    \draw [very thick, verdeunb] plot[domain=1:4, samples=200] (\x, {erf(0.5/(\x*sqrt(2)))});
+    
+    \draw [very thick, verdeunb!80, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(1/(\x*sqrt(2)))});
+    \draw [very thick, verdeunb!80] plot[domain=1:4, samples=200] (\x, {erf(1/(\x*sqrt(2)))});
+    
+    \draw [very thick, verdeunb!60, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(1.5/(\x*sqrt(2)))});
+    \draw [very thick, verdeunb!60] plot[domain=1:4, samples=200] (\x, {erf(1.5/(\x*sqrt(2)))});
+    
+    \draw [very thick, verdeunb!40, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(2/(\x*sqrt(2)))});
+    \draw [very thick, verdeunb!40] plot[domain=1:4, samples=200] (\x, {erf(2/(\x*sqrt(2)))});
+    
+    \draw [very thick, verdeunb!20, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(2.5/(\x*sqrt(2)))});
+    \draw [very thick, verdeunb!20] plot[domain=1:4, samples=200] (\x, {erf(2.5/(\x*sqrt(2)))});
+
+    \draw [azulunb, ->, dashdotted, thick] (1.5, 0.1) --++ (45:1.5) node [above] {$q$};
+
+    \foreach \x in {0, 1, 2, 3, 4}{
+        \draw (\x, 0) node [below] {$\x$};
+    }
+    \draw (0, 1) node [left] {$1$};
+\end{tikzpicture}

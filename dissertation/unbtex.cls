@@ -513,7 +513,7 @@
 % ---
 % Definição de ambientes teorema, exemplo, demonstração, etc.
 % ---
-\RequirePackage{mdframed}
+\RequirePackage[framemethod=TikZ]{mdframed}
 
 \theoremstyle{definition}
 \mdfdefinestyle{plainSty}{hidealllines=true,backgroundcolor=verdeunb!10,innertopmargin=0pt}
@@ -539,16 +539,18 @@
   \mdfsetup{%
     frametitle={%
       \tikz
-      \draw (0, 0) ++ (-1, 0) node [rectangle,fill=azulunb!20]
+      \draw (0, 0) node [rectangle,rounded corners=3pt,fill=azulunb!30]
       {\strut Implementation note~\thechapter.\thenote%
       \ifstrempty{#1}{}{: #1}
       };
     },%
+    roundcorner=10pt,%
     innertopmargin=5pt,%
     linecolor=azulunb!20,%
     linewidth=2pt,%
     topline=true,%
-    frametitleaboveskip=\dimexpr-\ht\strutbox\relax%
+    frametitleaboveskip=\dimexpr-\ht\strutbox\relax,%
+    frametitlealignment=\raggedright,%
   }
   \begin{mdframed}[]\relax%
 }{\end{mdframed}}
@@ -846,7 +848,8 @@
 \definecolor{darkred}{HTML}{CA3A27}
 \definecolor{steelblue}{HTML}{6EA4BF}
 \definecolor{highlight}{HTML}{FFA300}
-\definecolor{logoupperhalf}{HTML}{0B0A52}
+% \definecolor{logoupperhalf}{HTML}{0B0A52}
+\colorlet{logoupperhalf}{azulunb}
 \colorlet{logolowerhalf}{logoupperhalf}
 \colorlet{logobackground}{highlight}
 \newcommand{\metadeInferiorEsquerda}{
@@ -1160,11 +1163,6 @@
 \cleardoublepage
 }
 % ---
-
-% ---
-% Imprime nota sobre uso de inteligência artificial
-% ---
-\newenvsc{notaia}[store-env=notaia, print-env=true]
 
 % ---
 % Imprime epígrafe

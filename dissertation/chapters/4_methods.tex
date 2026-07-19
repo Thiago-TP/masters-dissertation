@@ -278,7 +278,7 @@ Your reader should be able to answer the following questions when they're done r
     cannot be disclosed due to ongoing confidentiality agreements with industrial partners, 
     only essential information is provided.
 
-    The real field is a mature reservoir located in the Brazilian pre-salt,
+    The real field is a mature reservoir located in the Brazilian Post-Salt,
     with a production history spanning over 20 years.
     It is comprised of 8 injector wells, labeled I$1$ to I$8$, and 16 producer wells, labeled P$1$ to P$16$.
     Producers produce oil and water, but not gas.
@@ -305,86 +305,7 @@ Your reader should be able to answer the following questions when they're done r
             Outline of the evaluation process. 
         }
         \label{fig:flowchart-evaluation}
-        \begin{tikzpicture}[> = latex]
-            % Blocks
-            \node [startstop] (start) 
-                {Start};
-
-            \node [io, below=0.5 of start] (data1) 
-                {%
-                    Receive 
-                    $\nu$,
-                    $\mathbf{d}$, 
-                    $\{\mathbf{d}_j\}_{1\leq j\leq N_e}$
-                };
-
-            \node [io, left=1 of data1] (data2) 
-                {%
-                    Receive
-                    $L_x'$, $L_y'$, $T_c$, $\theta$
-                };
-
-            \node [io, right=1 of data1] (data3) 
-                {%
-                    Receive
-                    $N_a$
-                };
-
-            \node [process, below=2 of data1] (covariance) 
-                {Set $\mathbf{C}_e = \nu \cdot \mathrm{diag}(\mathcal{U}(\mathbf{0}, \mathbf{1}])$};
-
-            \node [process, below=0.5 of covariance] (d_obs) 
-                {%
-                    Set $\mathbf{d}_\text{obs} = \widetilde{\mathbf{d}}_h + \mathbf{e}$, 
-                    $\mathbf{e} \sim \mathcal{N}(\mathbf{0}, \mathbf{C}_e)$
-                };
-
-            \node [process, below=0.5 of data2] (localization) 
-                {Compute $\mathbf{R}$};
-
-            \node [process, below=0.5 of d_obs] (gated_dsiesmda) 
-                {%
-                    \begin{minipage}{5.5cm}
-                    \centering
-                        Fix $\lambda$ and run \cref{eq:iteration_gated}\\ from $k=1$ to $k=N_a$
-                    \end{minipage}
-                };
-
-            \node [process, below=0.5 of gated_dsiesmda] (dsiesmda) 
-                {%
-                    \begin{minipage}{4cm}
-                    \centering
-                        Run \cref{eq:iteration_dsiesmda}\\ from $k=1$ to $k=N_a$
-                    \end{minipage}
-                };
-
-            \node [process, below=0.5 of dsiesmda] (posterior) 
-                {%
-                    \begin{minipage}{6cm}
-                    \centering
-                        Evaluate priors and posteriors\\ using
-                        metrics in \cref{sec:evaluation-metrics}
-                    \end{minipage}
-                };
-
-            \node [startstop, below=0.5 of posterior] (stop) 
-                {Stop};
-
-            % Arrows
-            \draw [->] (start) -- (data1);
-            \draw [->] (start) -| (data2);
-            \draw [->] (start) -| (data3);
-            \draw [->] (data1) |- (localization);
-            \draw [->] (data2) -- (localization);
-            \draw [->] (data1) -- (covariance);
-            \draw [->] (covariance) -- (d_obs);
-            \draw [->] (d_obs) -- (gated_dsiesmda);
-            \draw [->] (localization) |- (gated_dsiesmda);
-            \draw [->] (data3) |- (gated_dsiesmda);
-            \draw [->] (gated_dsiesmda) -- (dsiesmda);
-            \draw [->] (dsiesmda) -- (posterior);
-            \draw [->] (posterior) -- (stop);
-        \end{tikzpicture}
+        \input{figures/flowchart-evaluation.tikz}
         \fonte{Self-elaboration.}
     \end{figure}
 
