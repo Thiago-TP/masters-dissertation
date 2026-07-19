@@ -86,7 +86,7 @@
   firstpageonly=false,
   angle=90,
   fontsize=20pt,
-  text={\normalfont Submetido 24 de julho de 2026 para revisão da banca},
+  text={\normalfont Submetido 27 de julho de 2026 para revisão da banca},
   pos={1cm, 0.5\paperheight},
 ]{draftwatermark}
 \fi
