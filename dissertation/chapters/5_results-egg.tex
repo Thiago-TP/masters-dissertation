@@ -1,4 +1,21 @@
-\subsection{Egg ensemble}
+\section{Egg ensemble}
+
+For this case study analysis, 10 realizations were picked, one at a time, 
+for running the evaluation of DSI-ESMDA and Gated DSI-ESMDA.
+%
+\Cref{fig:fopt-egg} shows where each groundtruth sits on the FOPT CDF of the ensemble.
+%
+The 5th-75th percentile is roughly uniformly covered, but there are no picks at higher percentiles.
+
+\begin{figure}
+    \centering
+    \caption{
+        Distribution of field oil production totals of the Egg ensemble
+        with realizations picked as groundtruths highlighted.
+    }
+    \label{fig:fopt-egg}
+    \input{figures/realizations/fopt-egg.tikz}
+\end{figure}
 
 Results for the standard DSI-ESMDA are detailed in \cref{tab:egg-dsi-esmda},
 while results for the proposed Gated DSI-ESMDA under a mild gating intensity are shown in \cref{tab:egg-gated-dsi-esmda}.
@@ -14,7 +31,8 @@ It is also clear that localization tends to increase posterior coverage in the v
 but it may also decrease it, as seen in the groundtruth 30 case.
 %
 While localization did not decrease posterior MSE,
-values being close to 1 indicate that posterior can be considered good (MSE$\leq1$) or at least fair ($1<$MSE$\leq 2$)
+values being close to 1 indicate that posterior can be considered good 
+($\text{MSE}\leq1$) or at least fair ($1<\text{MSE}\leq 2$)
 \cite[section 9.4.2.2]{Emerick:2025}.
 
 It is known \cite[appendix]{Oliver:2018} that the expected mismatch is 0.5
@@ -35,7 +53,7 @@ and that the proposed method posterior coverages tend to be slightly higher than
 Localization did not tend to decrease the posterior MSE, which remained good or fair. 
 This was expected, since the same behavior was observed in the standard DSI-ESMDA.
 
-The following short-hands are used in the tables and figures of this section:
+The following shorthands are used in the tables and figures of this section:
 Loc.: Localization is applied;
 Pr.: Prior ensemble;
 Po.: Posterior ensemble;

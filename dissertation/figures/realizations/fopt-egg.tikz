@@ -1,9 +1,44 @@
 \begin{tikzpicture}
+    \pgfplotsset{minor grid style={color=gray, dashdotted}}
     \begin{axis}[%
-        xlabel=Normalized FOPT,%
-        ylabel=Percentile
+        xlabel=FOPT,
+        ylabel=CDF,
+        minor tick num=1,
+        grid=both,
+        legend entries={Egg},
+        legend pos=north west,
+        legend style={draw=none},
     ]
-        \addplot table [y=Percentile, x=Normalized FOPT]{figures/results/egg/opt_plots/opt_cdf.dat};
-        \addlegendentry{$Q_A$ series}
+        \addplot [azulunb, mark=*] table [y=Percentile, x=FOPT] {figures/results/egg/opt_plots/opt_cdf.dat};
+
+        \addplot [highlight!80, mark=*, only marks] coordinates {
+            (0.978800644381978,  0.4554455445544554)
+            (0.986390923486414,  0.7227722772277229)
+            (0.9836097442350015, 0.6138613861386139)
+            (0.9730840699595805, 0.24752475247524752)
+            (0.9831911641717007, 0.594059405940594)
+            (0.9674915392902653, 0.1485148514851485)
+            (0.9634823823117771, 0.0594059405940594)
+            (0.9746531897550796, 0.28712871287128716)
+            (0.9702940720496037, 0.17821782178217824)
+            (0.9873888860910818, 0.7524752475247525)
+        };
+        
+        \tikzstyle{every pin}=[
+            fill=white,
+            draw=black,
+            font=\small,
+        ]
+
+        \node [coordinate,pin=above:{10}]  at (axis cs:0.978800644381978,  0.4554455445544554)  {};
+        \node [coordinate,pin=above:{20}]  at (axis cs:0.986390923486414,  0.7227722772277229)  {};
+        \node [coordinate,pin=below:{30}]  at (axis cs:0.9836097442350015, 0.6138613861386139)  {};
+        \node [coordinate,pin=below:{40}]  at (axis cs:0.9730840699595805, 0.24752475247524752) {};
+        \node [coordinate,pin=above:{50}]  at (axis cs:0.9831911641717007, 0.594059405940594)   {};
+        \node [coordinate,pin=below:{60}]  at (axis cs:0.9674915392902653, 0.1485148514851485)  {};
+        \node [coordinate,pin=above:{70}]  at (axis cs:0.9634823823117771, 0.0594059405940594)  {};
+        \node [coordinate,pin=above:{80}]  at (axis cs:0.9746531897550796, 0.28712871287128716) {};
+        \node [coordinate,pin=above:{90}]  at (axis cs:0.9702940720496037, 0.17821782178217824) {};
+        \node [coordinate,pin=below:{100}] at (axis cs:0.9873888860910818, 0.7524752475247525)  {};
     \end{axis}
 \end{tikzpicture}

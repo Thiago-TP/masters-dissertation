@@ -288,17 +288,18 @@ Your reader should be able to answer the following questions when they're done r
     Importantly, observed data has a time vector that is not identical to the simulation's but is a subset of it.
 
     \subsection{Field Oil Production Totals}
-    The field oil production total (FOPT) is a measurement commonly used to compare ensembles since groundtruth and realizations are each represented by a single value:
-    how much oil was produced within a given period. 
+    The field oil production total (FOPT) 
+    is a measurement commonly used to compare ensembles since groundtruth and realizations are each represented by a single value:
+    how much oil was produced within the recorded data period. 
     %
-    \Cref{fig:opt-cdfs} shows the cumulative distribution function (CDF) of field oil production total (FOPT) of the case studies ensembles.
+    \Cref{fig:opt-cdf-all} shows the cumulative distribution function (CDF) of field oil production total (FOPT) of the case studies ensembles.
     FOPT values are normalized by the maximum across all a case study's realizations.
     
-    \Cref{fig:egg-opt-cdf} shows that the Egg ensemble has a relatively narrow, roughly uniform range of FOPT values,
+    The Egg ensemble has a relatively narrow, roughly uniform range of FOPT values,
     suggesting that the priors should be reasonable representatives of the groundtruths, 
     especially those that are closer to the median of the distribution. 
     
-    On the other hand, \cref{fig:olympus-opt-cdf} shows that
+    On the other hand,
     the Olympus ensemble has a much wider (about 10 times that of the Egg ensemble), 
     albeit still roughly uniform, range of FOPT values.
     %
@@ -309,60 +310,18 @@ Your reader should be able to answer the following questions when they're done r
     as they are less likely to be represented in the prior ensemble.
     This effect is further aggravated by the large range of FOPT values in the Olympus ensemble, which is roughly 10 times larger than that of the Egg ensemble.
 
-    Finally,
-    \cref{fig:real-field-opt-cdf} shows the real field's ensemble's CDF of FOPT, with the observed datum circled. 
-    Since the time vector of realizations go well beyond the observed period, they would become more likely to have a FOPT greater than the reference.
-    To avoid this, FOPT values presented refer only to the observed period, and are normalized by the maximum across all realizations.
-    This ensemble has a relatively wide range of FOPT values, 
-    with the observed datum being very close to the 50th percentile.
+    The real ensemble has a similarly wide range of FOPT values.
     However, the distribution quite lopsided, with a very populated 5-80th percentile range and a thin 0-5\% and 80-100\% range.
-    As seen in the Olympus case, a broad range of FOPT values coupled with poorly-represented tails can lead to inconsistent posterior coverages and MSEs.
+    As with the Olympus case, a broad range of FOPT values coupled with poorly-represented tails can lead to inadequate priors depending on where the groundtruth sits.
     %
     \begin{figure}[htbp]
         \centering
         \caption{%
-            Distribution of FOPT values for each realization in the (a) Egg, (b) Olympus, and (c) real field ensembles.
+            Distribution of field oil prodution totals for each realization in the Egg, Olympus, and     real field ensembles.
             Each ensemble is normalized by its maximum FOPT.
-            % Realizations that were used as groundtruths in this work's experiments are circled.
         }
-        \begin{subfigure}{\linewidth}
-            \centering
-            \caption{}
-            \label{fig:egg-opt-cdf}
-            % \includegraphics[width=\linewidth]{results/egg/opt_plots/opt_cdf.pdf}
-            \begin{tikzpicture}
-                \begin{axis}[%
-                    xlabel=FOPT,
-                    ylabel=CDF,
-                    y=4cm, x=20cm,
-                    % ytick={0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0},
-                    grid=major,
-                    legend entries={Egg,Olympus,Real field},
-                    legend pos=north west,
-                    legend style={draw=none},
-                ]
-                    \addplot [azulunb, mark=o] table [y=Percentile, x=FOPT]{figures/results/egg/opt_plots/opt_cdf.dat};
-                    %
-                    \addplot [verdeunb, mark=o] table [y=Percentile, x=FOPT]{figures/results/olympus/opt_plots/opt_cdf.dat};
-                    %
-                    \addplot [highlight, mark=o] table [y=Percentile, x=FOPT]{figures/results/real_field/opt_plots/opt_cdf.dat};
-                \end{axis}
-            \end{tikzpicture}
-        \end{subfigure}
-        %
-        \begin{subfigure}{\linewidth}
-            \centering
-            \caption{}
-            \label{fig:olympus-opt-cdf}
-            \includegraphics[width=\linewidth]{results/olympus/opt_plots/opt_cdf.pdf}
-        \end{subfigure}
-        %
-        \begin{subfigure}{\linewidth}
-            \centering
-            \caption{}
-            \label{fig:real-opt-cdf}
-            \includegraphics[width=\linewidth]{results/real_field/opt_plots/opt_cdf.pdf}
-        \end{subfigure}
+        \label{fig:opt-cdf-all}
+        \input{figures/realizations/fopt-all.tikz}
         \fonte{Self-elaboration.}
     \end{figure}
 
@@ -508,30 +467,32 @@ Your reader should be able to answer the following questions when they're done r
 
     \Cref{tab:simulation-parameters-time} compares the time-related simulation parameters and features across reservoirs, 
     while \cref{tab:simulation-parameters-localization} compares the localization-related parameters.
-    Finally, \cref{tab:evaluation-parameters} lists the main hyperparameters: 
-    number of iterations, 
-    noise magnitude, and
-    gating intensity.
-
-    Experiments were performed on a small array of noise magnitudes and gating intensities,
-    with the number of iterations fixed at $N_a = 1$ for all experiments. 
+    %
+    Note that $N_e$ represents the number of realizations after a groundtruth is separated from the ensemble.
+    %
+    Experiments were performed
+    with the number of iterations fixed at $N_a = 1$ and noise magnitude $\nu=0.01$ for all experiments.
+    %
+    Both standard DSI-ESMDA and Gated DSI-ESMDA were run with and without localization.
+    Finally, the value of gating intensity $\lambda$ varied in $\{1, 2, 4, 8, 16\}$. 
 
     \begin{table}[htbp]
     \IBGEtab{%
         \caption{Time-related simulation parameters per reservoir.}
         \label{tab:simulation-parameters-time}
     }{
-        \begin{tabular}{c R{2cm} R{2cm} C{2.75cm} rr L{1.5cm}}
+        \begin{tabular}{c c R{1.75cm} R{2.75cm} rl rl}
             \toprule
-            Reservoir  & Number of realizations & Number of time steps & Time step size       & \multicolumn{2}{c}{Simulation life} & History split \\ \midrule
-            Egg        & 100                    & 120                  & 30 days              & 3600 days  & (9.8 years)            & 60\%\\
-            Olympus    & 49                     & 20                   & 1 calendar year      & 7305 days  & (20 years)             & 60\%\\
-            Real field & 200                    & 510                  & 1 calendar month$^*$ & 12785 days & (35 years)             & 60\%$^{**}$\\
+            Reservoir  & $N_e$ & Number of time steps & Time step size       & \multicolumn{2}{c}{Simulation life} & \multicolumn{2}{c}{History split} \\ 
+            \midrule
+            Egg        & 100   & 120                  & 30 days              & 3600 days  & (9.8 years)            & 60\% & (5.9 years)\\
+            Olympus    & 49    & 20                   & 1 calendar year      & 7305 days  & (20 years)             & 60\% & (12 years)\\
+            Real field & 200   & 510                  & 1 calendar month$^*$ & 12785 days & (35 years)             & 60\% & (21 years)$^{**}$\\
             \bottomrule
         \end{tabular}
     }{%
         \fonte{Self-elaboration.}
-        \nota[$^*$]{The very first time step, with 274 days, is the only exception.}
+        \nota[$^*$]{The very first time step is the only exception.}
         \nota[$^{**}$]{Real data time vectors aren't synchronized across features, so 60\% of a feature may lead to a shorter time scope than another feature.}
     }
     \end{table}
@@ -552,24 +513,6 @@ Your reader should be able to answer the following questions when they're done r
     }{%
         \fonte{Self-elaboration.}
         \nota{Critical lengths are in amount of gridblocks, and are therefore dimensionless.}
-    }
-    \end{table}
-
-    \begin{table}[htbp]
-    \IBGEtab{%
-        \caption{Evaluation hyperparameters.}
-        \label{tab:evaluation-parameters}
-    }{
-        \begin{tabular}{c C{2cm} C{2cm} C{2cm} c}
-            \toprule
-            Parameter & Symbol & Value(s) & Unit \\ \midrule
-            Kalman-like iterations & $N_a$ & 1 & - \\
-            Noise magnitude & $\nu$ & $\{0.001, 0.01\}$ & - \\
-            Gating intensity & $\lambda$ & $\{1, 2, 4, 8, 16\}$ & - \\
-            \bottomrule
-        \end{tabular}
-    }{%
-        \fonte{Self-elaboration.}
     }
     \end{table}
         

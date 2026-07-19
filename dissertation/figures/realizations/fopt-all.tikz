@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+    \pgfplotsset{minor grid style={color=gray, dashdotted}}
+    \begin{axis}[%
+        xlabel=FOPT,
+        ylabel=CDF,
+        minor tick num=1,
+        grid=both,
+        legend entries={Egg,Olympus,Real field},
+        legend pos=north west,
+        legend style={draw=none},
+    ]
+        \addplot [azulunb, mark=*] table [y=Percentile, x=FOPT] {figures/results/egg/opt_plots/opt_cdf.dat};
+        %
+        \addplot [verdeunb, mark=*] table [y=Percentile, x=FOPT] {figures/results/olympus/opt_plots/opt_cdf.dat};
+        %
+        \addplot [highlight, mark=*] table [y=Percentile, x=FOPT] {figures/results/real_field/opt_plots/opt_cdf.dat};
+    \end{axis}
+\end{tikzpicture}
