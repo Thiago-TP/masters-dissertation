@@ -1,0 +1,39 @@
+\begin{tabular}{cccccccccccc}
+\toprule
+\multirow{3}{*}{
+    \begin{minipage}{2cm}
+        \centering
+        Gating\\
+        intensity
+    \end{minipage}
+}
+&
+\multirow{3}{*}{Loc.} 
+& 
+\multicolumn{4}{c}{Observation coverages} & 
+\multicolumn{2}{c}{\multirow{2}{*}{
+    MSE
+}} & 
+\multicolumn{4}{c}{Data mismatch} 
+\\
+& & \multicolumn{2}{c}{History} & \multicolumn{2}{c}{Validation} &     &     & \multicolumn{2}{c}{Avg.} & \multicolumn{2}{c}{Std. Dev.}
+\\
+& & Pr. & Po.                   & Pr. & Po.                      & Pr. & Po. & Pr. & Po.                & Pr. & Po.
+\\
+\midrule
+\multirow{2}{*}{$\lambda=1$} & No & 0.86 & 0.53 & 0.95 & 0.52 & 2.71 & 2.32 & 5.44 & 1.21 & 2.19 & 0.01 \\
+ & Yes & 0.86 & 0.54 & 0.95 & 0.55 & 2.71 & 2.32 & 5.44 & 1.21 & 2.19 & 0.01 \\
+\midrule
+\multirow{2}{*}{$\lambda=2$} & No & 0.86 & 0.56 & 0.95 & 0.55 & 2.71 & 2.36 & 5.44 & 1.27 & 2.19 & 0.02 \\
+ & Yes & 0.86 & 0.57 & 0.95 & 0.58 & 2.71 & 2.36 & 5.44 & 1.27 & 2.19 & 0.02 \\
+\midrule
+\multirow{2}{*}{$\lambda=4$} & No & 0.86 & 0.63 & 0.95 & 0.64 & 2.71 & 2.44 & 5.44 & 1.52 & 2.19 & 0.04 \\
+ & Yes & 0.86 & 0.64 & 0.95 & 0.66 & 2.71 & 2.44 & 5.44 & 1.53 & 2.19 & 0.05 \\
+\midrule
+\multirow{2}{*}{$\lambda=8$} & No & 0.86 & 0.73 & 0.95 & 0.74 & 2.71 & 2.55 & 5.44 & 2.15 & 2.19 & 0.19 \\
+ & Yes & 0.86 & 0.73 & 0.95 & 0.75 & 2.71 & 2.55 & 5.44 & 2.16 & 2.19 & 0.19 \\
+\midrule
+\multirow{2}{*}{$\lambda=16$} & No & 0.86 & 0.80 & 0.95 & 0.81 & 2.71 & 2.66 & 5.44 & 3.10 & 2.19 & 0.57 \\
+ & Yes & 0.86 & 0.80 & 0.95 & 0.81 & 2.71 & 2.66 & 5.44 & 3.12 & 2.19 & 0.57 \\
+\bottomrule
+\end{tabular}

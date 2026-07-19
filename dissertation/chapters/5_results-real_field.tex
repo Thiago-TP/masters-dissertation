@@ -1,0 +1,45 @@
+\subsection{Brazilian Post-salt Field}
+
+Results for the standard DSI-ESMDA are presented in \cref{tab:real-dsi-esmda},
+while results for the proposed Gated DSI-ESMDA are shown in 
+\cref{tab:real-gated-dsi-esmda-1-16}.
+
+Unlike the trend set by the synthetic case studies,
+localization did not have a significant impact on observation coverages or data mismatches in the real field case study,
+be it in the standard DSI-ESMDA or the proposed Gated DSI-ESMDA.
+%
+However, it is clear that the gating produces better coverages as the gating intensity increases,
+with the best results occuring at $\lambda=16$, the largest value tested.
+Importantly, this comes at the cost of a higher data mismatch and MSE, which is expected since the posterior is gaining variance.
+
+\begin{table}[htbp]
+    \centering
+    \IBGEtab{%
+        \caption{%
+            DSI-ESMDA results for the real field in the Brazilian Post-salt.
+        }
+        \label{tab:real-dsi-esmda}
+    }{%
+        \input{tables/results/real-dsi-esmda.tex}
+    }{%
+        \fonte{Self-elaboration.}
+    }
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \IBGEtab{%
+        \caption{%
+            Gated DSI-ESMDA results for the real field in the Brazilian Post-salt with varying gating.
+        }
+        \label{tab:real-gated-dsi-esmda-1-16}
+    }{%
+        \input{tables/results/real-gated-dsi-esmda-1-16.tex}
+    }{%
+        \fonte{Self-elaboration.}
+    }
+\end{table}
+
+Mild gating intensities ($\lambda=1$, $\lambda=2$) produce similar results to the standard DSI-ESMDA.
+This indicates that the gating mechanism may act as a substitute to simpler localizations on complexely correlated features, 
+which is a significant advantage since localization tuning isn't straightforward.

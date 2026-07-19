@@ -287,6 +287,85 @@ Your reader should be able to answer the following questions when they're done r
     with a total of 510 simulation time steps of roughly 30 days each.
     Importantly, observed data has a time vector that is not identical to the simulation's but is a subset of it.
 
+    \subsection{Field Oil Production Totals}
+    The field oil production total (FOPT) is a measurement commonly used to compare ensembles since groundtruth and realizations are each represented by a single value:
+    how much oil was produced within a given period. 
+    %
+    \Cref{fig:opt-cdfs} shows the cumulative distribution function (CDF) of field oil production total (FOPT) of the case studies ensembles.
+    FOPT values are normalized by the maximum across all a case study's realizations.
+    
+    \Cref{fig:egg-opt-cdf} shows that the Egg ensemble has a relatively narrow, roughly uniform range of FOPT values,
+    suggesting that the priors should be reasonable representatives of the groundtruths, 
+    especially those that are closer to the median of the distribution. 
+    
+    On the other hand, \cref{fig:olympus-opt-cdf} shows that
+    the Olympus ensemble has a much wider (about 10 times that of the Egg ensemble), 
+    albeit still roughly uniform, range of FOPT values.
+    %
+    The picked groundtruths (realizations 5, 10, etc.) are spread within the 5-95th percentiles, 
+    with half of them quite distant from the median.
+    Since this reservoir's FOPTs thin out at the percentile ranges of 0-5\% and 90-100\%,
+    it would be expected that groundtruths picked from these ranges would be more difficult to match, 
+    as they are less likely to be represented in the prior ensemble.
+    This effect is further aggravated by the large range of FOPT values in the Olympus ensemble, which is roughly 10 times larger than that of the Egg ensemble.
+
+    Finally,
+    \cref{fig:real-field-opt-cdf} shows the real field's ensemble's CDF of FOPT, with the observed datum circled. 
+    Since the time vector of realizations go well beyond the observed period, they would become more likely to have a FOPT greater than the reference.
+    To avoid this, FOPT values presented refer only to the observed period, and are normalized by the maximum across all realizations.
+    This ensemble has a relatively wide range of FOPT values, 
+    with the observed datum being very close to the 50th percentile.
+    However, the distribution quite lopsided, with a very populated 5-80th percentile range and a thin 0-5\% and 80-100\% range.
+    As seen in the Olympus case, a broad range of FOPT values coupled with poorly-represented tails can lead to inconsistent posterior coverages and MSEs.
+    %
+    \begin{figure}[htbp]
+        \centering
+        \caption{%
+            Distribution of FOPT values for each realization in the (a) Egg, (b) Olympus, and (c) real field ensembles.
+            Each ensemble is normalized by its maximum FOPT.
+            % Realizations that were used as groundtruths in this work's experiments are circled.
+        }
+        \begin{subfigure}{\linewidth}
+            \centering
+            \caption{}
+            \label{fig:egg-opt-cdf}
+            % \includegraphics[width=\linewidth]{results/egg/opt_plots/opt_cdf.pdf}
+            \begin{tikzpicture}
+                \begin{axis}[%
+                    xlabel=FOPT,
+                    ylabel=CDF,
+                    y=4cm, x=20cm,
+                    % ytick={0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0},
+                    grid=major,
+                    legend entries={Egg,Olympus,Real field},
+                    legend pos=north west,
+                    legend style={draw=none},
+                ]
+                    \addplot [azulunb, mark=o] table [y=Percentile, x=FOPT]{figures/results/egg/opt_plots/opt_cdf.dat};
+                    %
+                    \addplot [verdeunb, mark=o] table [y=Percentile, x=FOPT]{figures/results/olympus/opt_plots/opt_cdf.dat};
+                    %
+                    \addplot [highlight, mark=o] table [y=Percentile, x=FOPT]{figures/results/real_field/opt_plots/opt_cdf.dat};
+                \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+        %
+        \begin{subfigure}{\linewidth}
+            \centering
+            \caption{}
+            \label{fig:olympus-opt-cdf}
+            \includegraphics[width=\linewidth]{results/olympus/opt_plots/opt_cdf.pdf}
+        \end{subfigure}
+        %
+        \begin{subfigure}{\linewidth}
+            \centering
+            \caption{}
+            \label{fig:real-opt-cdf}
+            \includegraphics[width=\linewidth]{results/real_field/opt_plots/opt_cdf.pdf}
+        \end{subfigure}
+        \fonte{Self-elaboration.}
+    \end{figure}
+
 \section{Evaluation workflow and parameters}
 \label{sec:evaluation-workflow-parameters}
 

@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+    \begin{axis}[%
+        xlabel=Normalized FOPT,%
+        ylabel=Percentile
+    ]
+        \addplot table [y=Percentile, x=Normalized FOPT]{figures/results/egg/opt_plots/opt_cdf.dat};
+        \addlegendentry{$Q_A$ series}
+    \end{axis}
+\end{tikzpicture}
