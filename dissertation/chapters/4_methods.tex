@@ -318,12 +318,7 @@ Your reader should be able to answer the following questions when they're done r
     \end{align}
     %
     where index $j$ denotes the realization, $f$ denotes the production data feature, and the tilde indicates normalization.
-    This process is repeated for all features%
-    \footnote{%
-        An important caveat is that the normalization in 
-        \cref{eq:normalize_realization,eq:normalize_groundtruth} 
-        will not work if the groundtruth feature is constant, in which case prediction would be trivial anyway.
-    }
+    This process is repeated for all non-constant features
     and realizations to improve the conditioning of the data and facilitate noise modeling, as shown next.
 
     \subsection{Noise modeling}

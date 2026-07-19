@@ -86,28 +86,38 @@
     \draw [->] (dsiesmda) -- (evaluation);
     \draw [->] (evaluation) -- (stop);
 
-    \draw [<-] (gating_intensity.north) ++ (0, .25) --++ (0, 1.45);
-    \draw [<-] (dsiesmda.north) ++ (0, .25) --++ (0, 2.95);
+    \draw [<-] (gating_intensity.north) ++ (0, .25) --++ (0, 1.4);
+    \draw [<-] (dsiesmda.north) ++ (0, .25) --++ (0, 2.9);
 
     % Boxes and annotations
     %% Data loading and pre-processing box 
-    \draw [dashed] ($(data3.north east)+(1.9, 0.25)$) rectangle ($(normalization.south west)+(-0.25, -0.25)$);
+    \draw [dashed, rounded corners=5pt]
+        ($(data3.north east)+(1.9, 0.25)$) rectangle 
+        ($(normalization.south west)+(-0.25, -0.25)$)
+    ;
     \node [below=0.25 of d_obs.south] {
         \begin{minipage}{7cm}
             \centering
+            \sffamily
             \bfseries
             Data loading and pre-processing,\\
             Covariance and localization setting
         \end{minipage}
     };
     %% DSI-ESMDA box
-    \draw [dashed] ($(dsiesmda.north west)+(-0.25, 0.25)$) rectangle ($(dsiesmda.south east)+(0.25, -0.25)$);
+    \draw [dashed, rounded corners=5pt]
+        ($(dsiesmda.north west)+(-0.25, 0.25)$) rectangle 
+        ($(dsiesmda.south east)+(0.25, -0.25)$)
+    ;
     \node [below=0.25 of dsiesmda.south] {
-        \textbf{DSI-ESMDA}
+        \sffamily\textbf{DSI-ESMDA}
     };
     %% Gated DSI-ESMDA box
-    \draw [dashed] ($(gating_intensity.north west)+(-1.35, 0.25)$) rectangle ($(gated_dsiesmda.south east)+(0.25, -0.25)$);
+    \draw [dashed, rounded corners=5pt]
+        ($(gating_intensity.north west)+(-1.35, 0.25)$) rectangle 
+        ($(gated_dsiesmda.south east)+(0.25, -0.25)$)
+    ;
     \node [below=0.2 of gated_dsiesmda.south] {
-        \textbf{Proposal}
+        \sffamily\textbf{Proposal}
     };
 \end{tikzpicture}
