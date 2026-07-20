@@ -1,127 +1,37 @@
 \section{Egg ensemble}
 
-For this case study analysis, 10 realizations were picked, one at a time, 
-for running the evaluation of DSI-ESMDA and Gated DSI-ESMDA.
-%
-\Cref{fig:fopt-egg} shows where each groundtruth sits on the FOPT CDF of the ensemble.
-%
-The 5th-75th percentile is roughly uniformly covered, but there are no picks at higher percentiles.
-
-\begin{figure}
-    \centering
-    \caption{
-        Distribution of field oil production totals of the Egg ensemble
-        with realizations picked as groundtruths highlighted.
-    }
-    \label{fig:fopt-egg}
-    \input{figures/realizations/fopt-egg.tikz}
-\end{figure}
-
-Results for the standard DSI-ESMDA are detailed in \cref{tab:egg-dsi-esmda},
-while results for the proposed Gated DSI-ESMDA under a mild gating intensity are shown in \cref{tab:egg-gated-dsi-esmda}.
-
-\Cref{tab:egg-dsi-esmda} shows that DSI-ESMDA posteriors had a higher posterior coverage during the history period when localization was applied, 
-in exchange for a slightly higher data mismatch average and standard deviation.
-Indeed, averaging across groundtruths, 
-localization increased the posterior coverage from 
-35.4\% ($\pm$ 0.84\%) to 52.7\% ($\pm$ 2.11\%),
-while the average data mismatch increased from 
-0.496 ($\pm$ 0.005) to 0.555 ($\pm$ 0.02).
-It is also clear that localization tends to increase posterior coverage in the validation period,
-but it may also decrease it, as seen in the groundtruth 30 case.
-%
-While localization did not decrease posterior MSE,
-values being close to 1 indicate that posterior can be considered good 
-($\text{MSE}\leq1$) or at least fair ($1<\text{MSE}\leq 2$)
-\cite[section 9.4.2.2]{Emerick:2025}.
-
-It is known \cite[appendix]{Oliver:2018} that the expected mismatch is 0.5
-for randomized maximum likelihood samples.
-Since the localization did not move the average mismatch significantly away from 0.5,
-it is reasonable to say that the increase in posterior coverage is overall beneficial. 
-
-From \cref{tab:egg-gated-dsi-esmda}, it can be seen that the proposed Gated DSI-ESMDA method, across groundtruths,
-has an average posterior coverage in the history period of 41.00\% ($\pm$ 1.76\%) 
-and an average mismatch of 0.513 ($\pm$ 0.008) when localization isn't applied,
-versus 57.3\% ($\pm$ 1.25\%) and 0.598 ($\pm$ 0.01) when it is.
-%
-The increase in history coverages relative to those obtained by the DSI-ESMDA under the same conditions is significant,
-although so is the increase in the data mismatch.
-In the validation period, it is clear that localization has a positive effect on the posterior coverage,
-and that the proposed method posterior coverages tend to be slightly higher than those obtained by the DSI-ESMDA.
-%
-Localization did not tend to decrease the posterior MSE, which remained good or fair. 
-This was expected, since the same behavior was observed in the standard DSI-ESMDA.
-
-The following shorthands are used in the tables and figures of this section:
-Loc.: Localization is applied;
-Pr.: Prior ensemble;
-Po.: Posterior ensemble;
-Avg.: Average value;
-Std. Dev.: Standard deviation.
-
-\begin{table}[htbp]
-    \centering
-    \IBGEtab{%
-        \caption{%
-            DSI-ESMDA results for the Egg ensemble.
-        }
-        \label{tab:egg-dsi-esmda}
-    }{%
-        \def\arraystretch{0.97}
-        \input{tables/results/aggregated_metrics_egg_n_iterations=1_gating=false_mu=0.0_noise_magnitude=0.01.tex}
-    }{%
-        \fonte{Self-elaboration.}
-    }
-\end{table}
-%
-\begin{table}[htbp]
-    \centering
-    \IBGEtab{%
-        \caption{%
-            Gated DSI-ESMDA ($\lambda=2$) results for the Egg ensemble.
-        }
-        \label{tab:egg-gated-dsi-esmda}
-    }{%
-        \def\arraystretch{0.97}
-        \input{tables/results/aggregated_metrics_egg_n_iterations=1_gating=true_mu=2.0_noise_magnitude=0.01.tex}
-    }{%
-        \fonte{Self-elaboration.}
-    }
-\end{table}
-
-\Cref{fig:egg-summaries} summarizes results for the Egg ensemble by averaging posterior coverage and MSE across groundtruths 
-for different gating intensities, with null gating corresponding to standard DSI-ESMDA.
-
-Gating seems to produce effects similar to those of localization, especially when its intensity is increased.
-In the history period, there is a clear trend of increasing posterior coverage with increasing gating intensity,
-at the cost of increased MSE. 
-Importantly, the was little effect on validation coverage, but it did tend to increase relative to the prior regardless of gating intensity. 
-This is likely an effect of the prior ensemble being a good representative of the groundtruths, 
-as the FOPT CDF suggested.
-
 \begin{figure}[htbp]
     % \centering
     \caption{%
         Average posterior coverage and MSE values found in the Egg ensemble.
     }
     \label{fig:egg-summaries}
-    \begin{subfigure}{.49\linewidth}
+    \begin{subfigure}[b]{.49\linewidth}
         \centering
+        \caption{Average history period coverages.}
         \input{figures/results/egg/summary_plots/summary_history_coverage.tikz}
-        \caption{History coverage.}
     \end{subfigure}
     %
-    \begin{subfigure}{.49\linewidth}
+    \begin{subfigure}[b]{.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{results/egg/summary_plots/summary_validation_coverage.pdf}
-        \caption{Validation coverage.}
+        \caption{Average validation period coverage.}
+        \input{figures/results/egg/summary_plots/summary_validation_coverage.tikz}
     \end{subfigure}
     %
-    \begin{subfigure}{.49\linewidth}
+    \begin{subfigure}[b]{.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{results/egg/summary_plots/summary_history_mse.pdf}
-        \caption{MSE.}
+        \caption{Average history period MSEs.}
+        \input{figures/results/egg/summary_plots/summary_history_mse.tikz}
     \end{subfigure}
+    %
+    \begin{subfigure}[b]{.49\linewidth}
+        \centering
+        \caption{
+            Groundtruths' FOPT.
+        }
+        \label{fig:fopt-egg}
+        \input{figures/results/egg/fopt_plots/fopt-groundtruths.tikz}
+    \end{subfigure}
+    %
     \fonte{Self-elaboration.}
 \end{figure}

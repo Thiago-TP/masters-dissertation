@@ -16,7 +16,7 @@
                 x expr=\coordindex, 
                 y={Mean Without Localization}, 
                 y error={Std Without Localization}
-            ] {figures/results/egg/summary_plots/summary_history_coverage.dat};
+            ] {figures/results/olympus/summary_plots/summary_history_coverage.dat};
         \addlegendentry{Without loc.}
 
         \addplot [fill=verdeunb!50, error bars/.cd, y dir=both, y explicit] 
@@ -25,7 +25,7 @@
                 x expr=\coordindex, 
                 y={Mean With Localization}, 
                 y error={Std With Localization}
-            ] {figures/results/egg/summary_plots/summary_history_coverage.dat};
+            ] {figures/results/olympus/summary_plots/summary_history_coverage.dat};
         \addlegendentry{With loc.}
     
         \addplot [fill=gray, error bars/.cd, y dir=both, y explicit] 
@@ -35,7 +35,7 @@
                 x expr=5, 
                 y={Prior Mean}, 
                 y error={Prior Std}
-            ] {figures/results/egg/summary_plots/summary_history_coverage.dat};
+            ] {figures/results/olympus/summary_plots/summary_history_coverage.dat};
         \addlegendentry{Prior}
     \end{axis}
 \end{tikzpicture}

@@ -1,16 +1,16 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.85]
     \pgfplotsset{minor grid style={color=gray, dashdotted}}
     \begin{axis}[%
         xlabel=FOPT,
         ylabel=CDF,
         minor tick num=1,
         grid=both,
-        legend entries={Olympus},
-        legend pos=north west,
-        legend style={draw=none},
+        legend entries={Realization$\quad$, Groundtruth},
+        legend columns=2,
+        legend style={draw=none, at={(0.5, 1.0)}, anchor=south},
         ymax=1.3,
     ]
-        \addplot [verdeunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/olympus/opt_plots/opt_cdf.dat};
+        \addplot [verdeunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/olympus/fopt_plots/fopt_cdf.dat};
 
         \addplot [red!80, mark=*, only marks] coordinates {
             (0.6443270354852001, 0.14)

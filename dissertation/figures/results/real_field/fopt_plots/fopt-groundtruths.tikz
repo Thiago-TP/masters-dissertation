@@ -5,11 +5,11 @@
         ylabel=CDF,
         minor tick num=1,
         grid=both,
-        legend entries={Real field},
-        legend pos=north west,
-        legend style={draw=none},
+        legend entries={Realization$\quad$, Groundtruth},
+        legend columns=2,
+        legend style={draw=none, at={(0.5, 1.0)}, anchor=south},
     ]
-        \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/opt_plots/opt_cdf.dat};
+        \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/fopt_plots/fopt_cdf.dat};
 
         \addplot [verdeunb, mark=*, only marks] coordinates {
             (0.6541689131076032, 0.4875621890547264)

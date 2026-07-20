@@ -1,94 +1,5 @@
 \section{Olympus ensemble}
 
-For this case study analysis, 10 realizations were picked, one at a time, 
-for running the evaluation of DSI-ESMDA and Gated DSI-ESMDA.
-%
-\Cref{fig:fopt-olympus} shows where each groundtruth sits on the ensemble's FOPT CDF.
-%
-There is a slight bias in picking realizations away from the meadian.
-
-\begin{figure}
-    \centering
-    \caption{
-        Distribution of field oil production totals of the Olympus ensemble
-        with realizations picked as groundtruths highlighted.
-    }
-    \label{fig:fopt-olympus} 
-    \input{figures/realizations/fopt-olympus.tikz}
-\end{figure}
-
-Results for the standard DSI-ESMDA are presented in \cref{tab:olympus-dsi-esmda},
-while results for the proposed Gated DSI-ESMDA are shown in \cref{tab:olympus-gated-dsi-esmda}.
-
-Compared to the Egg case, priors of the Olympus ensemble presented extremely high data mismatches
-(to the point of producing expurious deviations), 
-which is a testment to the large spread in range this ensemble has.
-
-\Cref{tab:olympus-dsi-esmda} confirms that localization had a pronounced positive effect on posterior coverage,
-both in the history and validation periods, albeit at the risk of incurring high data mismatches.
-Averaging across groundtruths,
-localization increased the posterior coverage from 
-40.00\% ($\pm$ 5.01\%) to 64.80\% ($\pm$ 5.75\%) in the history period,
-and from
-47.5\% ($\pm$ 18.53\%) to 87.8\% ($\pm$ 4.92\%) in the validation period,
-while the average data mismatch increased from 
-0.897 ($\pm$ 0.257) to 3.340 ($\pm$ 5.267).
-%
-Localization was also effective in decreasing the posterior MSE,
-even managing to fair biased MSEs (groundtruths 15, 45).
-
-\begin{table}[h!]
-    \centering
-    \IBGEtab{%
-        \caption{%
-            DSI-ESMDA results for the Olympus ensemble.
-        }
-        \label{tab:olympus-dsi-esmda}
-    }{%
-        \def\arraystretch{0.9}
-        \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=false_mu=0.0_noise_magnitude=0.01.tex}
-    }{%
-        \fonte{Self-elaboration.}
-    }
-\end{table}
-%
-\begin{table}[htbp]
-    \centering
-    \IBGEtab{%
-        \caption{%
-            Gated DSI-ESMDA ($\lambda=2$) results for the Olympus ensemble.
-        }
-        \label{tab:olympus-gated-dsi-esmda}
-    }{%
-        \def\arraystretch{0.9}
-        \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=2.0_noise_magnitude=0.01.tex}
-    }{%
-        \fonte{Self-elaboration.}
-    }
-\end{table}
-
-\Cref{tab:olympus-gated-dsi-esmda} shows that the trend is similar for the proposed approach.
-Averaging across groundtruths,
-localization increased the posterior coverage from 
-28.90\% ($\pm$ 6.54\%) to 61.7\% ($\pm$ 6.72\%) in the history period,
-and from
-37.40\% ($\pm$ 18.17\%) to 88.50\% ($\pm$ 4.90\%) in the validation period,
-while the average data mismatch increased from 
-0.869 ($\pm$ 0.246) to 3.337 ($\pm$ 5.263).
-%
-As with the standard DSI-ESMDA, localization was also effective in decreasing the posterior MSE,
-managing to fair the same biased MSEs (groundtruths 15, 45).
-
-% For this case study, the proposed gating was, at best, only as effective as the standard DSI-ESMDA in terms of posterior coverage and data mismatch.
-% This could be due to poor tuning of the gating intensity hyperparameter, and remains a topic of future research.
-
-\Cref{fig:olympus-summaries} summarizes results for the Olympus ensemble by averaging posterior coverage and MSE across groundtruths
-for different gating intensities, with null gating corresponding to standard DSI-ESMDA.
-
-As with the Egg case, intensifying the gating tends to increase the posterior coverage while trading off MSE.
-Unlike the Egg case, however, MSE values of gated DSI-ESMDA are on average consistently higher than those of standard DSI-ESMDA.
-Furthermore, validation coverage varied wildly, with localization greatly boosting the metric for null or mild gating.
-
 \begin{figure}[htbp]
     \caption{%
         Summary of results for the Olympus ensemble.
@@ -97,27 +8,29 @@ Furthermore, validation coverage varied wildly, with localization greatly boosti
     \label{fig:olympus-summaries}
     \begin{subfigure}{.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{results/olympus/summary_plots/summary_history_coverage.pdf}
-        \caption{Posterior coverage.}
+        \caption{Average history period coverages.}
+        \input{figures/results/olympus/summary_plots/summary_history_coverage.tikz}
     \end{subfigure}
     %
     \begin{subfigure}{.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{results/olympus/summary_plots/summary_validation_coverage.pdf}
-        \caption{Validation coverage.}
+        \caption{Average validation period coverages.}
+        \input{figures/results/olympus/summary_plots/summary_validation_coverage.tikz}
     \end{subfigure}
     %
     \begin{subfigure}{.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{results/olympus/summary_plots/summary_history_mse.pdf}
-        \caption{MSE.}
+        \caption{Average history period MSEs.}
+        \input{figures/results/olympus/summary_plots/summary_history_mse.tikz}
+    \end{subfigure}
+    %
+    \begin{subfigure}{.49\linewidth}
+        \centering
+        \caption{
+            Groundtruths' FOPT.
+        }
+        \label{fig:fopt-olympus} 
+        \input{figures/results/olympus/fopt_plots/fopt-groundtruths.tikz}
     \end{subfigure}
     \fonte{Self-elaboration.}
 \end{figure}
-
-The larger deviations and ranges on the average MSE and coverages are likely due, 
-at least in some part, to the sampling of groundtruth realizations: FOPT-wise, half of them come from the tails of the distribution, 
-which are weakly represented in the prior ensemble.
-In order to explore the effects of gating on a more typical groundtruth,
-Appendix C shows the prior and posterior distributions for realization 27, which is the ensemble's median FOPT.
-The posterior is reasonably well-matched to the groundtruth.

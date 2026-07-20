@@ -9,10 +9,10 @@
         legend pos=north west,
         legend style={draw=none},
     ]
-        \addplot [azulunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/egg/opt_plots/opt_cdf.dat};
+        \addplot [azulunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/egg/fopt_plots/fopt_cdf.dat};
         %
-        \addplot [verdeunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/olympus/opt_plots/opt_cdf.dat};
+        \addplot [verdeunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/olympus/fopt_plots/fopt_cdf.dat};
         %
-        \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/opt_plots/opt_cdf.dat};
+        \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/fopt_plots/fopt_cdf.dat};
     \end{axis}
 \end{tikzpicture}

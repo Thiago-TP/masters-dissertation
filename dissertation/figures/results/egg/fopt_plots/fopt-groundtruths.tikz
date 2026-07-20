@@ -1,15 +1,15 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.85]
     \pgfplotsset{minor grid style={color=gray, dashdotted}}
     \begin{axis}[%
-        xlabel=FOPT,
+        xlabel=FOPT (Normalized),
         ylabel=CDF,
         minor tick num=1,
         grid=both,
-        legend entries={Egg},
-        legend pos=north west,
-        legend style={draw=none},
+        legend entries={Realization$\quad$, Groundtruth},
+        legend columns=2,
+        legend style={draw=none, at={(0.5, 1.0)}, anchor=south},
     ]
-        \addplot [azulunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/egg/opt_plots/opt_cdf.dat};
+        \addplot [azulunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/egg/fopt_plots/fopt_cdf.dat};
 
         \addplot [highlight!80, mark=*, only marks] coordinates {
             (0.978800644381978,  0.4554455445544554)
