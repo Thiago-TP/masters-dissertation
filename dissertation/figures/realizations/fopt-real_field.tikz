@@ -9,7 +9,7 @@
         legend pos=north west,
         legend style={draw=none},
     ]
-        \addplot [highlight, mark=*] table [y=Percentile, x=FOPT] {figures/results/real_field/opt_plots/opt_cdf.dat};
+        \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/opt_plots/opt_cdf.dat};
 
         \addplot [verdeunb, mark=*, only marks] coordinates {
             (0.6541689131076032, 0.4875621890547264)
@@ -21,6 +21,6 @@
             font=\small,
         ]
 
-        \node [coordinate,pin=right:{Real field}]  at (axis cs:0.6541689131076032, 0.4875621890547264) {};
+        \node [coordinate,pin=right:{Real data}]  at (axis cs:0.6541689131076032, 0.4875621890547264) {};
     \end{axis}
 \end{tikzpicture}

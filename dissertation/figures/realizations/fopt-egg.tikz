@@ -9,7 +9,7 @@
         legend pos=north west,
         legend style={draw=none},
     ]
-        \addplot [azulunb, mark=*] table [y=Percentile, x=FOPT] {figures/results/egg/opt_plots/opt_cdf.dat};
+        \addplot [azulunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/egg/opt_plots/opt_cdf.dat};
 
         \addplot [highlight!80, mark=*, only marks] coordinates {
             (0.978800644381978,  0.4554455445544554)

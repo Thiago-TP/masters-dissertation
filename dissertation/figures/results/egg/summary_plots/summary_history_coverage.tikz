@@ -1,0 +1,41 @@
+\begin{tikzpicture}[scale=0.85]
+    \begin{axis}[%
+        xlabel={Gating instensity},
+        ylabel={Posterior history coverage},
+        ybar,
+        xtick={0, 1, 2, 3, 4, 5},
+        xticklabels={0, 1, 2, 4, 8, 16},
+        ymin=0,
+        grid=major,
+        legend entries={
+            Without loc., 
+            With loc.,
+            Prior
+        },
+        legend pos=north west,
+        legend style={draw=none, font=\small},
+        legend cell align=left,
+    ]
+
+        \addplot [fill=azulunb!50, error bars/.cd, y dir=both, y explicit relative] coordinates {
+            (0, 0.35147569444444443) +- (0, 0.00931739920820035)
+            (1, 0.23506944444444447) +- (0, 0.010645631747747152)
+            (2, 0.4106770833333333) +- (0, 0.01643686619272308)
+            (3, 0.7138888888888888) +- (0, 0.024797301768193503)
+            (4, 0.873263888888889) +- (0, 0.025357525810424372)
+            (5, 0.9017361111111111) +- (0, 0.022213479665304077)
+        };
+
+        \addplot [fill=verdeunb!50, error bars/.cd, y dir=both, y explicit relative] coordinates {
+            (0, 0.5272569444444445) +- (0, 0.02032148358374904)
+            (1, 0.4846354166666666) +- (0, 0.014363339656379823)
+            (2, 0.5735243055555557) +- (0, 0.012731810286158156)
+            (3, 0.7878472222222221) +- (0, 0.023461421833978414)
+            (4, 0.9050347222222221) +- (0, 0.023833179776261475)
+            (5, 0.9183159722222223) +- (0, 0.021366826958163825)
+        };
+        \addplot [fill=gray, error bars/.cd, y dir=both, y explicit relative] coordinates {
+            (5, 0.91171875) +- (0, 0.02197555162119999)
+        };
+    \end{axis}
+\end{tikzpicture}
