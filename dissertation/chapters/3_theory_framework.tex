@@ -51,13 +51,28 @@ and let $\mathbf{d}_j$ denote the production data vector produced by
 simulating a realization of the reference reservoir using model parameters $\mathbf{m}_j$.
 For an ensemble of $N_e$ realizations, we have $N_e$ different such vectors, each of which dependent on its own parameters vector.
 
-Of the original reference data vector, only part of it is used in the history matching process.
-Denote this vector by $\mathbf{d}_h$. 
-Following the same pattern, $\mathbf{d}_{h,\ j}$ denotes the history match period data output by member $j$ of the ensemble.
+Of the original reference data vector, only part of it is used in the history matching process,
+and the remainder is kept for later validation.
+Data is thus split in two periods, named here the history period and the validation period.
+
+Denote the history period vector from the reference by $\mathbf{d}_h$. 
+Following the same pattern, $\mathbf{d}_{h,\ j}$ denotes the history period data output by member $j$ of the realizations.
 Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim N(\mathbf{0}, \mathbf{C}_e)$,
 where $\mathbf{C}_e$ is the noise covariance matrix.
 The resulting vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
 %
+\Cref{fig:data-vectors} summarizes the concepts and notations in this section.
+
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Relationship between model parameters and data vectors. 
+    }
+    \label{fig:data-vectors}
+    \input{figures/data-vectors.tikz}
+    \fonte{Self-elaboration.}
+\end{figure}
+
 DSI-ESMDA updates the ensemble outputs by iterating a Kalman-like data assimilation, shown below
 \cite{Lima:2020}:
 %
@@ -68,9 +83,11 @@ DSI-ESMDA updates the ensemble outputs by iterating a Kalman-like data assimilat
     (\mathbf{d}_\text{obs} + \sqrt{\alpha_k}\mathbf{e}_j^k - \mathbf{d}_{h,\ j}^k),
 \label{eq:iteration_dsiesmda}
 \end{equation}
-
+%
 with $1 \leq k \leq N_a$, $N_a$ the number of assimilations DSI-ESMDA must do.
-Thus, $\mathbf{d}_j^k$ for $k=1$ is the ensemble prior $\mathbf{d}_j$, and $\mathbf{d}_j^{Na+1}$, the posterior.
+Thus, $\mathbf{d}_j^k$ for $k=1$ is the prior ensemble (initially denoted $\mathbf{d}_j$),
+and $\mathbf{d}_j^{Na+1}$, the posterior.
+%
 Vector $\mathbf{e}_j^k\sim N(\mathbf{0}, \mathbf{C}_e)$ is a random disturbance,
 and $\alpha_k$ coefficients are positive constants that satisfy $\sum_k 1/\alpha_k = 1$. 
 
@@ -207,27 +224,17 @@ By critical, it is understood the inflection point $\delta=1$ in $r(\delta)$.
 %
 As illustrated by \cref{fig:compact-correlation-function}, the greater the critical value, 
 the more lax the localization, allowing more weakly correlated changes to hold more impact.
-%
+
 % \begin{figure}[htbp]
 %     \centering
+%     % \includegrpahics[width=0.6\textwidth]{schematic_localization.png}
 %     \caption{
-%         Compact correlation function $r$.
+%         Illustration of the localization applied in several different measurements.
+%         \textit{Left panel:} Localization between measurements from the same well but from different times.
+%         \textit{Center panel:} Localization between measurements from the different wells but at the same times.
+%         \textit{Right panel:} Localization between measurements from the different wells at different times.
 %     }
-%     \label{fig:compact-correlation-function}
-%     \input{figures/compact-correlation-function.tikz}
-%     \fonte{Self-elaboration.}
 % \end{figure}
-%
-\begin{figure}[htbp]
-    \centering
-    % \includegrpahics[width=0.6\textwidth]{schematic_localization.png}
-    \caption{
-        Illustration of the localization applied in several different measurements.
-        \textit{Left panel:} Localization between measurements from the same well but from different times.
-        \textit{Center panel:} Localization between measurements from the different wells but at the same times.
-        \textit{Right panel:} Localization between measurements from the different wells at different times.
-    }
-\end{figure}
 
 Localization greatly improves the quality of the posterior, 
 but if the prior zeroes in on an average that is too different from the reference,
@@ -240,7 +247,7 @@ DSI-ESMDA may suffer the inherent history matching problem of making poor predic
 The ensemble posterior narrows around a curve that is not representative of the reservoir.
 
 The inherent problem of history matching may be impossible to solve, but it may be mitigated by allowing the posterior to spread more.
-We propose doing so by adaptively adjusting the importance of the history mismatch when running the update iterations:
+This work proposes doing so by adaptively adjusting the importance of the history mismatch when running the update iterations:
 %
 \begin{align}
     \mathbf{d}_j^{k+1} 
@@ -260,8 +267,17 @@ We propose doing so by adaptively adjusting the importance of the history mismat
 \label{eq:alpha_lambda}
 \end{align}
 %
-The equation above is based on the work of \citeonline{Fortaleza:2022}, and a detailed derivation is provided in \cref{chap:deriving-alpha}.
-The smaller the mismatch of a measurement relative to the noise at that measure, the smaller the update.
+The equation above is based on the work of \citeonline{Fortaleza:2022}. 
+%
+Statistically, the gating coefficient $\alpha^k_{j,v}\in[0, 1)$ (see \cref{fig:erf}) is the probability that 
+the prediction of datum $v$ of realization $j$ reflects the same direction of its target value 
+given the uncertainty in the data.
+%
+A detailed derivation of \cref{eq:alpha_lambda} is provided in \cref{chap:deriving-alpha}.
+
+The gating recovers variance loss in the posterior ensemble by diminishing Kalman-like updates on reasonably matched data.
+As \cref{fig:alpha} shows, the smaller the mismatch of a measurement relative to the noise at that datum, 
+the smaller the coefficients, and thus the smaller the update.
 Constant $\lambda\geq 1$ inflates the deviation, further softening the Kalman-like update.
 At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^k$), $\bm{\alpha}_j^k = \mathbf{0}$ and the DSI update is fully undone. 
 
@@ -271,6 +287,13 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
         Important functions for understanding the proposed Data-Space Inversion algorithm.
     }
     \label{fig:erf_and_alpha}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \caption{Compact correlation function.}
+        \label{fig:compact-correlation-function}
+        \input{figures/compact-correlation-function.tikz}
+    \end{subfigure}
+    %
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \caption{Special error function.}
@@ -284,29 +307,50 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
         \label{fig:alpha}
         \input{figures/gating-intensities.tikz}
     \end{subfigure}
-    %
-    \begin{subfigure}[b]{0.32\textwidth}
-        \centering
-        \caption{Compact correlation function.}
-        \label{fig:compact-correlation-function}
-        \input{figures/compact-correlation-function.tikz}
-    \end{subfigure}
     \fonte{Self-elaboration.}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    % \includegraphics[width=0.6\textwidth]{}
     \caption{
         Illustration of the effect of $\lambda$ on the posterior ensemble for fixed $\mathbf{R}$ and $N_a$.
-        Yellow lines are the values of $\alpha_{j}^{N_a+1}$ across time.
+        Prior ensemble is shown in gray, while posterior ensemble is shown in blue.
+        The 50th percentile of the posterior is drawn as a darker blue line under label P50.
+        The reference data is shown in red during the history period, and yellow beyond it (dashed vertical line).
         \textit{Left panel}: DSI-ESMDA prior and posterior ensembles.
-        \textit{Center panel}: DSI-ESMDA with $\lambda=1$ filtering.
-        \textit{Right panel}: DSI-ESMDA with $\lambda=5$ filtering.
-        Posterior gains variance as $\lambda$ grows.
+        \textit{Center panel}: gated DSI-ESMDA with $\lambda=4$.
+        \textit{Right panel}: gated DSI-ESMDA with $\lambda=16$.
+        Posterior gains variance as $\lambda$ grows, 
+        covering the reference data points in exchange for reverting to the prior.
     }
-    \fonte{Self-elaboration.}
+    \label{fig:gating-example}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_false/WELLS_P11_WWCTP.pdf}
+        \caption{}
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_4.0/WELLS_P11_WWCTP.pdf}
+        \caption{}
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_16.0/WELLS_P11_WWCTP.pdf}
+        \caption{}
+    \end{subfigure}
 \end{figure}
+
+\begin{note}[Noise modeling.]
+    Technically speaking, this work will apply the standard DSI-ESMDA and the proposed algorithm 
+    on normalized data vectors.
+    %
+    As \cref{sec:evaluation-workflow-parameters} clarifies, 
+    this is done to facilitate noise injection and modeling,
+    and does not affect the validity of the theory and formulas presented in this chapter.
+\end{note}
 
 % \begin{figure}[htbp]
 %     \centering

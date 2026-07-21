@@ -327,14 +327,26 @@ Your reader should be able to answer the following questions when they're done r
 
 \section{Evaluation workflow and parameters}
 \label{sec:evaluation-workflow-parameters}
+    While the outline of both DSI-ESMDA and the proposed Gated DSI-ESMDA methods have been presented in \cref{chap:theory-framework},
+    it remains to be explained 
+    how experiments will be set up (\cref{subsec:evaluation-workflow}), 
+    how the error covariance matrix $\mathbf{C}_e$ is constructed (\cref{subsec:noise-modeling}),
+    what metrics will be used to evaluate the performance of the methods (\cref{subsec:evaluation-metrics}), and
+    what parameters are used (\cref{subsec:evaluation-parameters}). 
 
     \subsection{Evaluation workflow}
     \label{subsec:evaluation-workflow}
-    While the outline of both DSI-ESMDA and the proposed Gated DSI-ESMDA methods have been presented in \cref{chap:theory-framework},
-    it remains to be explained how the error covariance matrix $\mathbf{C}_e$ is constructed,
-    what parameters are used, and what metrics will be used to evaluate the performance of the methods.
     %
-    \Cref{fig:flowchart-evaluation} illustrates the workflow of the evaluation process.
+    The evaluation pipeline, illustrated in \cref{fig:flowchart-evaluation}
+    is executed once per groundtruth data vector $\mathbf{d}$.
+    %
+    In synthetic ensembles, 10 groundtruths are picked.
+    %
+    The average of these results, as well as the results found with the real field case study,
+    are presented in the following chapter.
+    %
+    More detailed results that would not have fit with the flow of the text 
+    are exhibited in \cref{chap:detailed-results}. 
 
     \begin{figure}[htbp]
         \centering
@@ -379,10 +391,10 @@ Your reader should be able to answer the following questions when they're done r
     and observed data is simply the normalized groundtruth data restricted to the history period.
 
     Finally, the methods are applied to the pre-processed data, 
-    and their priors and posteriors are evaluated using the metrics described in \cref{sec:evaluation-metrics}.
+    and their priors and posteriors are evaluated using the metrics described in \cref{subsec:evaluation-metrics}.
 
 \subsection{Evaluation metrics}
-\label{sec:evaluation-metrics}
+\label{subsec:evaluation-metrics}
     Both the prior and posterior ensembles are evaluated on the history and forecast periods using the following metrics
     \cite[sections 9.4.2 and 9.4.4]{Emerick:2025}:
     \begin{itemize}
@@ -456,7 +468,7 @@ Your reader should be able to answer the following questions when they're done r
     with an associated standard deviation.
 
 \subsection{Evaluation parameters}
-\label{sec:evaluation-parameters}
+\label{subsec:evaluation-parameters}
     While a straightforward application of DSI-ESMDA requires knowledge of the error covariance matrix 
     (addressed in \cref{subsec:noise-modeling}) and the number of Kalman-like iterations $N_a$,
     the amount of parameters to tune balloon if localization is utilized.

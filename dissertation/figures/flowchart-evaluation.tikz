@@ -38,7 +38,7 @@
 
     \node [process, right=1 of covariance] (d_obs) 
         {%
-            Set $\mathbf{d}_\text{obs} = \mathbf{d}_h + \mathcal{N}(\mathbf{0}, \mathbf{C}_e)$
+            Set $\widetilde{\mathbf{d}}_\text{obs} = \widetilde{\mathbf{d}}_h + \mathcal{N}(\mathbf{0}, \mathbf{C}_e)$
         };
 
     \node [process, below=0.5 of data3] (localization) 
