@@ -1,29 +1,65 @@
-\begin{table}[htbp]
-    \centering
-    \IBGEtab{%
-        \caption{%
-            DSI-ESMDA results for the Olympus ensemble.
-        }
-        \label{tab:olympus-dsi-esmda}
-    }{%
-        \def\arraystretch{0.9}
-        \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=false_mu=0.0_noise_magnitude=0.01.tex}
-    }{%
-        \fonte{Self-elaboration.}
+\noindent\begin{minipage}[b]{.58\linewidth}
+    \small
+    \captionof{table}{%
+        DSI-ESMDA.
     }
-\end{table}
+    \label{tab:olympus-dsi-esmda}
+    \def\arraystretch{0.63}
+    \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=false_mu=0.0_noise_magnitude=0.01.tex}
+    \fonte{Self-elaboration.}
+\end{minipage}
 %
-\begin{table}[htbp]
-    \centering
-    \IBGEtab{%
-        \caption{%
-            Gated DSI-ESMDA ($\lambda=2$) results for the Olympus ensemble.
-        }
-        \label{tab:olympus-gated-dsi-esmda}
-    }{%
-        \def\arraystretch{0.9}
-        \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=2.0_noise_magnitude=0.01.tex}
-    }{%
-        \fonte{Self-elaboration.}
+\begin{minipage}[b]{.42\linewidth}
+    \small
+    \captionof{table}{%
+        Gated DSI-ESMDA ($\lambda=1$).
     }
-\end{table}
+    \label{tab:olympus-gated-dsi-esmda-1}
+    \def\arraystretch{0.5}
+    \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=1.0_noise_magnitude=0.01.tex}
+    \fonte{Self-elaboration.}
+\end{minipage}
+
+\noindent\begin{minipage}[b]{.58\linewidth}
+    \small
+    \captionof{table}{%
+        Gated DSI-ESMDA ($\lambda=2$).
+    }
+    \label{tab:olympus-gated-dsi-esmda-2}
+    \def\arraystretch{0.5}
+    \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=2.0_noise_magnitude=0.01.tex}
+    \fonte{Self-elaboration.}
+\end{minipage}
+%
+\begin{minipage}[b]{.42\linewidth}
+    \small
+    \captionof{table}{%
+        Gated DSI-ESMDA ($\lambda=4$).
+    }
+    \label{tab:olympus-gated-dsi-esmda-4}
+    \def\arraystretch{0.58}
+    \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=4.0_noise_magnitude=0.01.tex}
+    \fonte{Self-elaboration.}
+\end{minipage}
+
+\noindent\begin{minipage}[b]{.58\linewidth}
+    \small
+    \captionof{table}{%
+        Gated DSI-ESMDA ($\lambda=8$).
+    }
+    \label{tab:olympus-gated-dsi-esmda-8}
+    \def\arraystretch{0.5}
+    \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=8.0_noise_magnitude=0.01.tex}
+    \fonte{Self-elaboration.}
+\end{minipage}
+%
+\begin{minipage}[b]{.42\linewidth}
+    \small
+    \captionof{table}{%
+        Gated DSI-ESMDA ($\lambda=16$).
+    }
+    \label{tab:olympus-gated-dsi-esmda-16}
+    \def\arraystretch{0.5}
+    \input{tables/results/aggregated_metrics_olympus_n_iterations=1_gating=true_mu=16.0_noise_magnitude=0.01.tex}
+    \fonte{Self-elaboration.}
+\end{minipage}

@@ -1,27 +1,15 @@
-\begin{tabular}{cccccccccccc}
+\begin{tabular}{ccccc}
 \toprule
-\multirow{3}{*}{
-    \begin{minipage}{2cm}
-        \centering
-        Groundtruth\\
-        realization
-    \end{minipage}
-}
-&
-\multirow{3}{*}{Loc.} 
-& 
-\multicolumn{4}{c}{Observation coverages} & 
-\multicolumn{2}{c}{\multirow{2}{*}{
+\multicolumn{2}{c}{OC} & 
+\multirow{2}{*}{
     MSE
-}} & 
-\multicolumn{4}{c}{Data mismatch} 
+} & 
+\multicolumn{2}{c}{Data mismatch} 
 \\
-& & \multicolumn{2}{c}{History} & \multicolumn{2}{c}{Validation} &     &     & \multicolumn{2}{c}{Avg.} & \multicolumn{2}{c}{Std. Dev.}
-\\
-& & Pr. & Po.                   & Pr. & Po.                      & Pr. & Po. & Pr. & Po.                & Pr. & Po.
+His. & Val. &  & Avg. & Std. Dev.
 \\
 \midrule
-\multirow{2}{*}{0} & No & 0.86 & 0.53 & 0.95 & 0.52 & 2.71 & 2.32 & 5.44 & 1.21 & 2.19 & 0.01 \\
- & Yes & 0.86 & 0.54 & 0.95 & 0.55 & 2.71 & 2.32 & 5.44 & 1.21 & 2.19 & 0.01 \\
+0.53 & 0.52 & 2.32 & 1.21 & 0.01 \\
+0.54 & 0.55 & 2.32 & 1.21 & 0.01 \\
 \bottomrule
 \end{tabular}
