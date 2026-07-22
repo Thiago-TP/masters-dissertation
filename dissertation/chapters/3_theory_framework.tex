@@ -29,6 +29,8 @@ That means that a theory framework can take different forms:
 \end{itemize}
 }
 
+\debug{What is an ensemble, realization, groundtruth? What is a forward model? What is $g(\cdot)$?}
+
 \section{Elements of reservoir engineering}
     
 
@@ -236,10 +238,10 @@ the more lax the localization, allowing more weakly correlated changes to hold m
 %     }
 % \end{figure}
 
-Localization greatly improves the quality of the posterior, 
-but if the prior zeroes in on an average that is too different from the reference,
-it is hard to adjust it in order to inject some variance on the collapsed curves.
-This is partly the reason behind the random disturbance in: injecting variance on the ensemble fit.
+A well tuned localization tends to greatly improve the quality of the posterior, 
+but if the prior zeroes in on an average that is far mismatched from the reference,
+it is hard to tune it in order to inject some variance on the collapsed curves.
+This is partly the reason behind the random disturbance in injecting variance on the ensemble fit.
 
 Even when the localization $\mathbf{R}$ is well tuned (i.e., $\theta$, $L_{x'}$, $L_{y'}$ and $T_c$ generate adequate posteriors), 
 DSI-ESMDA may suffer the inherent history matching problem of making poor predictions despite good fit to past data.
@@ -351,6 +353,16 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
     this is done to facilitate noise injection and modeling,
     and does not affect the validity of the theory and formulas presented in this chapter.
 \end{note}
+
+The Kalman-like update in \cref{eq:iteration_dsiesmda,eq:iteration_gated} 
+updates the entirety of the realization data vector by projecting the history match correction 
+to the entire vector.
+%
+That being the case, the quality of the update is heavily dependent on the quality of the prior ensemble;
+a prior not being representative of the reference, 
+or a history period with too little data,
+are significant obstacles in the pursuit of a well adjusted posterior.
+ 
 
 % \begin{figure}[htbp]
 %     \centering
