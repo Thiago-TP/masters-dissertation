@@ -32,21 +32,213 @@ That means that a theory framework can take different forms:
 \debug{What is an ensemble, realization, groundtruth? What is a forward model? What is $g(\cdot)$?}
 
 \section{Elements of reservoir engineering}
-    
+\label{sec:reservoir-engineering}
 
     \subsection{Reservoir formation}
         
 
-    \subsection{Reservoir simulation}
+    \subsection{Subsurface simulation}
+    % While parameters refer to the “static” uncertainty properties of
+    % the reservoir, states refer to the “dynamic” variables that evolve over time,
+    % such as pressure, temperature, phase saturation, and fluid composition.
+
+    % The attentive reader may have noticed that
+    % we used the term “forecasting” instead of “prediction.” It appears that these words
+    % are used interchangeably in the literature. In fact, the original Kalman filter paper by
+    % Kalman [228] uses the word “prediction.” However, we are going to make a distinction
+    % between the two words. We use “prediction” as a more general term; for example, we
+    % use “prediction” for a state generated from a model. In this sense, we can use a model
+    % to predict a past state, sometimes referred to as “hindcasting” [98]. We can also use
+    % the model to predict the present, which is referred to as “nowcasting” [338]. We reserve
+    % the word “forecasting” for the prediction of future states.
+
+    % It is worth noting that the first-order Markov condition holds in reservoir simulations,
+    % where the state (say, pressure and saturation) at time tn is solely dependent on static
+    % parameters and the state at the preceding time step, tn-1. This property is precisely
+    % why we can employ restarts in reservoir simulators.
 
 
-\section{Kalman Filtering}
+% \section{Kalman Filtering}
+%     At the heart of both the standard DSI-ESMDA and the proposed Gated DSI-ESMDA
+%     there is a Kalman-like update of ensemble realizations.
+%     %
+%     This section presents two of the base Kalman filter algorithms upon which not only are 
+%     these algorithms inpired of, but also many algorithms in history matching state of the art:
+%     the standard Kalman Filter (KF), and the Ensemble Kalman Filter (EnKF).
+
+%     More specifically, the EnKF is presented as a method aimed at 
+%     the forecasting of reservoir production data,
+%     contrasting with its original aim of estimating model parameters and states.
+
+    % \subsection{The Standard Kalman Filter}
+    % SDA fits in the Bayesian framework as illustrated in Fig. 4.4, which de-
+    % picts the main elements. In this process, sequential and simultaneous data
+    % assimilation are equivalent.
 
 
-\section{Compact Correlation Functions}
+%     \subsection{The Ensemble Kalman Filter}
+
+% \section{Ensemble Smoother}
+
+
+% \section{Ensemble Smoother with Multiple Data Assimilation}
+
+
+% \section{Compact Correlation Functions}
     
 
-\section{Data-Space Inversion}
+\section{Data-Space Inversion with Ensemble Smoother with Multiple Data Assimilation}
+    \subsection{Key concepts and definitions}
+    This subsection presents the key mathematical objects and concepts 
+    used by both the standard DSI-ESMDA and the proposed Gated DSI-ESMDA,
+    many of which are directly tied to the elements of reservoir engineering 
+    presented in \cref{sec:reservoir-engineering}.
+    %
+    Important nuances, such as the differentiation between prediction and forecasting,
+    are also pointed here.
+
+    \subsubsection{Bayes' theorem}
+
+
+    \subsection{Statistical Framework}
+    DSI-ESMDA frames the forecasting problem through a Bayesian approach,
+    aiming to estimate the underlying conditional probability distribution of the reference data.
+    %
+    For a given datum, the algorithm returns samples from this posterior distribution,
+    outputing a range of values rather than a single value.
+    %
+    While this makes evaluating the algorithm less straightforward, 
+    it allows for quantification of uncertainty.
+    %
+    \Cref{fig:distribution-as-prediction}
+    %
+    \begin{figure}
+        \centering
+        \caption{Reservoir prediction ranges from samplings of a probability distribution.}
+        \label{fig:distribution-as-prediction}
+        \input{figures/distribution-as-prediction.tikz}
+    \end{figure}
+
+    Let $p(\mathbf{d}\mid \mathbf{d}_\text{obs})$ 
+    be the conditional \emph{a posteriori} probability distribution
+    of true reservoir production being $\mathbf{d}$ given observations $\mathbf{d}_\text{obs}$.
+    %
+    From Bayes' theorem, one can write the posterior as
+    %
+    \begin{equation}
+        p(\mathbf{d}\mid \mathbf{d}_\text{obs}) =
+        c_\text{pos} \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) p(\mathbf{d})
+    \label{eq:bayes}
+    \end{equation}  
+    %
+    where $c_\text{pos}$ is, for the purposes of this work, a normalization constant;
+    $\mathcal{L}(\mathbf{d}_\text{obs}\mid \mathbf{d})$,
+    the likelihood function%
+    \footnote{%
+        Note that the likelihood is denoted by a $\mathcal{L}$ instead of the usual $p$.
+        This is deliberate, since likelihoods are not necessarily probability distributions, 
+        i.e., they need not sum up to 1. 
+    }, 
+    is the probability of $\mathbf{d}_\text{obs}$ being the true reservoir production 
+    if $\mathbf{d}$ was observed, and;
+    $p(\mathbf{d})$, the prior, is the probability of observing $\mathbf{d}$
+    before observations $\mathbf{d}_\text{obs}$ were made.
+
+    Maximizing \cref{eq:bayes} means finding reservoir production that is 
+    best suited to match field observations tempered by prior beliefs on the behavior of data.
+    %    
+    While this approach is statistically sensible, in practice a single maximization tends to produce poor matches to data.
+    %
+    This situation could be mitigated by assimilating more data, 
+    since then the posterior would be adjusted Bayes' theorem,
+    $p(\mathbf{d} \mid \mathbf{d}^\text{new}_\text{obs}, \mathbf{d}_\text{obs}) = 
+    c^\text{new}_\text{pos} \mathcal{L}(\mathbf{d}^\text{new}_\text{obs}\mid \mathbf{d}) p(\mathbf{d} \mid \mathbf{d}_\text{obs})$,
+    but it is assumed that $\mathbf{d}_\text{obs}$ already holds all the data available for analysis.
+
+    Therefore, in order to improve data match, the effect of posterior updating is obtained 
+    by successively assimilating disturbed versions of observed data.
+    %
+    This is called Multiple Data Assimilation (MDA), contrasting with the previous Single Data Assimilation (SDA).
+    %
+    Denoting the number of assimilations by $N_a$,
+    assimilation $1\leq l\leq N_a$ with disturbed observations $\mathbf{d}^l_\text{obs}$
+    produces posterior $p^l$ such that
+    %
+    \begin{align}
+        p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
+        &= c^1_\text{pos} \mathcal{L}(\mathbf{d}^1_\text{obs}\mid \mathbf{d}) 
+                          p(\mathbf{d}) 
+    \label{eq:p1}
+        \\
+        p^2(\mathbf{d}\mid \mathbf{d}^2_\text{obs}, \mathbf{d}^1_\text{obs}) 
+        &= c^2_\text{pos} \mathcal{L}(\mathbf{d}^2_\text{obs}\mid \mathbf{d}) 
+                          p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
+    \label{eq:p2} 
+        \\
+        &\vdots 
+        \\
+        p^{N_a}(\mathbf{d}\mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})
+        &= c^{N_a}_\text{pos} \mathcal{L}(\mathbf{d}^{N_a}_\text{obs} \mid \mathbf{d})
+           p^{N_a-1}(\mathbf{d}\mid \mathbf{d}^{N_a-1}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
+    \label{eq:pNa} 
+        \\
+        &= p(\mathbf{d}) \prod_{l=1}^{N_a} c^l_\text{pos} \mathcal{L}(\mathbf{d}^l_\text{obs} \mid \mathbf{d}) 
+    \label{eq:p-prod}
+    \end{align}  
+
+    By successively updating the posterior with disturbed data, the posterior's maximum is also successively updated.
+    If maximizing \cref{eq:bayes} was akin to trying to reach optimum $p^*$ in a single fixed step,
+    maximizing \cref{eq:pNa} is akin to reaching $p^*$ with multiple steps, 
+    as illustrated in \cref{fig:sda-versus-mda}.
+    The number of steps is exactly equal to $N_a$, and their size dependent on the perturbations done to the observed data. 
+    %
+    \begin{figure}
+        \centering 
+        \caption{}
+        \label{fig:sda-versus-mda}
+        \input{figures/sda-versus-mda.tikz}
+    \end{figure}
+
+    While SDA and MDA can be made to be equivalent if likelihoods are Gaussian 
+    (more details in \cref{subsec:update-equation}), 
+    in general MDA produces better matches to data than SDA.
+    This is because MDA attempts to reduce variance in the posterior distribution 
+    without underestimating uncertainty in observations, 
+    which often results in tighter posteriors whose means are closer aligned to observations.
+    
+    \subsection{Deriving the update equation}
+    \label{subsec:update-equation}
+    As is usually the challenge in a Bayesian approach, 
+    both the prior distribution and the likelihood function
+    need to be specified so that optimization can be carried out.
+    %
+    In the context of reservoir engineering, 
+    this often means assuming that production data (and model parameters) 
+    follow some structure, statistically speaking.
+    
+    DSI-ESMDA assumes that the likelihood is Gaussian, so that 
+    %
+    \begin{equation}
+        \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d})
+        = c_\mathcal{L} \exp(-\mathcal{O}_d(\mathbf{d}))
+    \end{equation}
+    %
+    where $c_\text{Lik.}$ is a normalization constant and 
+    $\mathcal{O}_d(\mathbf{d})$ is given by
+    %
+    \begin{equation}
+        \mathcal{O}_d(\mathbf{d}) 
+        = \frac{1}{2} (\mathbf{d}_\text{obs} - \mathbf{d}) \mathbf{C}_e^{-1}
+        (\mathbf{d}_\text{obs} - \mathbf{d})^\top.
+    \label{eq:likelihood-cost}
+    \end{equation}
+    %
+    where $\mathbf{C}_e$ is the covariance of the measurement error in $\mathbf{d}_\text{obs}$.
+    
+
+    \subsection{Improving data match with covariance localization}
+
+\section{Gated DSI-ESMDA}
 
 Let $\mathbf{d}$ denote the true production data vector of a reference reservoir across time,
 and let $\mathbf{d}_j$ denote the production data vector produced by 
