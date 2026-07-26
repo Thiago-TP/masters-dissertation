@@ -5,7 +5,7 @@
         ylabel=CDF,
         minor tick num=1,
         grid=both,
-        legend entries={Realization$\quad$, Groundtruth},
+        legend entries={Realization$\quad$, Ground-truth},
         legend columns=2,
         legend style={draw=none, at={(0.5, 1.0)}, anchor=south},
     ]

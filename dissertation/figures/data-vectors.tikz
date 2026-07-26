@@ -20,32 +20,32 @@
     ;
 
     % Annotation: reference and realizations labels
-    % \draw [fill] (m.north)  ++(0, 0.25) circle (0.05) --++ (-1.75, 0) node [anchor=east] {Groundtruth};
+    % \draw [fill] (m.north)  ++(0, 0.25) circle (0.05) --++ (-1.75, 0) node [anchor=east] {Ground-truth};
     % \draw [fill] (m1.north) ++(0, 0.25) circle (0.05) --++ (-1.75, 0) node [anchor=east] {Realizations};
 
     % Annotation: subsurface simulation
-    \draw [->] (m.east) --++ (2, 0)
-        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m})$}
+    \draw [->] (m.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}, \mathbf{u})$}
     ;
-    \draw [->] (m1.east) --++ (2, 0)
-        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_1)$}
+    \draw [->] (m1.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_1, \mathbf{u})$}
     ;
-    \draw [->] (m2.east) --++ (2, 0)
-        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_2)$}
+    \draw [->] (m2.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_2, \mathbf{u})$}
     ;
-    \draw [->] (m3.east) --++ (2, 0)
-        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_3)$}
+    \draw [->] (m3.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_3, \mathbf{u})$}
     ;
 
     % Figures: production curves
     %% reference
-    \node [right=2.5 of m.south east, yshift=-0.1cm] (plots_d) {};
+    \node [right=2.75 of m.south east, yshift=-0.1cm] (plots_d) {};
     \begin{scope}[shift={(plots_d)}]
         %% axis
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (2, 0)
         ;
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}$}
         ;
         %% curves
@@ -56,10 +56,10 @@
         %% d_h
         \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
             %% axis
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (2, 0)
             ;
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_h$}
             ;
             %% curves
@@ -72,10 +72,10 @@
             %% d_obs
             \begin{scope}[shift={(3, 0)},domain=0:1.5]
                 %% axis
-                \draw [-latex]
+                \draw [-Latex]
                     (0, 0) --++ (2, 0)
                 ;
-                \draw [-latex]
+                \draw [-Latex]
                     (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_\text{obs}$}
                 ;
                 %% curves
@@ -94,13 +94,13 @@
         \end{scope}
     \end{scope}
     %% m1
-    \node [right=2.5 of m1.south east, yshift=-0.1cm] (plots_d1) {};
+    \node [right=2.75 of m1.south east, yshift=-0.1cm] (plots_d1) {};
     \begin{scope}[shift={(plots_d1)}]
         %% axis
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (2, 0)
         ;
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_1$}
         ;
         %% curves
@@ -111,10 +111,10 @@
         %% d_h
         \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
             %% axis
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (2, 0)
             ;
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_{h,1}$}
             ;
             %% curves
@@ -127,13 +127,13 @@
         \end{scope}
     \end{scope}
     %% m2
-    \node [right=2.5 of m2.south east, yshift=-0.1cm] (plots_d2) {};
+    \node [right=2.75 of m2.south east, yshift=-0.1cm] (plots_d2) {};
     \begin{scope}[shift={(plots_d2)}]
         %% axis
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (2, 0)
         ;
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_2$}
         ;
         %% curves
@@ -144,10 +144,10 @@
         %% d_h
         \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
             %% axis
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (2, 0)
             ;
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_{h,2}$}
             ;
             %% curves
@@ -160,13 +160,13 @@
         \end{scope}
     \end{scope}
     %% m3
-    \node [right=2.5 of m3.south east, yshift=-0.1cm] (plots_d3) {};
+    \node [right=2.75 of m3.south east, yshift=-0.1cm] (plots_d3) {};
     \begin{scope}[shift={(plots_d3)}]
         %% axis
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (2, 0) node [midway, below] {\ABNTEXfontereduzida Time}
         ;
-        \draw [-latex]
+        \draw [-Latex]
             (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_3$}
         ;
         %% curves
@@ -177,10 +177,10 @@
         %% d_h
         \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
             %% axis
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (2, 0) node [midway, below] {\ABNTEXfontereduzida Time}
             ;
-            \draw [-latex]
+            \draw [-Latex]
                 (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_{h,3}$}
             ;
             %% curves

@@ -1,0 +1,126 @@
+\section{Gated DSI-ESMDA}
+
+A well tuned localization tends to greatly improve the quality of the posterior, 
+but if the prior zeroes in on an average that is far mismatched from the reference,
+it is hard to tune it in order to inject some variance on the collapsed curves.
+This is partly the reason behind the random disturbance in injecting variance on the ensemble fit.
+
+Even when the localization $\mathbf{R}$ is well tuned (i.e., $\theta$, $L_{x'}$, $L_{y'}$ and $T_c$ generate adequate posteriors), 
+DSI-ESMDA may suffer the inherent history matching problem of making poor predictions despite good fit to past data.
+%
+The ensemble posterior narrows around a curve that is not representative of the reservoir.
+
+The inherent problem of history matching may be impossible to solve, but it may be mitigated by allowing the posterior to spread more.
+This work proposes doing so by adaptively adjusting the importance of the history mismatch when running the update iterations:
+%
+\begin{align}
+    \mathbf{d}_j^{k+1} 
+    &=
+    \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
+    [
+    \bm{\alpha}_j^k \circ 
+    (\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)], 
+\label{eq:iteration_gated}
+    \\
+    \alpha_{j,\ v}^k 
+    &= \mathrm{erf}
+    \left(
+        \frac{1}{\lambda \sqrt{2\sigma_v^2}} 
+        |(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v|
+    \right)
+\label{eq:alpha_lambda}
+\end{align}
+%
+The equation above is based on the work of \citeonline{Fortaleza:2022}. 
+%
+Statistically, the gating coefficient $\alpha^k_{j,v}\in[0, 1)$ (see \cref{fig:erf}) is the probability that 
+the prediction of datum $v$ of realization $j$ reflects the same direction of its target value 
+given the uncertainty in the data.
+%
+A detailed derivation of \cref{eq:alpha_lambda} is provided in \cref{chap:deriving-alpha}.
+
+The gating recovers variance loss in the posterior ensemble by diminishing Kalman-like updates on reasonably matched data.
+As \cref{fig:alpha} shows, the smaller the mismatch of a measurement relative to the noise at that datum, 
+the smaller the coefficients, and thus the smaller the update.
+Constant $\lambda\geq 1$ inflates the deviation, further softening the Kalman-like update.
+At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^k$), $\bm{\alpha}_j^k = \mathbf{0}$ and the DSI update is fully undone. 
+
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Important functions for understanding the proposed Data-Space Inversion algorithm.
+    }
+    \label{fig:erf_and_alpha}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \caption{Compact correlation function.}
+        \label{fig:compact-correlation-function}
+        \input{figures/compact-correlation-function.tikz}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \caption{Special error function.}
+        \label{fig:erf}
+        \input{figures/erf.tikz}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{0.36\textwidth}
+        \centering
+        \caption{$\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$.}
+        \label{fig:alpha}
+        \input{figures/gating-intensities.tikz}
+    \end{subfigure}
+    \fonte{Self-elaboration.}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \caption{
+        Illustration of the effect of $\lambda$ on the posterior ensemble for fixed $\mathbf{R}$ and $N_a$.
+        Prior ensemble is shown in gray, while posterior ensemble is shown in blue.
+        The 50th percentile of the posterior is drawn as a darker blue line under label P50.
+        The reference data is shown in red during the history period, and yellow beyond it (dashed vertical line).
+        \textit{Left panel}: DSI-ESMDA prior and posterior ensembles.
+        \textit{Center panel}: gated DSI-ESMDA with $\lambda=4$.
+        \textit{Right panel}: gated DSI-ESMDA with $\lambda=16$.
+        Posterior gains variance as $\lambda$ grows, 
+        covering the reference data points in exchange for reverting to the prior.
+    }
+    \label{fig:gating-example}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_false/WELLS_P11_WWCTP.pdf}
+        \caption{}
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_4.0/WELLS_P11_WWCTP.pdf}
+        \caption{}
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_16.0/WELLS_P11_WWCTP.pdf}
+        \caption{}
+    \end{subfigure}
+\end{figure}
+
+\begin{note}[Noise modeling.]
+    Technically speaking, this work will apply the standard DSI-ESMDA and the proposed algorithm 
+    on normalized data vectors.
+    %
+    As \cref{sec:evaluation-workflow-parameters} clarifies, 
+    this is done to facilitate noise injection and modeling,
+    and does not affect the validity of the theory and formulas presented in this chapter.
+\end{note}
+
+The Kalman-like update in \cref{eq:iteration_dsiesmda,eq:iteration_gated} 
+acts on the entirety of the realization data vector by projecting the history match correction 
+through the cross-covariance of data in the history period and data in the forecast period.
+%
+That being the case, the quality of the update is heavily dependent on the quality of the prior ensemble;
+a prior not being representative of the reference, 
+or a history period with too little data,
+are significant obstacles in the pursuit of a well adjusted posterior.

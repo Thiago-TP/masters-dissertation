@@ -56,7 +56,7 @@
 }
 % 1 = debug mode with guiding questions and comments
 % 0 = normal mode with no guiding questions and comments
-\newcommand{\debugmode}{0}
+\newcommand{\debugmode}{1}
 \newcommand{\debug}[1]{%
     \if\debugmode1
         \color{darkred}
@@ -87,7 +87,7 @@
 \colorlet{startstopcolor}{highlight!50}
 \colorlet{processcolor}{steelblue!50}
 \colorlet{iocolor}{verdeunb!30}
-\colorlet{decisioncolor}{steelblue!80}
+\colorlet{decisioncolor}{steelblue!25}
 % Flowchart blocks
 \tikzstyle{startstop} = [
     rectangle, 
@@ -126,6 +126,31 @@
     draw=black, 
     fill=decisioncolor,
 ]
+% Ambiente de nota
+\newcounter{note}[chapter]
+\newenvironment{note}[1][]{%
+  \stepcounter{note}%
+  \mdfsetup{%
+    frametitle={%
+      \tikz
+      \draw (0, 0) node [rectangle,rounded corners=3pt,fill=azulunb!30]
+      {\strut Note~\thechapter.\thenote%
+      \ifstrempty{#1}{}{: #1}
+      };
+    },%
+    roundcorner=10pt,%
+    innertopmargin=5pt,%
+    linecolor=azulunb!20,%
+    linewidth=2pt,%
+    topline=true,%
+    frametitleaboveskip=\dimexpr-\ht\strutbox\relax,%
+    frametitlealignment=\raggedright,%
+  }
+  \begin{mdframed}[]\relax%
+}{\end{mdframed}}
+% Operadores argmin, argmax
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
 %---
 
 % ---
@@ -431,7 +456,6 @@
 %\part{Nome da parte}
 
 \include{chapters/1_introduction}
-\include{chapters/2_literature_review}
 \include{chapters/3_theory_framework}
 \include{chapters/4_methods}
 \include{chapters/5_results}
@@ -450,10 +474,10 @@
 % Arquivo com as referências bibliográficas
 \bibhang{2.2em} % Recuo da margem esquerda da lista de referências
 \bibliography{% O estilo de citação é selecionado automaticamente
-    chapters/references/main,%
+    chapters/references/main.bib,%
     chapters/references/literature_review.bib,%
-    chapters/references/reservoir_characterization,%
-    chapters/references/donoho%
+    chapters/references/reservoir_characterization.bib,%
+    chapters/references/donoho.bib%
 } 
 % ---
 

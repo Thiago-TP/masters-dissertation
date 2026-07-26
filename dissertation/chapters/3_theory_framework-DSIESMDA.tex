@@ -1,0 +1,537 @@
+\section{DSI-ESMDA}
+\subsection{Key concepts and definitions}
+This subsection presents the key mathematical objects and concepts 
+used by both the standard DSI-ESMDA and the proposed Gated DSI-ESMDA,
+many of which are directly tied to the elements of reservoir engineering 
+presented in \cref{sec:reservoir-engineering}.
+%
+Important nuances, such as the distinction between prediction and forecasting,
+are also pointed here.
+
+\subsubsection{Predicting versus forecasting}
+Prediction and forecasting, usually interchangeable terms, 
+have an important distinction in this work.
+%
+Prediction refers to the estimation of any datum at a given time,
+while forecasting refers to the estimation of any datum beyond the observation period.
+%
+Forecasting is a type of prediction, but in particular prediction of new data.
+
+In Data Science literature, 
+a common way of estimating forecast quality is splitting available data 
+into a training partition and a test partition.
+%
+The training partition is used to freely adjust predictions within a given period, 
+and the test, to verify how close predictions will be on new data.
+
+In the context of this work, data from a given reference will be split into two disjointed periods in time:
+history period, and validation period,
+mirroring the common train and test splits respectively.
+
+\subsubsection{Data vectors}
+Let $\mathbf{d}$ denote the true production data vector of a reference reservoir across time,
+free of observation error.
+As discussed above, data is separated into a history period and a validation period,
+so that $\mathbf{d} = \begin{bmatrix}
+    \mathbf{d}^\top_h & \mathbf{d}^\top_v
+\end{bmatrix}^\top$
+with $\mathbf{d}_h$ the ground-truth history data, and $\mathbf{d}_v$ the ground-truth validation data.
+%
+Analogously, let $\mathbf{u}$ and $\mathbf{m}$ be 
+the controls applied to the ground-truth and the parameters of the ground-truth, respectively.
+%
+Denoting the prediction forward model by $\mathbf{g}(\cdot, \cdot)$,
+ground-truth data is given by $\mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u})$.
+
+Let $\mathbf{d}_j$ denote the production data vector produced by 
+running the forward model with parameters $\mathbf{m}_j$
+from the start of the history period up to (at least) the end of the validation period,
+i.e., $\mathbf{d}_j = \mathbf{g}(\mathbf{m}_j, \mathbf{u})$.
+For an ensemble of $N_e$ realizations, there are $N_e$ different such vectors, 
+each of which associated to its own parameters vector.
+
+Following the pattern established in the ground-truth, 
+$\mathbf{d}_{h,\ j}$ denotes the history period data output by realization $j$.
+Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim N(\mathbf{0}, \mathbf{C}_e)$,
+where $\mathbf{C}_e$ is the noise covariance matrix.
+The corrupted vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
+%
+\Cref{fig:data-vectors} summarizes the concepts and notations in this section.
+%
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Relationship between model parameters and data vectors. 
+    }
+    \label{fig:data-vectors}
+    \input{figures/data-vectors.tikz}
+    \fonte{Self-elaboration.}
+\end{figure}
+
+\subsubsection{Bayes' theorem}
+
+
+\subsection{Statistical Framework}
+\label{subsec:statistical-framework}
+DSI-ESMDA can be conceptulized as a Bayesian approach to the forecasting problem,
+aiming to estimate the underlying conditional probability distribution of 
+predictions given the reference data.
+%
+For given data, the algorithm returns samples from this posterior distribution,
+outputing a range of values rather than a single value.
+%
+While this makes evaluating the algorithm less straightforward, 
+it allows for quantification of uncertainty.
+%
+\Cref{fig:distribution-as-prediction}
+%
+\begin{figure}
+    \centering
+    \caption{Reservoir prediction ranges from samplings of a probability distribution.}
+    \label{fig:distribution-as-prediction}
+    \input{figures/distribution-as-prediction.tikz}
+\end{figure}
+
+Let $p(\mathbf{d}\mid \mathbf{d}_\text{obs})$ 
+be the conditional \emph{a posteriori} probability distribution
+of true reservoir production being $\mathbf{d}$ given observations $\mathbf{d}_\text{obs}$.
+%
+From Bayes' theorem, one can write the posterior as
+%
+\begin{equation}
+    p(\mathbf{d}\mid \mathbf{d}_\text{obs}) =
+    c_\text{pos} \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) p(\mathbf{d})
+\label{eq:bayes}
+\end{equation}  
+%
+where $c_\text{pos}$ is, for the purposes of this work, a normalization constant;
+$\mathcal{L}(\mathbf{d}_\text{obs}\mid \mathbf{d})$,
+the likelihood function%
+\footnote{%
+    Note that the likelihood is denoted by a $\mathcal{L}$ instead of the usual $p$.
+    This is deliberate, since likelihoods are not necessarily probability distributions, 
+    i.e., they need not sum up to 1. 
+}, 
+is the probability of $\mathbf{d}_\text{obs}$ being the true reservoir production 
+if $\mathbf{d}$ was observed, and;
+$p(\mathbf{d})$, the prior, is the probability of observing $\mathbf{d}$
+before observations $\mathbf{d}_\text{obs}$ were made.
+
+Maximizing \cref{eq:bayes} means finding reservoir production that is 
+best suited to match field observations tempered by prior beliefs on the behavior of data.
+%    
+While this approach is statistically sensible, in practice a single maximization tends to produce poor matches to data.
+%
+This situation could be mitigated by assimilating more data, 
+since then the posterior would be adjusted Bayes' theorem,
+$p(\mathbf{d} \mid \mathbf{d}^\text{new}_\text{obs}, \mathbf{d}_\text{obs}) = 
+c^\text{new}_\text{pos} \mathcal{L}(\mathbf{d}^\text{new}_\text{obs}\mid \mathbf{d}) p(\mathbf{d} \mid \mathbf{d}_\text{obs})$,
+but it is assumed that $\mathbf{d}_\text{obs}$ already holds all the data available for analysis.
+
+Therefore, in order to improve data match, the effect of posterior updating is obtained 
+by successively assimilating disturbed versions of observed data.
+%
+This is called Multiple Data Assimilation (MDA), contrasting with the previous Single Data Assimilation (SDA).
+%
+Denoting the number of assimilations by $N_a$,
+assimilation $1\leq l\leq N_a$ with disturbed observations $\mathbf{d}^l_\text{obs}$
+produces posterior $p^l$ such that
+%
+\begin{align}
+    p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
+    &= c^1_\text{pos} \mathcal{L}(\mathbf{d}^1_\text{obs}\mid \mathbf{d}) 
+                        p(\mathbf{d}) 
+\label{eq:p1}
+    \\
+    p^2(\mathbf{d}\mid \mathbf{d}^2_\text{obs}, \mathbf{d}^1_\text{obs}) 
+    &= c^2_\text{pos} \mathcal{L}(\mathbf{d}^2_\text{obs}\mid \mathbf{d}) 
+                        p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
+\label{eq:p2} 
+    \\
+    &\ \ \vdots 
+    \\
+    p^{N_a}(\mathbf{d}\mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})
+    &= c^{N_a}_{\text{pos},\mathcal{L}_\text{pos}} \mathcal{L}(\mathbf{d}^{N_a}_\text{obs} \mid \mathbf{d})
+        p^{N_a-1}(\mathbf{d}\mid \mathbf{d}^{N_a-1}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
+\label{eq:pNa} 
+    \\
+    &= p(\mathbf{d}) \prod_{l=1}^{N_a} c^l_\text{pos} \mathcal{L}(\mathbf{d}^l_\text{obs} \mid \mathbf{d}) 
+\label{eq:p-prod}
+\end{align}  
+
+By successively updating the posterior with disturbed data, the posterior's maximum is also successively updated.
+If maximizing \cref{eq:bayes} was akin to trying to reach optimum $p^*$ in a single fixed step,
+maximizing \cref{eq:p-prod} is akin to reaching $p^*$ with multiple steps, 
+as illustrated in \cref{fig:sda-versus-mda}.
+The number of steps is exactly equal to $N_a$, and their size dependent on the perturbations done to the observed data. 
+%
+\begin{figure}[htbp]
+    \centering 
+    \caption{%
+        Posterior distributions obtained with SDA (green) and MDA (yellow) 
+        for an observation vector with 2 points of data.
+        Circles denotes means, and circunferences, covariances.
+        True underlying posterior is denoted in blue, and the prior in gray. 
+    }
+    \label{fig:sda-versus-mda}
+    \input{figures/sda-versus-mda.tikz}
+\end{figure}
+
+While SDA and MDA can be made to be equivalent if likelihoods are Gaussian 
+(more details in \cref{subsec:update-equation}), 
+in general MDA produces better matches to data than SDA.
+This is because MDA attempts to reduce variance in the posterior distribution 
+without underestimating uncertainty in observations, 
+which often results in tighter posteriors whose means are closer aligned to observations.
+%
+Furthermore, the iterative search of MDA for a maximum 
+better acommodates for underlying likelihoods that are not Gaussian.
+
+\subsection{Deriving the update equation}
+\label{subsec:update-equation}
+This subsection derives the base update equation used by DSI-ESMDA 
+(and by extension, Gated DSI-ESMDA) 
+by extracting a practical implementation from the general, more abstract 
+statistical framework outlined in \cref{subsec:statistical-framework}.
+%
+Chiefly, this process requires making assumptions on prior and likelihoods 
+and then using model ensembles to sample from the distributions. 
+
+In the context of reservoir engineering, it is standard to assume that data 
+(and model parameters, for that matter)
+have underlying Gaussian distributions.
+%
+In this case, the general likelihood in \cref{eq:bayes} becomes
+%
+\begin{equation}
+    \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) =
+    c_\mathcal{L} \exp(-\mathcal{O}_d(\mathbf{d}_\text{obs} - \mathbf{d}))
+\end{equation}
+%
+where $\mathcal{O}_d$ is defined as
+%
+\begin{equation}
+    \mathcal{O}_d(\mathbf{d}_\text{obs} - \mathbf{d}) =
+    \frac{1}{2} 
+    (\mathbf{d}_\text{obs} - \mathbf{d})^\top 
+    \mathbf{C}_e
+    (\mathbf{d}_\text{obs} - \mathbf{d}),
+\end{equation}
+%
+with $\mathbf{C}_e$ the measurement noise in observed data.
+%
+The associated posterior can then be rewritten as 
+%
+\begin{equation}
+    p(\mathbf{d} \mid \mathbf{d}_\text{obs}) = 
+    c_\text{pos} 
+    c_\mathcal{L} 
+    p(\mathbf{d}) 
+    \exp(-\mathcal{O}_d(\mathbf{d}_\text{obs} - \mathbf{d})).
+\label{eq:posterior}
+\end{equation}
+
+
+Similarly, the likelihood at assimilation $l$ in \cref{eq:p-prod} becomes
+%
+\begin{equation}
+    \mathcal{L}^l(\mathbf{d}_\text{obs}^l \mid \mathbf{d}) =
+    c^l_\mathcal{L} \exp(-\mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d}))
+\end{equation}
+%
+where $\mathcal{O}^l_d$ is defined as
+%
+\begin{equation}
+    \mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d}) =
+    \frac{1}{2} 
+    (\mathbf{d}_\text{obs} - \mathbf{d})^\top 
+    \mathbf{C}^l_e
+    (\mathbf{d}_\text{obs} - \mathbf{d}),
+\end{equation}
+%
+with $\mathbf{C}^l_e$ the measurement noise in the disturbed observed data.
+%
+The associated posterior can then be rewritten as 
+%
+\begin{align}
+    p^{N_a}(\mathbf{d} \mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
+    &=
+    p(\mathbf{d}) 
+    \prod_{l=1}^{N_a} 
+        c^l_\text{pos} 
+        \mathcal{L}(\mathbf{d}^l_\text{obs}\mid \mathbf{d}) \\
+    &=
+    p(\mathbf{d}) 
+    \prod_{l=1}^{N_a} 
+        c^l_\text{pos} 
+        c^l_\mathcal{L}
+        \exp(-\mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d})) \\
+    &=
+    c^{N_a}_{\text{pos},\mathcal{L}} 
+    p(\mathbf{d})
+    \exp\left(
+        -\sum_{l=1}^{N_a} \mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d})
+    \right) 
+\label{eq:posterior-MDA}
+\end{align}
+%
+where $c^{N_a}_{\text{pos},\mathcal{L}}$ is a normalization constant that 
+absorbed the intermediary posterior and likelihood normalization constants.
+%
+Then, \cref{eq:posterior-MDA} is equivalent to \cref{eq:posterior} if and only if 
+%
+\begin{equation}
+    c^{N_a}_{\text{pos},\mathcal{L}} = c_\text{pos} c_\mathcal{L}, 
+    \quad 
+    \sum_{l=1}^{N_a} (\mathbf{C}^l_e)^{-1} = \mathbf{C}^{-1}_e.
+\label{eq:cov-requirement}
+\end{equation}
+
+Now, DSI-ESMDA models the covariance at assimilation $l$ proportionately to $\mathbf{C}_e$:
+%
+\begin{equation}
+    \mathbf{C}^l_e = \alpha_l \mathbf{C}_e, 
+    \quad 
+    \alpha_l > 0,
+\label{eq:cov-as-inflation}
+\end{equation}
+%
+so that \cref{eq:cov-requirement} reduces to
+%
+\begin{equation}
+    \sum_{l=1}^{N_a} \frac{1}{\alpha_l} = 1.
+\label{eq:alpha-requirement}
+\end{equation}
+
+Constants $\alpha_l$ parameterize the covariance in assimilation $l$,
+and by extension how much the intermediary posterior distribution should tighten around the data.
+%
+Invoking the analogy at the end of \cref{subsec:statistical-framework} 
+and the associated illustration in \cref{fig:sda-versus-mda}, 
+$\mathbf{C}_e$ influences the direction of the adjustment,
+facilitating corrections on less uncertain data,
+and $\alpha_l$ influences the size of the adjustment, 
+so that assimilations with larger $\alpha_l$ incur smaller corrections.  
+
+The next step towards an implementable update equation is assuming the prior distribution is also Gaussian, i.e.,
+%
+\begin{equation}
+    p(\mathbf{d}) = c_\text{prior} \exp(-\mathcal{O}_p(\mathbf{d} - \mathbf{d}_\text{prior}))
+\label{eq:prior}
+\end{equation}
+%
+with $c_\text{prior}$ a normalization constant and
+%
+\begin{equation}
+    \mathcal{O}_p(\mathbf{d} - \mathbf{d}_\text{prior}) = 
+    \frac{1}{2}
+    (\mathbf{d} - \mathbf{d}_\text{prior})^\top 
+    \mathbf{C}_p^{-1}
+    (\mathbf{d} - \mathbf{d}_\text{prior})
+\end{equation}
+%
+where $\mathbf{d}_\text{prior}$ is the prediction with highest belief of occurring prior to observing $\mathbf{d}_\text{obs}$,
+and $\mathbf{C}_p$ is the prior covariance matrix, i.e., it is assumed that 
+$\mathbf{d} \sim \mathcal{N}(\mathbf{d}_\text{prior}, \mathbf{C}_p)$.
+
+Substituting \cref{eq:prior} in \cref{eq:posterior-MDA}, 
+it follows that the first assimilation (\cref{eq:p1}) can be written as
+%
+\begin{align}
+    p^1(\mathbf{d} \mid \mathbf{d}^1_\text{obs})
+    &=
+    c^1 \exp\left(
+        -[
+            \mathcal{O}_p(\mathbf{d} - \mathbf{d}^0_\text{prior}) + 
+            \mathcal{O}^1_d(\mathbf{d}^1_\text{obs} - \mathbf{d})
+        ]
+    \right) \\
+    &=
+    c^1 \exp(-\mathcal{O}(\mathbf{d}, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior}))
+\label{eq:posterior-MDA-1}
+\end{align} 
+%
+where $c^1 = c_\text{prior} c^1_\text{pos} c^1_{\mathcal{L}}$,
+and $\mathbf{d}^0_\text{prior}$ is the mean of the prior distribution after 0 assimilations,
+i.e., before any assimilation was performed.
+%
+The maximum \emph{a posterior} (MAP) of the first assimilation,
+denoted $\mathbf{d}^1_\text{map}$, is thus given by 
+%
+\begin{align}
+    \mathbf{d}^1_\text{map} 
+    &= \argmin_\mathbf{d} (
+        \mathcal{O}(\mathbf{d}, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior})
+    )
+    \\
+    0 &= \nabla_\mathbf{d}\mathcal{O}(
+        \mathbf{d}^1_\text{map}, 
+        \mathbf{d}^1_\text{obs}, 
+        \mathbf{d}^0_\text{prior}
+    ) 
+    \\
+    0 &=
+    \mathbf{C}_p^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
+    -
+    \mathbf{C}_e^{-1} (\mathbf{d}^1_\text{obs} - \mathbf{d}^1_\text{map})
+    \\
+    0 &= 
+    \mathbf{C}_p^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
+    -
+    \mathbf{C}_e^{-1} (\mathbf{d}^1_\text{obs} - \mathbf{d}^0_\text{prior} - 
+        [\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior}]
+    )
+\end{align}
+
+DSI-ESMDA updates the ensemble outputs by iterating a Kalman-like data assimilation, shown below
+\cite{Lima:2020}:
+%
+\begin{equation}
+    \mathbf{d}_j^{k+1} 
+    =
+    \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
+    (\mathbf{d}_\text{obs} + \sqrt{\alpha_k}\mathbf{e}_j^k - \mathbf{d}_{h,\ j}^k),
+\label{eq:iteration_dsiesmda}
+\end{equation}
+%
+with $1 \leq k \leq N_a$, $N_a$ the number of assimilations DSI-ESMDA must do.
+Thus, $\mathbf{d}_j^k$ for $k=1$ is the prior ensemble (initially denoted $\mathbf{d}_j$),
+and $\mathbf{d}_j^{Na+1}$, the posterior.
+%
+Vector $\mathbf{e}_j^k\sim N(\mathbf{0}, \mathbf{C}_e)$ is a random disturbance,
+and $\alpha_k$ coefficients are positive constants that satisfy $\sum_k 1/\alpha_k = 1$. 
+
+Matrices $\mathbf{R}$ and $\mathbf{K}$ are the localization and the modified Kalman gain, respectively.
+$\mathbf{K}$ is defined as
+%
+\begin{equation}
+    \mathbf{K}^k = 
+    \Delta\mathbf{D}^k (\Delta\mathbf{D}_h^k)^\top
+    \left(
+        \Delta\mathbf{D}_h^k (\Delta\mathbf{D}_h^k)^\top
+        +
+        \alpha_k\mathbf{C}_e
+    \right)^{-1},
+\end{equation}
+%
+with 
+%
+\begin{align}
+    \Delta\mathbf{D} &= \frac{1}{\sqrt{N_e-1}} 
+    \begin{bmatrix}
+        \mathbf{d}_1 - \overline{\mathbf{d}} &
+        \cdots &
+        \mathbf{d}_{N_e} - \overline{\mathbf{d}}
+    \end{bmatrix}, 
+\label{eq:delta-d}
+    \\
+    \overline{\mathbf{d}} &= \frac{1}{N_e} 
+    \sum_{j=1}^{N_e} \mathbf{d}_j,
+\end{align}
+a matrix that quantifies the spread of the ensemble. 
+$\Delta \mathbf{D}_h$ is defined analogously by constraining the above equations to the history matching period:
+%
+\begin{align}
+    \Delta\mathbf{D}_h &= \frac{1}{\sqrt{N_e-1}} 
+    \begin{bmatrix}
+        \mathbf{d}_{h, 1} - \overline{\mathbf{d}}_h &
+        \cdots &
+        \mathbf{d}_{h, N_e} - \overline{\mathbf{d}}_h
+    \end{bmatrix}, 
+    \\
+    \overline{\mathbf{d}}_h &= \frac{1}{N_e} 
+    \sum_{j=1}^{N_e} \mathbf{d}_{h, j}.
+\end{align}
+
+\begin{note}[Index $v$]
+    Data vectors stack time series of a fields' measurements, 
+    so index $v$ in this chapter's equations specify a datum in place and time simultaneously.
+    %
+    For example, if DSI is being applied on the oil production of two wells of a field, 
+    each with a simulation time vector of 100 elements, 
+    then for any $1\leq j\leq N_e$ $\mathbf{d}_j$ would be 200$\times$1, 
+    with elements $v=1$ through $v=100$ the oil production history of the first well,
+    and elements $v=101$ through $v=200$ the oil production history of the second well.
+\end{note}
+
+\begin{note}[Time vectors]
+    Note that all realization data vectors are implicitly assumed to have a synchronized time vector.
+    Ultimately, this means simulation scheduling was the same for all realizations. 
+    %
+    Reference data, however, is under no obligation to follow this scheduling.
+    %
+    As such, in order for \cref{eq:iteration_dsiesmda} to work,
+    the history period of the realization data is constrained to match the observed data's.
+    %
+    This leads to an important practical requirement of the algorithm:
+    for simulations to cover the time vector of observed data.
+    %
+    \Cref{fig:time-vector-illustration} illustrates this process 
+    for data vectors with a single feature (e.g., field oil production total). 
+    %
+    \begin{center}
+        \captionof{figure}{Synchronization between realization data vector and reference data.}
+        \label{fig:time-vector-illustration}
+        \input{figures/time-vector-illustration.tikz}
+        \fonte{Self-elaboration.}
+    \end{center}
+\end{note}
+
+\subsection{Improving data match with covariance localization}
+$\mathbf{R}$ adjusts the Kalman gain, 
+preserving correlated measures while 
+diminishing the impact of spuriously correlated measures. 
+As such, its entries lie in $[0, 1]$, and pointwisely multiply $\mathbf{K}$.
+Intuitively, a correlation is strong if measures of a same quantity were taken closer in space and/or in time, and weaker otherwise. 
+Denoting this ``distance'' by $\delta_{uv}$, 
+where $u$ is an index from $\mathbf{d}_j$ and 
+$v$ an index from $\mathbf{d}_h$, 
+$\mathbf{R}$ is given by
+%
+\begin{align}
+    R_{uv} &= r(\delta_{uv}), 
+    \\
+    r(\delta) &= \begin{cases}
+        -\frac{1}{4}\delta^5 + \frac{1}{2}\delta^4 + \frac{5}{8}\delta^3 -\frac{5}{3}\delta^2 + 1,
+        & 0 \leq \delta \leq 1 \\
+        \frac{1}{12}\delta^5 - \frac{1}{2}\delta^4 + \frac{5}{8}\delta^3 +\frac{5}{3}\delta^2 -5\delta + 4 - \frac{2}{3}\delta^{-1},
+        & 1 < \delta \leq 2 \\
+        0,
+        & \delta > 2 
+    \end{cases},
+    \\
+    \delta_{uv} &= 
+    \sqrt{
+        \left(\frac{\Delta x'_{uv}}{L_{x'}}\right)^2 + 
+        \left(\frac{\Delta y'_{uv}}{L_{y'}}\right)^2 + 
+        \left(\frac{\Delta t_{uv}}{T_c}\right)^2
+    }, \\
+    \begin{bmatrix}
+        \Delta x'_{uv} \\ \Delta y'_{uv}
+    \end{bmatrix}
+    &= 
+    \begin{bmatrix}
+        \cos\theta & -\sin\theta \\ 
+        \sin\theta & \cos\theta
+    \end{bmatrix}
+    \begin{bmatrix}
+        \Delta x_{uv} \\ \Delta y_{uv}
+    \end{bmatrix}
+\end{align}
+
+$\Delta x_{uv}$ and $\Delta y_{uv}$ are the $x$ and $y$ differences, respectively, 
+between the points in space from where measure $u$ and $v$ were taken.
+In this context, measurements always come from a well, and so these differences are always distances between wells.
+%
+$\Delta t_{uv}$ is the difference between the time when measurement $u$ was taken, and the time when $v$ was taken.
+Note that while $v$ is restrained to the history matching period by definition, $u$ is not.
+The inclusion of $\Delta t_{uv}$ guarantees that measurements far apart in time will hold little correlation,
+even if taken from the same well.
+
+A rotation by $\theta$ is applied to take into account the anisotropy of reservoir permeability,
+and are $L_{x'}$, $L_{y'}$, $T_c$ positive constants that regulate the critical points of differences in $x$, $y$ and $t$ separately.
+%
+By critical, it is understood the inflection point $\delta=1$ in $r(\delta)$.
+%
+As illustrated by \cref{fig:compact-correlation-function}, the greater the critical value, 
+the more lax the localization, allowing more weakly correlated changes to hold more impact.

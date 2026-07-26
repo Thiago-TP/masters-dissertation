@@ -538,28 +538,6 @@
 \newmdtheoremenv[style=defnSty]{exercise}{\excname}[chapter] % Exercício
 \newmdtheoremenv[style=defnSty]{problem}{\prbname}[chapter] % Proplema
 
-\newcounter{note}[chapter]
-\newenvironment{note}[1][]{%
-  \stepcounter{note}%
-  \mdfsetup{%
-    frametitle={%
-      \tikz
-      \draw (0, 0) node [rectangle,rounded corners=3pt,fill=azulunb!30]
-      {\strut Implementation note~\thechapter.\thenote%
-      \ifstrempty{#1}{}{: #1}
-      };
-    },%
-    roundcorner=10pt,%
-    innertopmargin=5pt,%
-    linecolor=azulunb!20,%
-    linewidth=2pt,%
-    topline=true,%
-    frametitleaboveskip=\dimexpr-\ht\strutbox\relax,%
-    frametitlealignment=\raggedright,%
-  }
-  \begin{mdframed}[]\relax%
-}{\end{mdframed}}
-
 \theoremstyle{remark}
 \let\proof\relax
 \let\endproof\relax

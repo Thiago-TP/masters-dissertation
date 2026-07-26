@@ -10,10 +10,16 @@
         (-0.5, 5*\s) --++ (9*\r+0.5, 0)
     ;
     \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
-        (-0.55, 0) --++ (0, 3*\s) node [midway, left, xshift=-0.25cm] {History period}
+        (-0.55, 0) --++ (0, 3*\s) node [midway, left, xshift=-0.25cm] {%
+            \ABNTEXfontereduzida
+            History period
+        }
     ;
     \draw
-        (-0.55, 5*\s) node [left, xshift=-0.25cm] {Validation period}
+        (-0.55, 5*\s) node [left, xshift=-0.25cm] {%
+            \ABNTEXfontereduzida
+            Validation period
+        }
     ;
 
     % Reference vector - full
@@ -59,8 +65,9 @@
         (\r, 4*\s) .. controls ++(0:1) and ++(0:-1) .. (end)
         (\r, 6*\s) .. controls ++(0:1) and ++(0:-1) .. (end)
         (end) node [right] {%
-            \begin{minipage}{5cm}
+            \begin{minipage}{3cm}
                 \centering
+                \ABNTEXfontereduzida
                 Simulations outside the reference time vector
             \end{minipage}
         }
