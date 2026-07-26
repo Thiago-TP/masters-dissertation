@@ -56,7 +56,7 @@
 }
 % 1 = debug mode with guiding questions and comments
 % 0 = normal mode with no guiding questions and comments
-\newcommand{\debugmode}{1}
+\newcommand{\debugmode}{0}
 \newcommand{\debug}[1]{%
     \if\debugmode1
         \color{darkred}
@@ -395,10 +395,10 @@
 \imprimirfolhadeaprovacao
 
 % Insere dedicatória (elemento opcional)
-\imprimirdedicatoria
+% \imprimirdedicatoria
 
 % Insere agradecimentos (elemento opcional)
-\imprimiragradecimentos
+% \imprimiragradecimentos
 
 % Insere epígrafe (elemento opcional)
 \imprimirepigrafe
@@ -456,11 +456,11 @@
 %\part{Nome da parte}
 
 \include{chapters/1_introduction}
-\include{chapters/3_theory_framework}
-\include{chapters/4_methods}
-\include{chapters/5_results}
-\include{chapters/6_discussion}
-\include{chapters/7_conclusion}
+\include{chapters/2_theory_framework}
+\include{chapters/3_methods}
+\include{chapters/4_results}
+\include{chapters/5_discussion}
+\include{chapters/6_conclusion}
 
 % ------------------------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
