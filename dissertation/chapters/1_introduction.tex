@@ -1,6 +1,6 @@
 % ----------------------------------------------------------
 \chapter{Introduction}
-\label{cap:introduction}
+\label{chap:introduction}
 % ----------------------------------------------------------
 
 \textit{%
@@ -106,22 +106,101 @@ Once you have finished your thesis, ask yourself the following questions:
     \end{itemize}
     }
 
-    Prediction of future behavior of a geological reservoir given past data is a difficult inverse problem
-    \cite{Oliver:2011} 
-    since satisfactorily matching a reservoir model production to past production 
-    does not guarantee future data will also be satisfactorily matched.
-    %
-    In such cases, readjustments of model parameters is often performed,
-    leading to further subsurface simulations and analysis.
-    %
-    \Cref{fig:flowchart-history-matching} gives the general outline of a standard history matching strategy applied to a single model.
+    This section provides a brief presentation of necessary background concepts, i.e., 
+    a base understanding of oil and the formation of a reservoir,
+    as well as a literature review on methods employed for the reservoir prediction. 
 
-    \begin{figure}[htbp]
-        \centering
-        \input{figures/flowchart-history-matching.tikz}
-        \caption{Overview of a standard history matching strategy applied to a single model.}
-        \label{fig:flowchart-history-matching}
-    \end{figure}
+    \subsection{What is oil?}
+    In the context of reservoir engineering, oil refers to the more precise term petroleum, 
+    a combination of the latin \emph{petra} (rock) and \emph{oleum} (oil in the general sense).
+    %
+    Petroleum is an umbrella term for complex mixtures resulting from the deposition and decomposition 
+    of organic matter during a long period of time.
+    %
+    It is composed of hundreds of chemical components, 
+    with the main constituent being hydrocarbons, 
+    i.e., organic compounds primarily composed of carbon and hydrogen atoms.
+    
+    In its liquid phase, petroleum is inflammable, less dense than water, has a characteristic smell,
+    and a color anywhere between black and light-brown.
+    %
+    Petroleum is extracted from geological reservoirs, and its components, 
+    especially the hydrocarbons, used in applications that range from 
+    paving roads, to making plastic-based constructs, to fueling airplanes and cars, 
+    turning oil production into an extremely profitable economic activity.      
+
+    \subsection{What is a geological reservoir?}
+    Geological reservoirs are subsurface formations capable of storing and trans-
+    mitting fluids, such as hydrocarbons (oil and gas), water, hydrogen,
+    carbon dioxide, and waste materials from industrial processes
+    \cite[section 1.1]{Emerick:2025}. 
+
+    In order for oil to exist within a reservoir, 
+    it must occupy empty spaces within appropriate rock formations.
+    %
+    The amount of empty space a rock has is called porosity, 
+    since it comes in the form of small pores in the material.
+    %
+    How much of that empty space is actually occupied is called saturation, and changes in time.
+    %
+    Importantly, in order to oil to be extractable from inside the reservoir, 
+    these pores filled with oil must be sufficiently connected,
+    allowing the fluid to come through it.
+    The ease through which a fluid can flow through a porous media is called permeability.
+
+    In conventional petroleum reservoirs,
+    oil is stored inside relatively porous and permeable rock formations 
+    that are trapped by much less permeable rock formations or geological faults.
+    %
+    In contrast, unconventional reservoirs have the oil in porous rocks 
+    so impermeable the sealing property of a cap rock is unneeded.    
+
+    If there is economic interest in a petroleum reservoir, 
+    i.e., it is sufficiently large (possibly by linking with other reservoirs),
+    it can be referred to in the industry as an oil field. 
+    In this work, the terms reservoir, oil field, or simply field, are used interchangeably.
+    %
+    When oil production is no longer economically feasible, the field is either abandoned or repurposed.
+    This is the end of the reservoir's life, which started when wells were first completed. 
+
+    \subsection{The inverse problem}
+    Oil production has been established as an extremely profitable, but extremely difficult economic activity.
+    The scarcity of this natural resource pushes the search for new reservoirs offshore 
+    and in increasingly unfavorable geological formations, 
+    of which the discovery and extraction of oil from the Brazilian pre-salt is the prime example.
+    %
+    As extraction becomes less profitable, strategies for oil production enhancement become attractive.
+    %
+    This usually means closing (at least partially) producer wells, 
+    or injecting fluids into the reservoir 
+    (water and gas being the most common in this context) 
+    through injector wells in order to favorably manipulate the permeability and/or pressure within the filed,
+    whose aging means the plunging of pressure and oil saturation.
+
+    Controlling the reservoir often requires knowledge and prediction of subsurface dynamics and rock properties.
+    %
+    More specifically, 
+    given the observations coming from an oil field (e.g., oil production total, pressure at a wellhead),
+    and other geological information on the reservoir (e.g., porosity and permeability of a rock sample),
+    it is required to find the underlying parameters and states of the reservoir. 
+    %
+    Parameters are physical properties of the reservoir that remain constant throughout its life,
+    their main representatives being rock permeability and porosity. 
+    %
+    Conversely, states are physical properties that vary throughout reservoir life,
+    their main representatives being saturation and pressure
+    \cite[section 4.1]{Emerick:2025}.
+    %
+    Once identified, parameters and states can be used to construct a model of the reservoir, 
+    which in turn can be deployed to generate predictions of its reference.
+
+    Processing data-space outputs of the field into estimates of model-space parameters is referred to 
+    as the inverse problem in this work.
+    %
+    As the following subsection shows, the inverse problem is ill-posed in practice, 
+    and while great progress has been done in improving subsurface simulations and the data inversion process,
+    repeated model simulations remain a cost to be mitigated. 
+
 
     \subsection{Literature review}
     \label{subsec:literature-review}
@@ -161,114 +240,7 @@ Once you have finished your thesis, ask yourself the following questions:
     \end{itemize}
     }
 
-    \subsubsection{Model-space methods}
-
-    Subsurface simulations are computationally expensive, 
-    many methods in the literature have been proposed to avoid the adjustment loop by directly adjusting the model production curves to match past data, 
-    without updating model parameters.
-    %
-    Notably, this does not do away with the need for a model, since the model is still used to generate the initial ensemble of production curves,
-    so such methods are not to be taken as substitutes of standard model-based approaches, but rather as complementary techniques.
-
-    \subsubsection{Data-space methods}
-
-    A Data-Space Inversion (DSI) algorithm tackles the data matching problem 
-    by directly updating an ensemble of forecasts, doing away with the update of model parameters.
-
-    Originally, DSI used RML for sampling
-    \cite{Sun:2017},
-    requiring the solving of several minimization problems. 
-    %
-    DSI with Ensemble Smoother Multiple Data Assimilation (DSI-ESMDA)
-    \cite{Lima:2020}
-    speeds up the original DSI process by swapping the RML by iterative, Kalman-like updates to each member of the ensemble.
-    %
-    Recently, deep learning techniques have been used to further enhance DSI-ESMDA, with good results 
-    \cite{Jiang:2021,Xiao:2023,Jiang:2024}.
-
-    However, DSI-ESMDA may still make poor predictions despite good fit to past data.
-    %
-    In the language of Bayesian statistics, the starting ensemble data are samplings of the prior distribution of reservoir production,
-    and the ensemble data after DSI updates are samplings of the posterior distribution of reservoir production.
-    %
-    In that sense, poor results beyond the history period means that the ensemble posterior narrows around a curve that is not representative of the reference reservoir.
-
-    While the inherent problem of history matching may be impossible to solve, it may be mitigated by allowing the posterior to spread more.
-    %
-    In this paper, we propose a version of DSI-ESMDA that introduces variance in the posterior ensemble by 
-    adaptively and smoothly diminishing the effect of an iteration update the smaller the matching error.
-    %
-    This preserves the benefits of DSI-ESMDA, such as physics-driven localization and efficient execution,
-    while equipping it with an easy to implement, statistically based mechanism for posterior ensemble adjustment that is controlled by a single, easy-to interpret hyperparameter.
-
-    % \begin{citacao}
-    %     The DSI method introduced by Sun and Durlofsky [419] employs PCA
-    %     to reparameterize the predicted data from the prior ensemble into a lower-
-    %     dimensional space and uses RML to sample from the posterior distribution
-    %     of predicted data. The authors applied a data transformation prior to PCA
-    %     to enhance linearity. Sun et al. [421] further extended the DSI method by
-    %     introducing a more generalized data transformation procedure, and Sun and
-    %     Durlofsky [420] applied the method to a geological carbon storage problem.
-    %     Earlier, Scheidt et al. [381] proposed a similar concept in a method called
-    %     prediction-focused analysis (PFA), which involves projecting prior predic-
-    %     tions into a low-dimensional space and using kernel smoothing to estimate
-    %     the joint distribution of historical and forecasted data. However, PFA seems
-    %     to be limited to problems with a small number of data points, as it re-
-    %     quires projection into very few dimensions (two or three in the examples
-    %     presented). Satija and Caers [379] improved the PFA method by incorpo-
-    %     rating canonical functional component analysis to enhance linearity in the
-    %     projected data, and Satija and Caers [380] applied this approach to a reser-
-    %     voir problem, finding that it provided uncertainty estimates for production
-    %     forecasts in reasonable agreement with rejection sampling.
-    %     Lima et al. [263] combined ES-MDA and DSI, resulting in a more robust
-    %     and efficient DSI implementation. This method has been further enhanced
-    %     through the use of various deep learning techniques, leading to successful
-    %     applications in naturally fractured reservoirs [218] and geological carbon
-    %     storage [469, 217]
-    %     \cite[section D.8]{Emerick:2025}.
-    % \end{citacao}
-
-    % \vspace{-0.5cm}
-
-    % The economic viability of oil and gas operations depends critically on sound reservoir management, 
-    % where decisions must be made under significant uncertainty and with inherently limited subsurface data. 
-    % Accurate characterization of this uncertainty is essential: 
-    % overconfident forecasts can lead to poor investment decisions, 
-    % while excessively uncertain ones impede operational planning. 
-    % History matching — the process of calibrating reservoir models to observed production data — has long been central to reducing forecast uncertainty, 
-    % and ensemble-based methods have become the dominant paradigm for performing this calibration at scale.
-
-    % Kalman-based ensemble methods, such as the Ensemble Smoother with Multiple Data Assimilation (ES-MDA), 
-    % address this problem by maintaining an ensemble of plausible reservoir models and updating them iteratively as production data are assimilated. 
-    % By propagating uncertainty through an ensemble rather than relying on a single deterministic model, 
-    % these methods provide a principled framework for quantifying forecast uncertainty. 
-    % However, they carry a substantial computational cost: 
-    % each update cycle requires running full reservoir simulations for every ensemble member, 
-    % making large-scale uncertainty quantification expensive and, in practice, often infeasible.
-
-    % Data-Space Inversion (DSI), introduced by Sun and Durlofsky (2017), 
-    % was proposed as a computationally efficient alternative to traditional model-space history matching. 
-    % Rather than updating subsurface model parameters and re-running simulations, 
-    % DSI operates directly on the ensemble of simulated production forecasts — working entirely in data space. 
-    % This eliminates the need for repeated reservoir simulations during the assimilation process, 
-    % dramatically reducing the computational burden while still yielding calibrated posterior forecast distributions.
-
-    % Building on this foundation, Lima, Emerick, and Ortiz (2020) developed DSI-ESMDA, 
-    % which replaces the Randomized Maximum Likelihood minimizations of the original DSI formulation with an iterative ES-MDA-style Kalman update. 
-    % This modification brings further gains in computational efficiency and produces competitive posterior forecasts, 
-    % establishing DSI-ESMDA as a practical and attractive framework for reservoir uncertainty quantification.
-
-    % Despite these advances, DSI-ESMDA inherits a well-known vulnerability of ensemble smoother methods: 
-    % excessive variance loss during data assimilation. 
-    % When observations strongly constrain the ensemble, the spread of forecasts can collapse beyond what is physically justified, 
-    % leading to an underestimation of posterior uncertainty. 
-    % This phenomenon is particularly problematic in reservoir forecasting, where robust uncertainty envelopes are essential for risk-aware decision-making. 
-    % The issue is compounded in data-space methods, where the ensemble is not replenished through new simulations and the initial ensemble spread is the only source of diversity throughout the assimilation process.
-
-    % Mitigating variance collapse without sacrificing data match quality or introducing additional computational overhead remains an open challenge. 
-    % Existing remedies — such as inflation schemes and localization — typically require careful tuning and may not transfer cleanly to the data-space setting. 
-    % This motivates the development of a principled, lightweight mechanism that can stabilize the Kalman update in DSI-ESMDA, 
-    % preserving ensemble diversity and producing more reliable uncertainty quantification across a range of reservoir scenarios.
+    \input{chapters/1_introduction-literature_review}
 
 \section{Research problem}
     \debug{%

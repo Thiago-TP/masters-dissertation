@@ -31,31 +31,14 @@ That means that a theory framework can take different forms:
 
 \debug{What is an ensemble, realization, ground-truth? What is a forward model? What is $g(\cdot)$?}
 
-\section{Elements of reservoir engineering}
-\label{sec:reservoir-engineering}
+\section{Subsurface simulation}
+This section provides an outline for how subsurfaces dynamics are modeled,
+introducing notation and concepts that will be assumed known after its conclusion.
 
-    \subsection{Reservoir formation}
-        
-
-    \subsection{Subsurface simulation}
-    % While parameters refer to the “static” uncertainty properties of
-    % the reservoir, states refer to the “dynamic” variables that evolve over time,
-    % such as pressure, temperature, phase saturation, and fluid composition.
-
-    % The attentive reader may have noticed that
-    % we used the term “forecasting” instead of “prediction.” It appears that these words
-    % are used interchangeably in the literature. In fact, the original Kalman filter paper by
-    % Kalman [228] uses the word “prediction.” However, we are going to make a distinction
-    % between the two words. We use “prediction” as a more general term; for example, we
-    % use “prediction” for a state generated from a model. In this sense, we can use a model
-    % to predict a past state, sometimes referred to as “hindcasting” [98]. We can also use
-    % the model to predict the present, which is referred to as “nowcasting” [338]. We reserve
-    % the word “forecasting” for the prediction of future states.
-
-    % It is worth noting that the first-order Markov condition holds in reservoir simulations,
-    % where the state (say, pressure and saturation) at time tn is solely dependent on static
-    % parameters and the state at the preceding time step, tn-1. This property is precisely
-    % why we can employ restarts in reservoir simulators.
+% It is worth noting that the first-order Markov condition holds in reservoir simulations,
+% where the state (say, pressure and saturation) at time tn is solely dependent on static
+% parameters and the state at the preceding time step, tn-1. This property is precisely
+% why we can employ restarts in reservoir simulators.
     
 \input{chapters/2_theory_framework-DSIESMDA}
 \input{chapters/2_theory_framework-Gated-DSIESMDA}
