@@ -1,0 +1,204 @@
+
+While the outline of both DSI-ESMDA and the proposed Gated DSI-ESMDA methods have been presented in \cref{chap:theory-framework},
+it remains to be explained 
+how experiments will be set up (\cref{subsec:evaluation-workflow}), 
+how the error covariance matrix $\mathbf{C}_e$ is constructed (\cref{subsec:noise-modeling}),
+what metrics will be used to evaluate the performance of the methods (\cref{subsec:evaluation-metrics}), and
+what parameters  and features are used (\cref{subsec:evaluation-parameters}). 
+
+\subsection{Evaluation workflow}
+\label{subsec:evaluation-workflow}
+%
+The evaluation pipeline, illustrated in \cref{fig:flowchart-evaluation}
+is executed once per ground-truth data vector $\mathbf{d}$.
+%
+In synthetic ensembles, 10 ground-truths are picked.
+%
+The average of these results, as well as the results found with the real field case study,
+are presented in the following chapter.
+%
+More detailed results that would not have fit with the flow of the text 
+are exhibited in \cref{chap:detailed-results}. 
+
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Outline of the evaluation process. 
+    }
+    \label{fig:flowchart-evaluation}
+    \input{figures/flowchart-evaluation.tikz}
+    \fonte{Self-elaboration.}
+\end{figure}
+
+First, all data is normalized to the range $[0, 1]$ using the minimum and maximum values of the ground-truth production data, as follows:
+%
+\begin{align}
+    \widetilde{\mathbf{d}}_{j, f} &= \frac{\mathbf{d}_{j, f} - \min(\mathbf{d}_f)}{\max(\mathbf{d}_f) - \min(\mathbf{d}_f)}
+\label{eq:normalize_realization} \\
+    \widetilde{\mathbf{d}}_f      &= \frac{\mathbf{d}_f -      \min(\mathbf{d}_f)}{\max(\mathbf{d}_f) - \min(\mathbf{d}_f)},
+\label{eq:normalize_ground-truth}
+\end{align}
+%
+where index $j$ denotes the realization, $f$ denotes the production data feature, and the tilde indicates normalization.
+This process is repeated for all non-constant features
+and realizations to improve the conditioning of the data and facilitate noise modeling, as shown next.
+
+\subsection{Noise modeling}
+\label{subsec:noise-modeling}
+%
+The error covariance matrix $\mathbf{C}_e$ is assumed to be diagonal, 
+with its non-zero entries uniformly sampled from $(0, 1]$ and scaled by a constant $\nu > 0$.
+This constant is named the noise magnitude and is a hyperparameter of the Evaluation.
+However, $\nu$ is only means to easier explore the effects of different noise magnitudes on the performance of the methods,
+and not an essential parameter of the methods themselves.
+
+Next, observed data is constructed by adding noise to the normalized ground-truth data restricted to the history period:
+%
+\begin{equation}
+    \widetilde{\mathbf{d}}_\text{obs} = \widetilde{\mathbf{d}}_h + \mathbf{e}, \quad
+    \mathbf{e} \sim \mathcal{N}(\mathbf{0}, \mathbf{C}_e).
+\end{equation}
+%
+Since real field data already contains noise, this step is skipped for that case, 
+and observed data is simply the normalized ground-truth data restricted to the history period.
+
+Finally, the methods are applied to the pre-processed data, 
+and their priors and posteriors are evaluated using the metrics described in \cref{subsec:evaluation-metrics}.
+
+\subsection{Evaluation metrics}
+\label{subsec:evaluation-metrics}
+Both the prior and posterior ensembles are evaluated on the history and forecast periods using the following metrics
+\cite[sections 9.4.2 and 9.4.4]{Emerick:2025}:
+\begin{itemize}
+    \item observation coverage (OC),
+    \item mean squared error (MSE),
+    \item data-mismatch objective function (denoted $\mathcal{O}$).
+\end{itemize}
+%
+OC measures the percentage of observed data that falls within the range of an ensemble,
+while MSE quantifies the average squared difference between the observed and predicted data.
+Data-mismatch objective function, or simply data mismatch, is a metric that quantifies the discrepancy between observed and predicted data.
+Mathematically, each metric is defined as follows:
+%
+\begin{align}
+    \text{OC}_h(\mathbf{Y}) &= \frac{1}{N_h} \sum_{i=1}^{N_h} 
+    \mathbb{1}\left(
+        \min(\mathbf{Y})_i \leq d_{h, i} \leq \max(\mathbf{Y})_i
+    \right),\\
+    \text{OC}_v(\mathbf{Y}) &= \frac{1}{N_v} \sum_{i=1}^{N_v} 
+    \mathbb{1}\left(
+        \min(\mathbf{Y})_i \leq d_{v, i} \leq \max(\mathbf{Y})_i
+    \right),\\
+    %
+    \text{MSE}(\mathbf{Y}) &= 
+    \frac{1}{N_h} 
+    (\mathbf{d}_h - \overline{\mathbf{y}})^\top \mathbf{C}^{-1} 
+    (\mathbf{d}_h - \overline{\mathbf{y}}),
+    \quad 
+    \mathbf{C} = \Delta\mathbf{Y}\Delta\mathbf{Y}^\top + \mathbf{C}_e \\
+    %
+    \mathcal{O}(\mathbf{y}_j) &= 
+    \frac{1}{2N_h}
+    (\mathbf{d}_h - \mathbf{y}_{j, h})^\top
+    \mathbf{C}_e^{-1}
+    (\mathbf{d}_h - \mathbf{y}_{j, h}),
+\end{align}
+%
+where 
+%
+\begin{itemize}
+    \item 
+    $\mathbf{Y} = [\mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_{N_e}]$ denotes an ensemble (posterior or prior),
+
+    \item
+    $N_h$ is the number of data points in the history period, 
+
+    \item
+    $N_v$ is the number of data points in the validation period, 
+
+    \item 
+    $\overline{\mathbf{y}}$ is the mean of the ensemble, 
+
+    \item 
+    $\max(\mathbf{Y})_i$ is the maximum value in the ensemble at datum $i$,
+
+    \item 
+    $\min(\mathbf{Y})_i$ is the minimum value in the ensemble at datum $i$, 
+
+    \item 
+    $\Delta\mathbf{Y}$ is the deviation of the predicted data from its mean (see \cref{eq:delta-d}),
+
+    \item $\mathbb{1}: \{0, 1\} \to \{0, 1\}$ returns $1$ if the condition in its argument is true and $0$ otherwise.
+\end{itemize} 
+
+Both history and validation splits of ground-truth $\mathbf{d}$ are used to compute observation coverages, 
+while MSE and misfit exist only for the history period.
+Despite the similarity between the MSE and the misfit, 
+the latter is computed for each realization in the ensemble,
+while the former is computed for the entire ensemble.
+In this work, the misfit will be presented as an average over all realizations in the ensemble, 
+with an associated standard deviation.
+
+\subsection{Evaluation parameters}
+\label{subsec:evaluation-parameters}
+While a straightforward application of DSI-ESMDA requires knowledge of the error covariance matrix 
+(addressed in \cref{subsec:noise-modeling}) and the number of Kalman-like iterations $N_a$,
+the amount of parameters to tune balloon if localization is utilized.
+%
+The proposed Gated DSI-ESMDA method introduces an additional hyperparameter, the gating intensity $\lambda$.
+In practice, the gating is introduced after the standard DSI-ESMDA has been applied and tuned, 
+making the tuning of $\lambda$ incremental and independent of the other parameters.
+
+\Cref{tab:simulation-parameters-time} compares the time-related simulation parameters and features across reservoirs, 
+while \cref{tab:simulation-parameters-localization} compares the localization-related parameters.
+%
+Note that $N_e$ represents the number of realizations after a ground-truth is separated from the ensemble.
+
+Experiments were performed
+with the number of iterations fixed at $N_a = 1$ and noise magnitude $\nu=0.01$ for all experiments.
+%
+Both standard DSI-ESMDA and Gated DSI-ESMDA were run with and without localization.
+The value of gating intensity $\lambda$ varied in $\{1, 2, 4, 8, 16\}$. 
+Finally, \cref{tab:simulation-parameters-features} lists the data features used for each case study.
+Feature selection was based on economic potential and relevance in subsurface dynamics.
+
+\begin{table}[h!]
+\IBGEtab{%
+    \caption{Time-related simulation parameters per reservoir.}
+    \label{tab:simulation-parameters-time}
+}{%
+    \def\arraystretch{0.6}
+    \input{tables/simulation-parameters-time.tex}
+}{%
+    \fonte{Self-elaboration.}
+    \nota[$^{*}$]{Real data time vectors aren't synchronized across features, so 60\% of a feature may lead to a shorter time scope than another feature.}
+}
+\end{table}
+
+\begin{table}[h!]
+\IBGEtab{%
+    \caption{%
+        Localization-related simulation parameters per reservoir.
+        Lengths in gridblocks.
+    }
+    \label{tab:simulation-parameters-localization}
+}{%
+    \def\arraystretch{0.6}
+    \input{tables/simulation-parameters-localization}
+}{%
+    \fonte{Self-elaboration.}
+}
+\end{table}
+
+\begin{table}[h!]
+\IBGEtab{%
+    \caption{Data features used per reservoir well.}
+    \label{tab:simulation-parameters-features}
+}{%
+    \def\arraystretch{0.6}
+    \input{tables/simulation-parameters-features}
+}{%
+    \fonte{Self-elaboration.}
+    %\nota[$^*$]{One of the producer wells' WCTP was constant and therefore discarded.}
+}
+\end{table}

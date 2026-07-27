@@ -1,0 +1,301 @@
+Three reservoirs were used as case studies for this work, two of which are synthetic reservoirs and one is a real reservoir. 
+This section presents them, highlighting their most significant structural and geological characteristics within the scope of this work. 
+However, as information regarding the real reservoir is sensitive, it is only briefly discussed.
+
+The choice of these reservoirs was based on the availability of data and their suitability for testing the proposed methods:
+the Egg and Olympus ensembles are widely used in the literature for benchmarking purposes (with the Olympus ensemble being the more complex of the two),
+while the real field provides a practical application scenario for the algorithms employed in this work.
+
+Simulations of the Egg and Olympus ensembles to generate the associated priors 
+were performed using the JutulDarcy.jl simulator \cite{Moyner:2025}.
+
+\subsection{Egg ensemble}
+Originally introduced as a deterministic model in a study aimed at 
+exploring the reasons behind reservoir flooding problems and identifying conditions for optimal solutions 
+\cite{Zandvliet:2007}, 
+a stochastic version was later proposed as a benchmark in a robust waterflooding optimization problem \cite{Essen:2009}. 
+This reservoir consists of 18,533 active cells with dimensions of 8x8x4 m. 
+The arrangement of these cells forms an egg-shaped grid, hence the name \cite{Jansen:2014}.
+
+    \subsubsection{Realizations}
+    The standard Egg ensemble comprises a single deterministic realization and 100 permeability realizations of a channelized reservoir. 
+    In addition to eight injectors labeled INJECT1 through INJECT8, 
+    each realization includes four vertical producer wells labeled PROD1 through PROD4, 
+    which produce oil and water but not  gas. 
+    \Cref{tab:egg-fluid-properties} shows some of the properties shared by the realizations.
+        
+    \begin{table}[htbp]
+    \IBGEtab{%
+        \caption{Some geometry and fluid properties of the Egg ensemble.}  
+        \label{tab:egg-fluid-properties}
+    }{%
+        \begin{tabular}{c c c}
+            \toprule
+            Property                        & Value      & Unit       \\ \midrule
+            Rock Compressibility            & 0.0        & 1/Pa       \\  
+            Water Compressibility           & 1.0\e{-10} & 1/Pa       \\
+            Oil Dynamic Viscosity           & 5.0\e{-3}  & Pa$\cdot$s \\
+            Water Dynamic Viscosity         & 1.0\e{-3}  & Pa$\cdot$s \\
+            Well Diameter                   & 20         & cm         \\
+            Simulation Time                 & 3600       & days       \\
+            \bottomrule
+        \end{tabular}
+    }{%
+        Adapted from \citeonline{Jansen:2014}.
+    }
+    \end{table}  
+
+    In \cref{fig:egg-realizations}, renderings of permeability along the x-axis in some of Egg's realizations are depicted, 
+    with colors assigned according to a logarithmic scale. 
+    To enhance visualization, the z-axis was magnified fivefold. 
+    %
+    \begin{figure}[htbp]
+        \centering
+        \caption{%
+            Top view of selected realizations 1-10 from the Egg ensemble. 
+            Renderings were produced using the open-source software ResInsight.
+        }
+        \label{fig:egg-realizations}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_1}
+            \caption{01}
+            \vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_2}
+            \caption{02}
+            \vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_3}
+            \caption{03}
+            \vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_4}
+            \caption{04}
+            \vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_5}
+            \caption{05}
+            \vspace{0.2cm}
+        \end{subfigure}
+        %
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_6}
+            \caption{06}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_7}
+            \caption{07}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_8}
+            \caption{08}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_9}
+            \caption{09}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.8\linewidth]{realizations/EGG_10}
+            \caption{10}
+        \end{subfigure}
+        %
+        \fonte{\citeonline{Oniram:2025}.}
+    \end{figure}
+
+\subsection{Olympus ensemble}
+Launched in early 2017, the Olympus reservoir model was designed as a benchmark environment to problems concerning control optimization and 
+reservoir management within the framework of the Integrated Systems Approach for Petroleum Production 2 research consortium
+\cite{Fonseca:2018,Fonseca:2020}. 
+In what follows, the depiction of Olympus mirrors the one outlined by \citeonline{Fonseca:2020}, with adjustments made where deemed necessary.
+    
+Inspired by an oil field in the North Sea, this synthetic reservoir is approximately rectangular, measuring 9x3 km, with a depth of 50 m divided into 16 layers. The 3D grid comprises cells with dimensions of approximately 50x50x3 m, totaling 341,728 cells, of which 192,750 are active. 
+The perimeter of the reservoir is defined by a fault, with six additional smaller faults present within it. 
+Furthermore, Olympus features two distinct zones separated by an impermeable shale layer: 
+The upper zone contains fluvial channel sands embedded in floodplain shales, while the lower zone consists of alternating layers of coarse, medium, and fine sands that are inclined relative to the general structural dip of the field.
+
+The reservoir includes four facies types in different layers (see \cref{tab:olympus-facies-properties}), and geological properties, such as porosity, permeability, and
+the net-to-gross ratio, were generated using standard geostatistical techniques for the different facies types. 
+In the absence of sufficient early-stage data, no porosity/permeability ratio was used. 
+Permeabilities in the $x$ and $y$ directions were identical, while in the $z$ direction, it corresponded to 10\% of that in the $x$ direction.
+%
+\begin{table}[htbp]
+\IBGEtab{%
+    \caption{Types and distribution range intervals of facies properties in Olympus.}
+    \label{tab:olympus-facies-properties}
+}{
+    \begin{tabular}{ccccc}
+    \toprule
+    Type            & Presence zones        & NG        & Porosity      & Permeability ($\mu$m$^\text{2}$)     \\ \midrule
+    Channel sand    & Upper                 & 0.8-1     & 0.2-0.35      & 0.4-1      \\
+    Shale           & Upper, perimeter      & 0.0       & 0.03          & 0.001      \\
+    Coarse sand     & Lower                 & 0.7-0.9   & 0.2-0.3       & 0.15-0.4   \\
+    Medium sand     & Lower                 & 0.75-0.95 & 0.1-0.2       & 0.075-0.15 \\
+    Fine sand       & Lower                 & 0.9-1     & 0.05-0.1      & 0.01-0.05  \\
+    \bottomrule
+    \end{tabular}
+}{%
+    \fonte{\citeonline{Fonseca:2020}.}
+}
+\end{table}
+
+Based on available exploration well records, it was determined that the oil/water contact depth was 2092 m, 
+with an in-situ hydrostatic pressure of 205 bar. 
+The initial water saturation distribution was modeled using capillary pressure curves. 
+Different capillary pressure curves were assigned to different facies types. 
+Therefore, changes in the facies resulted in different initial water saturation distributions.
+The reservoir's fluid was similar to oil without dissolved gas, and some of its properties are summarized in \cref{tab:olympus-fluid-properties}.
+%
+\begin{table}[htbp]
+\IBGEtab{%
+    \caption{Olympus' fluid properties.}
+    \label{tab:olympus-fluid-properties}
+}{
+    \begin{tabular}{c c c}
+        \toprule
+        Property                        & Value           & Unit  \\
+        \midrule
+        Rock compressibility            & 1.42\e{-10}   & 1/Pa       \\  
+        Water compressibility           & 3.97\e{-10}   & 1/Pa       \\  
+        Oil dynamic viscosity           & 2.8-3.5\e{-3} & Pa$\cdot$s \\  
+        Water dynamic viscosity         & 0.398\e{-3}   & Pa$\cdot$s \\ 
+        Well diameter                   & 19            & cm         \\  
+        Simulation Time                 & 7380          & days       \\
+        \bottomrule
+    \end{tabular} 
+}{%
+    \fonte{Adapted from \citeonline{Fonseca:2020}.}
+}
+\end{table}
+
+    \subsubsection{Realizations}
+    A set of 50 realizations was generated by varying facies through random seed changes,
+    while keeping consistent mesh geometry, faults, and oil-water contact. 
+    %
+    Uncertain properties such as facies, porosity, permeability, NG ratio,
+    initial water saturation distribution, and transmissibility within faults were considered. 
+
+    By first generating a high-fidelity base model with approximately 5 million grid cells,
+    5 wells were drilled into this base case model and synthetic records were generated for each of these wells.
+    %
+    These records were then used to constrain the generation of 50 high-fidelity realizations to capture uncertainty. 
+    %
+    Each was upscaled for flow simulations using the flow-based upscaling method, 
+    featuring a total of 18 wells in each realization, of which 11 are producers and 7 are injectors. 
+    %
+    Each realization includes 7 injector wells, labeled INJ-$1$ to INJ-$7$, and 11 producer wells, labeled PROD-$1$ to PROD-$11$.
+    Producers produce oil and water, but not gas.
+    % 
+    \Cref{fig:olympus-realizations} illustrates the permeability in the $x$ direction for selected realizations, 
+    depicted with colors on a logarithmic scale and a fivefold exaggeration of the $z$-axis.
+
+    \begin{figure}[htbp]\centering
+        \caption{%
+            Top view of selected realizations from the OLYMPUS ensemble. 
+            Renderings were produced using the open-source software ResInsight.
+        }
+        \label{fig:olympus-realizations}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_6}
+            \caption{06}\vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_11}
+            \caption{11}\vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_15}
+            \caption{15}\vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_16}
+            \caption{16}\vspace{0.2cm}
+        \end{subfigure}
+        \begin{subfigure}[b]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_19}
+            \caption{19}\vspace{0.2cm}
+        \end{subfigure}
+        %
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_25}
+            \caption{25}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_32}
+            \caption{32}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_38}
+            \caption{38}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_43}
+            \caption{43}
+        \end{subfigure}
+        \begin{subfigure}[t]{.18\linewidth}
+            \includegraphics[width=.825\linewidth]{realizations/OLYMPUS_44}
+            \caption{44}
+        \end{subfigure}
+        %
+        \fonte{\citeonline{Oniram:2025}.}
+    \end{figure}
+
+\subsection{Real field}
+Given that most parameters characterizing the properties of the carbonate reservoir in question 
+cannot be disclosed due to ongoing confidentiality agreements with industrial partners, 
+only essential information is provided.
+
+The real field is a mature reservoir located in the Brazilian Post-Salt,
+with a production history spanning over 20 years.
+It is comprised of 8 injector wells, labeled I$1$ to I$8$, and 16 producer wells, labeled P$1$ to P$16$.
+Producers produce oil and water, but not gas.
+
+An ensemble of 200 realizations was generated from observed production data, 
+with a total of 510 simulation time steps of roughly 30 days each.
+Importantly, observed data has a time vector that is not identical to the simulation's but is a subset of it.
+
+\subsection{Field oil production totals}
+\label{subsec:fopts}
+The field oil production total (FOPT) 
+is a measurement commonly used to compare ensembles since ground-truth and realizations are each represented by a single value:
+how much oil was produced within the recorded data period. 
+%
+Furthermore, the FOPT range in an ensemble is correlated with reservoir complexity,
+so that simpler reservoirs are expected to exhibit a narrower range of FOPT in their ensemble 
+than a more complex reservoir. 
+%
+\Cref{fig:opt-cdf-all} shows the cumulative distribution function (CDF) of field oil production total (FOPT) of the case studies ensembles.
+FOPT values are normalized by the maximum across all a case study's realizations.
+
+The Egg ensemble has a relatively narrow, roughly uniform range of FOPT values,
+suggesting that the priors should be reasonable representatives of the ground-truths, 
+especially those that are closer to the median of the distribution. 
+
+On the other hand,
+the Olympus ensemble has a much wider (about 10 times that of the Egg ensemble), 
+albeit still roughly uniform, range of FOPT values.
+%
+The picked ground-truths (realizations 5, 10, etc.) are spread within the 5-95th percentiles, 
+with half of them quite distant from the median.
+Since this reservoir's FOPTs thin out at the percentile ranges of 0-5\% and 90-100\%,
+it would be expected that ground-truths picked from these ranges would be more difficult to match, 
+as they are less likely to be represented in the prior ensemble.
+This effect is further aggravated by the large range of FOPT values in the Olympus ensemble, which is roughly 10 times larger than that of the Egg ensemble.
+
+The real ensemble has a similarly wide range of FOPT values.
+However, the distribution quite lopsided, with a very populated 5-80th percentile range and a thin 0-5\% and 80-100\% range.
+As with the Olympus case, a broad range of FOPT values coupled with poorly-represented tails can lead to inadequate priors depending on where the ground-truth sits.
+%
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Distribution of field oil prodution totals for each realization in the Egg, Olympus, and     real field ensembles.
+        Each ensemble is normalized by its maximum FOPT.
+    }
+    \label{fig:opt-cdf-all}
+    \input{figures/realizations/fopt-all.tikz}
+    \fonte{Self-elaboration.}
+\end{figure}
