@@ -68,11 +68,20 @@ The corrupted vector is the oberved data during the history period, denoted $\ma
     \fonte{Self-elaboration.}
 \end{figure}
 
-\subsubsection{Bayes' theorem}
-
-
 \subsection{Statistical Framework}
 \label{subsec:statistical-framework}
+This subsection details the statistical frameworks underpinning the DSI-ESMDA algorithm,
+and expects the reader to hold knowledge of probability theory, namely:
+the axioms of probability; 
+what is a conditional probability; 
+statement of Bayes' theorem.
+what is a probability distribution; 
+formulation of Gaussian probability density function.
+%
+\Cref{subsec:fopts} also assume knowledge of cumulative distribution function. 
+%
+\citeonline[appendix C]{Emerick:2025} provides a brief overview of all these topics.
+
 DSI-ESMDA can be conceptulized as a Bayesian approach to the forecasting problem,
 aiming to estimate the underlying conditional probability distribution of 
 predictions given the reference data.
@@ -82,15 +91,6 @@ outputing a range of values rather than a single value.
 %
 While this makes evaluating the algorithm less straightforward, 
 it allows for quantification of uncertainty.
-%
-\Cref{fig:distribution-as-prediction}
-%
-\begin{figure}
-    \centering
-    \caption{Reservoir prediction ranges from samplings of a probability distribution.}
-    \label{fig:distribution-as-prediction}
-    \input{figures/distribution-as-prediction.tikz}
-\end{figure}
 
 Let $p(\mathbf{d}\mid \mathbf{d}_\text{obs})$ 
 be the conditional \emph{a posteriori} probability distribution
