@@ -92,20 +92,25 @@ outputing a range of values rather than a single value.
 While this makes evaluating the algorithm less straightforward, 
 it allows for quantification of uncertainty.
 
-Let $p(\mathbf{d}\mid \mathbf{d}_\text{obs})$ 
+Let $p(\mathbf{d}^*\mid \mathbf{d}_\text{obs})$ 
 be the conditional \emph{a posteriori} probability distribution
-of true reservoir production being $\mathbf{d}$ given observations $\mathbf{d}_\text{obs}$.
+of true reservoir production being $\mathbf{d}^*$ given observations $\mathbf{d}_\text{obs}$.
+%
+Note that, as with ground-truth production $\mathbf{d}$, 
+$\mathbf{d}^*$ can also be split into 
+history ($\mathbf{d}^*_h$) and 
+validation ($\mathbf{d}^*_h$) periods.  
 %
 From Bayes' theorem, one can write the posterior as
 %
 \begin{equation}
     p(\mathbf{d}\mid \mathbf{d}_\text{obs}) =
-    c_\text{pos} \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) p(\mathbf{d})
+    c_\text{pos} \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) p(\mathbf{d}^*)
 \label{eq:bayes}
 \end{equation}  
 %
 where $c_\text{pos}$ is, for the purposes of this work, a normalization constant;
-$\mathcal{L}(\mathbf{d}_\text{obs}\mid \mathbf{d})$,
+$\mathcal{L}(\mathbf{d}_\text{obs}\mid \mathbf{d}^*)$,
 the likelihood function%
 \footnote{%
     Note that the likelihood is denoted by a $\mathcal{L}$ instead of the usual $p$.
@@ -113,8 +118,8 @@ the likelihood function%
     i.e., they need not sum up to 1. 
 }, 
 is the probability of $\mathbf{d}_\text{obs}$ being the true reservoir production 
-if $\mathbf{d}$ was observed, and;
-$p(\mathbf{d})$, the prior, is the probability of observing $\mathbf{d}$
+if $\mathbf{d}^*$ was observed, and;
+$p(\mathbf{d}^*)$, the prior, is the probability of observing $\mathbf{d}^*$
 before observations $\mathbf{d}_\text{obs}$ were made.
 
 Maximizing \cref{eq:bayes} means finding reservoir production that is 
@@ -124,8 +129,8 @@ While this approach is statistically sensible, in practice a single maximization
 %
 This situation could be mitigated by assimilating more data, 
 since then the posterior would be adjusted Bayes' theorem,
-$p(\mathbf{d} \mid \mathbf{d}^\text{new}_\text{obs}, \mathbf{d}_\text{obs}) = 
-c^\text{new}_\text{pos} \mathcal{L}(\mathbf{d}^\text{new}_\text{obs}\mid \mathbf{d}) p(\mathbf{d} \mid \mathbf{d}_\text{obs})$,
+$p(\mathbf{d}^* \mid \mathbf{d}^\text{new}_\text{obs}, \mathbf{d}_\text{obs}) = 
+c^\text{new}_\text{pos} \mathcal{L}(\mathbf{d}^\text{new}_\text{obs}\mid \mathbf{d}^*) p(\mathbf{d}^* \mid \mathbf{d}_\text{obs})$,
 but it is assumed that $\mathbf{d}_\text{obs}$ already holds all the data available for analysis.
 
 Therefore, in order to improve data match, the effect of posterior updating is obtained 
@@ -134,8 +139,8 @@ by successively assimilating disturbed versions of observed data.
 This is called Multiple Data Assimilation (MDA), contrasting with the previous Single Data Assimilation (SDA).
 %
 Denoting the number of assimilations by $N_a$,
-assimilation $1\leq l\leq N_a$ with disturbed observations $\mathbf{d}^l_\text{obs}$
-produces posterior $p^l$ such that%
+assimilation $1\leq l\leq N_a$ with disturbed observations $\mathbf{d}^\ell_\text{obs}$
+produces posterior $p^\ell$ such that%
 \footnote{%
     Writing a conditional distribution as the product of simpler conditional distributions 
     is sometimes called  the chain rule of conditional probabilities
@@ -143,26 +148,32 @@ produces posterior $p^l$ such that%
 }
 %
 \begin{align}
-    p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
-    &= c^1_\text{pos} \mathcal{L}(\mathbf{d}^1_\text{obs}\mid \mathbf{d}) 
-                        p(\mathbf{d}) 
+    p^1(\mathbf{d}^*\mid \mathbf{d}^1_\text{obs}) 
+    &= c^1_\text{pos} \mathcal{L}(\mathbf{d}^1_\text{obs}\mid \mathbf{d}^*) 
+                        p(\mathbf{d}^*) 
 \label{eq:p1}
     \\
-    p^2(\mathbf{d}\mid \mathbf{d}^2_\text{obs}, \mathbf{d}^1_\text{obs}) 
-    &= c^2_\text{pos} \mathcal{L}(\mathbf{d}^2_\text{obs}\mid \mathbf{d}) 
-                        p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
+    p^2(\mathbf{d}^*\mid \mathbf{d}^2_\text{obs}, \mathbf{d}^1_\text{obs}) 
+    &= c^2_\text{pos} \mathcal{L}(\mathbf{d}^2_\text{obs}\mid \mathbf{d}^*) 
+                        p^1(\mathbf{d}^*\mid \mathbf{d}^1_\text{obs}) 
 \label{eq:p2} 
     \\
     &\ \ \vdots 
     \\
-    p^{N_a}(\mathbf{d}\mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})
-    &= c^{N_a}_{\text{pos},\mathcal{L}_\text{pos}} \mathcal{L}(\mathbf{d}^{N_a}_\text{obs} \mid \mathbf{d})
-        p^{N_a-1}(\mathbf{d}\mid \mathbf{d}^{N_a-1}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
+    p^{N_a}(\mathbf{d}^*\mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})
+    &= c^{N_a}_{\text{pos},\mathcal{L}_\text{pos}} \mathcal{L}(\mathbf{d}^{N_a}_\text{obs} \mid \mathbf{d}^*)
+        p^{N_a-1}(\mathbf{d}^*\mid \mathbf{d}^{N_a-1}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
 \label{eq:pNa} 
-    \\
-    &= p(\mathbf{d}) \prod_{l=1}^{N_a} c^l_\text{pos} \mathcal{L}(\mathbf{d}^l_\text{obs} \mid \mathbf{d}) 
-\label{eq:p-prod}
 \end{align}  
+%
+or
+%
+\begin{equation}
+    p^{N_a}(\mathbf{d}^*\mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})
+    =
+    p(\mathbf{d}^*) \prod_{l=1}^{N_a} c^\ell_\text{pos} \mathcal{L}(\mathbf{d}^\ell_\text{obs} \mid \mathbf{d}^*). 
+\label{eq:p-prod}
+\end{equation}  
 
 By successively updating the posterior with disturbed data, the posterior's maximum is also successively updated.
 If maximizing \cref{eq:bayes} was akin to trying to reach optimum $p^*$ in a single fixed step,
@@ -201,6 +212,8 @@ statistical framework outlined in \cref{subsec:statistical-framework}.
 %
 Chiefly, this process requires making assumptions on prior and likelihoods 
 and then using model ensembles to sample from the distributions. 
+%
+It will be assumed that the reader is familiar with linear algebra manipulations, and the gradient operation $\nabla$.
 
 In the context of reservoir engineering, it is standard to assume that data 
 (and model parameters, for that matter)
@@ -209,30 +222,37 @@ have underlying Gaussian distributions.
 In this case, the general likelihood in \cref{eq:bayes} becomes
 %
 \begin{equation}
-    \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) =
-    c_\mathcal{L} \exp(-\mathcal{O}_d(\mathbf{d}_\text{obs} - \mathbf{d}))
+    \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}^*) =
+    c_\mathcal{L} \exp(-\mathcal{O}_\mathcal{L}(\mathbf{d}_\text{obs}, \mathbf{d}^*))
 \end{equation}
 %
-where $\mathcal{O}_d$ is defined as
+where $\mathcal{O}_\mathcal{L}$ is defined as
 %
-\begin{equation}
-    \mathcal{O}_d(\mathbf{d}_\text{obs} - \mathbf{d}) =
+\begin{align}
+    \mathcal{O}_\mathcal{L}(\mathbf{d}_\text{obs}, \mathbf{d}) 
+    &=
     \frac{1}{2} 
-    (\mathbf{d}_\text{obs} - \mathbf{d})^\top 
+    (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)^\top 
     \mathbf{C}_e
-    (\mathbf{d}_\text{obs} - \mathbf{d}),
-\end{equation}
+    (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)\\
+    &=
+    \frac{1}{2} 
+    (\mathbf{d}_\text{obs} - \mathbf{d}_h)^\top 
+    \mathbf{C}_e
+    (\mathbf{d}_\text{obs} - \mathbf{d}_h),
+\end{align}
 %
-with $\mathbf{C}_e$ the measurement noise in observed data.
+with $\mathbf{C}_e$ the measurement noise in observed data and 
+$\mathbf{H}$ a matrix that extracts $\mathbf{d}^*_h$ from $\mathbf{d}^*$.
 %
 The associated posterior can then be rewritten as 
 %
 \begin{equation}
-    p(\mathbf{d} \mid \mathbf{d}_\text{obs}) = 
+    p(\mathbf{d}^* \mid \mathbf{d}_\text{obs}) = 
     c_\text{pos} 
     c_\mathcal{L} 
-    p(\mathbf{d}) 
-    \exp(-\mathcal{O}_d(\mathbf{d}_\text{obs} - \mathbf{d})).
+    p(\mathbf{d}^*) 
+    \exp(-\mathcal{O}_\mathcal{L}(\mathbf{d}_\text{obs}, \mathbf{d}^*_h)).
 \label{eq:posterior}
 \end{equation}
 
@@ -240,42 +260,42 @@ The associated posterior can then be rewritten as
 Similarly, the likelihood at assimilation $l$ in \cref{eq:p-prod} becomes
 %
 \begin{equation}
-    \mathcal{L}^l(\mathbf{d}_\text{obs}^l \mid \mathbf{d}) =
-    c^l_\mathcal{L} \exp(-\mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d}))
+    \mathcal{L}^\ell(\mathbf{d}_\text{obs}^\ell \mid \mathbf{d}^*_h) =
+    c^\ell_\mathcal{L} \exp(-\mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*))
 \end{equation}
 %
-where $\mathcal{O}^l_d$ is defined as
+where $\mathcal{O}^\ell_\mathcal{L}$ is defined as
 %
 \begin{equation}
-    \mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d}) =
+    \mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*) =
     \frac{1}{2} 
-    (\mathbf{d}_\text{obs} - \mathbf{d})^\top 
-    \mathbf{C}^l_e
-    (\mathbf{d}_\text{obs} - \mathbf{d}),
+    (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)^\top 
+    \mathbf{C}^\ell_e
+    (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*),
 \end{equation}
 %
-with $\mathbf{C}^l_e$ the measurement noise in the disturbed observed data.
+with $\mathbf{C}^\ell_e$ the measurement noise in the disturbed observed data.
 %
 The associated posterior can then be rewritten as 
 %
 \begin{align}
-    p^{N_a}(\mathbf{d} \mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
+    p^{N_a}(\mathbf{d}^* \mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs}) 
     &=
     p(\mathbf{d}) 
     \prod_{l=1}^{N_a} 
-        c^l_\text{pos} 
-        \mathcal{L}(\mathbf{d}^l_\text{obs}\mid \mathbf{d}) \\
+        c^\ell_\text{pos} 
+        \mathcal{L}(\mathbf{d}^\ell_\text{obs}\mid \mathbf{d}^*) \\
     &=
     p(\mathbf{d}) 
     \prod_{l=1}^{N_a} 
-        c^l_\text{pos} 
-        c^l_\mathcal{L}
-        \exp(-\mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d})) \\
+        c^\ell_\text{pos} 
+        c^\ell_\mathcal{L}
+        \exp(-\mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*)) \\
     &=
     c^{N_a}_{\text{pos},\mathcal{L}} 
-    p(\mathbf{d})
+    p(\mathbf{d}^*)
     \exp\left(
-        -\sum_{l=1}^{N_a} \mathcal{O}^l_d(\mathbf{d}^l_\text{obs} - \mathbf{d})
+        -\sum_{l=1}^{N_a} \mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*)
     \right) 
 \label{eq:posterior-MDA}
 \end{align}
@@ -285,204 +305,281 @@ absorbed the intermediary posterior and likelihood normalization constants.
 %
 Then, \cref{eq:posterior-MDA} is equivalent to \cref{eq:posterior} if and only if 
 %
-\begin{equation}
-    c^{N_a}_{\text{pos},\mathcal{L}} = c_\text{pos} c_\mathcal{L}, 
-    \quad 
-    \sum_{l=1}^{N_a} (\mathbf{C}^l_e)^{-1} = \mathbf{C}^{-1}_e.
-\label{eq:cov-requirement}
-\end{equation}
+\begin{subequations}
+    \begin{alignat}{4}
+        c^{N_a}_{\text{pos},\mathcal{L}} &= c_\text{pos} c_\mathcal{L}, \\
+        \sum_{l=1}^{N_a} (\mathbf{C}^\ell_e)^{-1} &= \mathbf{C}^{-1}_e.
+        \label{eq:cov-requirement}
+    \end{alignat}
+\end{subequations}
 
 Now, DSI-ESMDA models the covariance at assimilation $l$ proportionately to $\mathbf{C}_e$:
 %
 \begin{equation}
-    \mathbf{C}^l_e = \alpha_l \mathbf{C}_e, 
+    \mathbf{C}^\ell_e = \alpha^\ell \mathbf{C}_e, 
     \quad 
-    \alpha_l > 0,
+    \alpha^\ell > 0,
 \label{eq:cov-as-inflation}
 \end{equation}
 %
 so that \cref{eq:cov-requirement} reduces to
 %
 \begin{equation}
-    \sum_{l=1}^{N_a} \frac{1}{\alpha_l} = 1.
+    \sum_{l=1}^{N_a} \frac{1}{\alpha^\ell} = 1.
 \label{eq:alpha-requirement}
 \end{equation}
 
-Constants $\alpha_l$ parameterize the covariance in assimilation $l$,
+Constants $\alpha^\ell$ parameterize the covariance in assimilation $l$,
 and by extension how much the intermediary posterior distribution should tighten around the data.
 %
 Invoking the analogy at the end of \cref{subsec:statistical-framework} 
 and the associated illustration in \cref{fig:sda-versus-mda}, 
 $\mathbf{C}_e$ influences the direction of the adjustment,
 facilitating corrections on less uncertain data,
-and $\alpha_l$ influences the size of the adjustment, 
-so that assimilations with larger $\alpha_l$ incur smaller corrections.  
+and $\alpha^\ell$ influences the size of the adjustment, 
+so that assimilations with larger $\alpha^\ell$ incur smaller corrections.  
 
 The next step towards an implementable update equation is assuming the prior distribution is also Gaussian, i.e.,
 %
 \begin{equation}
-    p(\mathbf{d}) = c_\text{prior} \exp(-\mathcal{O}_p(\mathbf{d} - \mathbf{d}_\text{prior}))
+    p(\mathbf{d}) = c_\text{prior} \exp(-\mathcal{O}_p(\mathbf{d}^*, \mathbf{d}_\text{prior}))
 \label{eq:prior}
 \end{equation}
 %
 with $c_\text{prior}$ a normalization constant and
 %
 \begin{equation}
-    \mathcal{O}_p(\mathbf{d} - \mathbf{d}_\text{prior}) = 
+    \mathcal{O}_p(\mathbf{d}^*, \mathbf{d}_\text{prior}) = 
     \frac{1}{2}
-    (\mathbf{d} - \mathbf{d}_\text{prior})^\top 
+    (\mathbf{d}^* - \mathbf{d}_\text{prior})^\top 
     \mathbf{C}_p^{-1}
-    (\mathbf{d} - \mathbf{d}_\text{prior})
+    (\mathbf{d}^* - \mathbf{d}_\text{prior})
 \end{equation}
 %
 where $\mathbf{d}_\text{prior}$ is the prediction with highest belief of occurring prior to observing $\mathbf{d}_\text{obs}$,
 and $\mathbf{C}_p$ is the prior covariance matrix, i.e., it is assumed that 
-$\mathbf{d} \sim \mathcal{N}(\mathbf{d}_\text{prior}, \mathbf{C}_p)$.
+$\mathbf{d}^* \sim \mathcal{N}(\mathbf{d}_\text{prior}, \mathbf{C}_p)$.
 
 Substituting \cref{eq:prior} in \cref{eq:posterior-MDA}, 
 it follows that the first assimilation (\cref{eq:p1}) can be written as
 %
 \begin{align}
-    p^1(\mathbf{d} \mid \mathbf{d}^1_\text{obs})
+    p^1(\mathbf{d}^* \mid \mathbf{d}^1_\text{obs})
     &=
     c^1 \exp\left(
         -[
-            \mathcal{O}_p(\mathbf{d} - \mathbf{d}^0_\text{prior}) + 
-            \mathcal{O}^1_d(\mathbf{d}^1_\text{obs} - \mathbf{d})
+            \mathcal{O}^1_p(\mathbf{d}^*, \mathbf{d}^0_\text{prior}) + 
+            \mathcal{O}^1_\mathcal{L}(\mathbf{d}^1_\text{obs}, \mathbf{d}^*)
         ]
     \right) \\
     &=
-    c^1 \exp(-\mathcal{O}(\mathbf{d}, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior}))
+    c^1 \exp(-\mathcal{O}(\mathbf{d}^*, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior}))
 \label{eq:posterior-MDA-1}
 \end{align} 
 %
 where $c^1 = c_\text{prior} c^1_\text{pos} c^1_{\mathcal{L}}$,
+$\mathcal{O}(\mathbf{d}^*, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior}) =  
+\mathcal{O}_p(\mathbf{d}^*, \mathbf{d}^0_\text{prior}) + 
+\mathcal{O}^1_\mathcal{L}(\mathbf{d}^1_\text{obs}, \mathbf{d}^*)$,
 and $\mathbf{d}^0_\text{prior}$ is the mean of the prior distribution after 0 assimilations,
 i.e., before any assimilation was performed.
 %
-The maximum \emph{a posterior} (MAP) of the first assimilation,
+$\mathcal{O}^0_p$ is exactly equal to \cref{eq:prior}, 
+but with superscript $1$ denoting the use of $\mathbf{C}_p^0$, the covariance of $\mathbf{d}^0_\text{prior}$
+%
+The maximum \emph{a posteriori} (MAP) of the first assimilation,
 denoted $\mathbf{d}^1_\text{map}$, is thus given by 
 %
-\begin{align}
+\begin{equation}
     \mathbf{d}^1_\text{map} 
-    &= \argmin_\mathbf{d} (
-        \mathcal{O}(\mathbf{d}, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior})
+    = \argmin_{\mathbf{d}^*} (
+        \mathcal{O}(\mathbf{d}^*, \mathbf{d}^1_\text{obs}, \mathbf{d}^0_\text{prior})
     )
-    \\
-    0 &= \nabla_\mathbf{d}\mathcal{O}(
+\label{eq:argmin}
+\end{equation}
+%
+which works out to
+%
+\begin{align}
+    0 &= \nabla_{\mathbf{d}^*} \mathcal{O}(
         \mathbf{d}^1_\text{map}, 
         \mathbf{d}^1_\text{obs}, 
         \mathbf{d}^0_\text{prior}
     ) 
     \\
     0 &=
-    \mathbf{C}_p^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
+    (\mathbf{C}^0_p)^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
     -
-    \mathbf{C}_e^{-1} (\mathbf{d}^1_\text{obs} - \mathbf{d}^1_\text{map})
+    \mathbf{H}^\top (\mathbf{C}_e^1)^{-1} 
+    (\mathbf{d}^1_\text{obs} - \mathbf{H}\mathbf{d}^1_\text{map})
     \\
     0 &= 
-    \mathbf{C}_p^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
+    (\mathbf{C}^0_p)^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
     -
-    \mathbf{C}_e^{-1} (\mathbf{d}^1_\text{obs} - \mathbf{d}^0_\text{prior} - 
-        [\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior}]
-    )
+    \mathbf{H}^\top (\mathbf{C}_e^1)^{-1} 
+    (\mathbf{d}^1_\text{obs} - \mathbf{H}\mathbf{d}^0_\text{prior} - 
+     \mathbf{H}[\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior}])
+    \\
+    0 &= 
+    (\mathbf{C}^0_p)^{-1} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
+    -
+    \mathbf{H}^\top (\mathbf{C}_e^1)^{-1} (\mathbf{d}^1_\text{obs} - \mathbf{H}\mathbf{d}^0_\text{prior}) 
+    +
+    \mathbf{H}^\top (\mathbf{C}_e^1)^{-1} \mathbf{H} (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
 \end{align}
-
-DSI-ESMDA updates the ensemble outputs by iterating a Kalman-like data assimilation, shown below
-\cite{Lima:2020}:
 %
-\begin{equation}
-    \mathbf{d}_j^{k+1} 
-    =
-    \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
-    (\mathbf{d}_\text{obs} + \sqrt{\alpha_k}\mathbf{e}_j^k - \mathbf{d}_{h,\ j}^k),
-\label{eq:iteration_dsiesmda}
-\end{equation}
-%
-with $1 \leq k \leq N_a$, $N_a$ the number of assimilations DSI-ESMDA must do.
-Thus, $\mathbf{d}_j^k$ for $k=1$ is the prior ensemble (initially denoted $\mathbf{d}_j$),
-and $\mathbf{d}_j^{Na+1}$, the posterior.
-%
-Vector $\mathbf{e}_j^k\sim N(\mathbf{0}, \mathbf{C}_e)$ is a random disturbance,
-and $\alpha_k$ coefficients are positive constants that satisfy $\sum_k 1/\alpha_k = 1$. 
-
-Matrices $\mathbf{R}$ and $\mathbf{K}$ are the localization and the modified Kalman gain, respectively.
-$\mathbf{K}$ is defined as
-%
-\begin{equation}
-    \mathbf{K}^k = 
-    \Delta\mathbf{D}^k (\Delta\mathbf{D}_h^k)^\top
-    \left(
-        \Delta\mathbf{D}_h^k (\Delta\mathbf{D}_h^k)^\top
-        +
-        \alpha_k\mathbf{C}_e
-    \right)^{-1},
-\end{equation}
-%
-with 
+or
 %
 \begin{align}
-    \Delta\mathbf{D} &= \frac{1}{\sqrt{N_e-1}} 
-    \begin{bmatrix}
-        \mathbf{d}_1 - \overline{\mathbf{d}} &
-        \cdots &
-        \mathbf{d}_{N_e} - \overline{\mathbf{d}}
-    \end{bmatrix}, 
-\label{eq:delta-d}
+    ((\mathbf{C}^0_p)^{-1} + \mathbf{H}^\top (\mathbf{C}^1_e)^{-1} \mathbf{H})
+    (\mathbf{d}^1_\text{map} - \mathbf{d}^0_\text{prior})
+    &=
+    \mathbf{H}^\top (\mathbf{C}_e^1)^{-1} (\mathbf{d}^1_\text{obs} - \mathbf{d}^0_{h, \text{prior}}) 
     \\
-    \overline{\mathbf{d}} &= \frac{1}{N_e} 
-    \sum_{j=1}^{N_e} \mathbf{d}_j,
+    \mathbf{d}^1_\text{map}
+    &=
+    \mathbf{d}^0_\text{prior} +
+    \mathbf{K}^1 (\mathbf{d}^1_\text{obs} - \mathbf{d}^0_{h, \text{prior}}).
+\label{eq:kalman}
 \end{align}
-a matrix that quantifies the spread of the ensemble. 
-$\Delta \mathbf{D}_h$ is defined analogously by constraining the above equations to the history matching period:
 %
-\begin{align}
-    \Delta\mathbf{D}_h &= \frac{1}{\sqrt{N_e-1}} 
-    \begin{bmatrix}
-        \mathbf{d}_{h, 1} - \overline{\mathbf{d}}_h &
-        \cdots &
-        \mathbf{d}_{h, N_e} - \overline{\mathbf{d}}_h
-    \end{bmatrix}, 
+where 
+%
+\begin{equation}
+    \mathbf{K}^1 = 
+    ((\mathbf{C}^0_p)^{-1} + \mathbf{H}^\top (\mathbf{C}^1_e)^{-1} \mathbf{H})^{-1}
+    \mathbf{H}^\top (\mathbf{C}_e^1)^{-1}.
+\label{eq:gain-original}
+\end{equation}
+
+The general structure of \cref{eq:kalman}, 
+where a gain is applied to \emph{a priori} prediction error 
+(called the innovation, or, in this case, innovation vector) 
+in order to improve data mismatch, 
+is characteristic of Kalman filtering%
+\footnote{%
+    Indeed, the Bayesian framework can be used in order to derive the standard Kalman filter equations.
+}.
+Hence, in this work, $\mathbf{K}$ is referred to as ``Kalman-like gain'', and \cref{eq:kalman}, as the ``Kalman-like update''.
+
+While \cref{eq:gain-original} is a valid expression, it requires several matrix inversions, which can be computationally expensive.
+\Cref{appendix:woodbury} shows that the Kalman gain is equivalent to
+%
+\begin{equation}
+    \mathbf{K}^1 = 
+    \mathbf{C}^0_p\mathbf{H}^\top
+    (\mathbf{H}^\top (\mathbf{C}^0_p) \mathbf{H} + \mathbf{C}^1_e)^{-1}.
+\label{eq:gain-woodbury}
+\end{equation}
+
+Denoting the prior's covariance in the history period by $\mathbf{C}^0_{hh,p}$,
+and the prior's cross-covariance of the history period by $\mathbf{C}^0_{hd,p}$,
+it follows that 
+%
+\begin{subequations}
+    \begin{alignat}{4}
+        \mathbf{C}^0_{hh,p} &= \mathbf{H}^\top (\mathbf{C}^0_p) \mathbf{H},
     \\
-    \overline{\mathbf{d}}_h &= \frac{1}{N_e} 
-    \sum_{j=1}^{N_e} \mathbf{d}_{h, j}.
-\end{align}
+        \mathbf{C}^0_{dh,p} &= \mathbf{C}^0_p\mathbf{H}^\top.
+    \end{alignat}
+\label{eq:covs}
+\end{subequations}
 
-\begin{note}[Index $v$]
-    Data vectors stack time series of a fields' measurements, 
-    so index $v$ in this chapter's equations specify a datum in place and time simultaneously.
-    %
-    For example, if DSI is being applied on the oil production of two wells of a field, 
-    each with a simulation time vector of 100 elements, 
-    then for any $1\leq j\leq N_e$ $\mathbf{d}_j$ would be 200$\times$1, 
-    with elements $v=1$ through $v=100$ the oil production history of the first well,
-    and elements $v=101$ through $v=200$ the oil production history of the second well.
-\end{note}
+In practice, $\mathbf{C}^0_p$ can't be known, and \cref{eq:covs} must be approximated 
+by sampling the prior distribution.
+%
+This is done through the prediction forward model of an ensemble of model realizations.
+%
+Denoting by $\mathbf{d}^0_j$ the prediction vector obtained by running the forward model on realization $j$,
+$1\leq j\leq N_e$, the following approximations of \cref{eq:covs} are obtained:
+%
+\begin{subequations}
+    \begin{alignat}{4}
+    \mathbf{C}^0_{hh,p} &\approx \Delta\mathbf{D}^0_h\Delta\mathbf{D}^0_h,
+    \\
+        \mathbf{C}^0_{dh,p} &\approx \Delta\mathbf{D}^0(\Delta\mathbf{D}^0_h)^\top.
+    \end{alignat}
+\label{eq:covs-approximation}
+\end{subequations}
+%
+with
+%
+\begin{subequations}
+    \begin{alignat}{4}
+        \Delta\mathbf{D}^0 &= \frac{1}{\sqrt{N_e-1}} 
+        \begin{bmatrix}
+            \mathbf{d}^0_1 - \overline{\mathbf{d}}^0 &
+            \cdots &
+            \mathbf{d}^0_{N_e} - \overline{\mathbf{d}}^0
+        \end{bmatrix}, 
+    \label{eq:delta-d}
+    \\
+        \overline{\mathbf{d}}^0 &= \frac{1}{N_e} 
+        \sum_{j=1}^{N_e} \mathbf{d}^0_j,
+    \end{alignat}
+\end{subequations}
+%
+and
+%
+\begin{subequations}
+    \begin{alignat}{4}
+        \Delta\mathbf{D}^0_h &= \frac{1}{\sqrt{N_e-1}} 
+        \begin{bmatrix}
+            \mathbf{d}^0_{h, 1} - \overline{\mathbf{d}}^0_h &
+            \cdots &
+            \mathbf{d}^0_{h, N_e} - \overline{\mathbf{d}}^0_h
+        \end{bmatrix}, 
+    \\
+        \overline{\mathbf{d}}^0_h &= \frac{1}{N_e} 
+        \sum_{j=1}^{N_e} \mathbf{d}^0_{h, j}.
+    \end{alignat}
+\end{subequations}
 
-\begin{note}[Time vectors]
-    Note that all realization data vectors are implicitly assumed to have a synchronized time vector.
-    Ultimately, this means simulation scheduling was the same for all realizations. 
-    %
-    Reference data, however, is under no obligation to follow this scheduling.
-    %
-    As such, in order for \cref{eq:iteration_dsiesmda} to work,
-    the history period of the realization data is constrained to match the observed data's.
-    %
-    This leads to an important practical requirement of the algorithm:
-    for simulations to cover the time vector of observed data.
-    %
-    \Cref{fig:time-vector-illustration} illustrates this process 
-    for data vectors with a single feature (e.g., field oil production total). 
-    %
-    \begin{center}
-        \captionof{figure}{Synchronization between realization data vector and reference data.}
-        \label{fig:time-vector-illustration}
-        \input{figures/time-vector-illustration.tikz}
-        \fonte{Self-elaboration.}
-    \end{center}
-\end{note}
+At the next data assimilation, 
+$\mathbf{d}^1_\text{prior} = \mathbf{d}^1_\text{map}$,
+$\mathbf{d}^2_\text{obs} \sim \mathcal{N}(\mathbf{d}_\text{obs}, \mathbf{C}^\ell_e)$,
+and the minimization \cref{eq:argmin} is repeated.
+%
+Following the pattern,
+the update equation after $1\leq \ell\leq N_a$ assimilations becomes
+%
+\begin{subequations}
+    \begin{alignat}{4}
+        \mathbf{d}_j^{\ell+1} 
+        &=
+        \mathbf{d}_j^\ell + \mathbf{K}^\ell
+        (\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell - \mathbf{d}_{h,j}^\ell),
+        \\
+        \mathbf{K}^\ell 
+        &=  
+        \Delta\mathbf{D}^\ell\Delta\mathbf{D}^\ell_h
+        (\Delta\mathbf{D}^\ell_h\Delta\mathbf{D}^\ell_h + \alpha^\ell\mathbf{C}_e)^{-1}.
+        \label{eq:kalman-gain-l}
+    \end{alignat}
+\label{eq:iteration_dsiesmda-no-loc}
+\end{subequations}
+%
+with $\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell$, 
+$\mathbf{e}^\ell_j \sim \mathcal{N}(\mathbf{0}, \mathbf{C}_e)$, 
+implementing the sampling 
+$\mathbf{d}_\text{obs}^\ell \sim 
+\mathcal{N}(\mathbf{d}_\text{obs}, \mathbf{C}^\ell_e) =
+\mathcal{N}(\mathbf{d}_\text{obs}, \alpha^\ell\mathbf{C}_e)$.
+
+\Cref{eq:iteration_dsiesmda-no-loc} is the base DSI-ESMDA equation.
+Compared to the equation originally introduced by \citeonline{Lima:2020},
+a covariance localization factor was omitted. 
+This factor improves the Kalman-like update by diminishing the Kalman gain between weakly correlated data,
+and is addressed in the following subsection. 
 
 \subsection{Improving data match with covariance localization}
+\begin{equation}
+    \mathbf{d}_j^{\ell+1} 
+    =
+    \mathbf{d}_j^\ell + (\mathbf{R}\circ\mathbf{K}^\ell)
+    (\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell - \mathbf{d}_{h,\ j}^\ell),
+\label{eq:iteration_dsiesmda}
+\end{equation}
 $\mathbf{R}$ adjusts the Kalman gain, 
 preserving correlated measures while 
 diminishing the impact of spuriously correlated measures. 

@@ -1,6 +1,6 @@
 \begin{tikzpicture}[> = latex]
     \draw [->] (0, 0) -- node[at end, right] {$\lambda$} (4.3, 0); 
-    \draw [->] (0, 0) -- node[at end, above] {$\alpha$} (0, 1.6);
+    \draw [->] (0, 0) -- node[at end, above] {$\alpha^\ell_{j,v}$} (0, 1.6);
     
     \draw [very thick, verdeunb, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(0.5/(\x*sqrt(2)))});
     \draw [very thick, verdeunb] plot[domain=1:4, samples=200] (\x, {erf(0.5/(\x*sqrt(2)))});

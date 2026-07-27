@@ -14,26 +14,26 @@ The inherent problem of history matching may be impossible to solve, but it may 
 This work proposes doing so by adaptively adjusting the importance of the history mismatch when running the update iterations:
 %
 \begin{align}
-    \mathbf{d}_j^{k+1} 
+    \mathbf{d}_j^{\ell+1} 
     &=
-    \mathbf{d}_j^k + (\mathbf{R} \circ \mathbf{K}^k) 
+    \mathbf{d}_j^\ell + (\mathbf{R} \circ \mathbf{K}^\ell) 
     [
-    \bm{\alpha}_j^k \circ 
-    (\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)], 
+    \bm{\alpha}_j^\ell \circ 
+    (\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)], 
 \label{eq:iteration_gated}
     \\
-    \alpha_{j,\ v}^k 
+    \alpha_{j, v}^\ell 
     &= \mathrm{erf}
     \left(
         \frac{1}{\lambda \sqrt{2\sigma_v^2}} 
-        |(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v|
+        |(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_v|
     \right)
 \label{eq:alpha_lambda}
 \end{align}
 %
 The equation above is based on the work of \citeonline{Fortaleza:2022}. 
 %
-Statistically, the gating coefficient $\alpha^k_{j,v}\in[0, 1)$ (see \cref{fig:erf}) is the probability that 
+Statistically, the gating coefficient $\alpha^\ell_{j,v}\in[0, 1)$ (see \cref{fig:erf}) is the probability that 
 the prediction of datum $v$ of realization $j$ reflects the same direction of its target value 
 given the uncertainty in the data.
 %
@@ -43,7 +43,8 @@ The gating recovers variance loss in the posterior ensemble by diminishing Kalma
 As \cref{fig:alpha} shows, the smaller the mismatch of a measurement relative to the noise at that datum, 
 the smaller the coefficients, and thus the smaller the update.
 Constant $\lambda\geq 1$ inflates the deviation, further softening the Kalman-like update.
-At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^k$), $\bm{\alpha}_j^k = \mathbf{0}$ and the DSI update is fully undone. 
+At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^\ell$), 
+$\bm{\alpha}_j^\ell = \mathbf{0}$ and the Kalman-like update is fully undone. 
 
 \begin{figure}[htbp]
     \centering
@@ -67,7 +68,7 @@ At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^
     %
     \begin{subfigure}[b]{0.36\textwidth}
         \centering
-        \caption{$\alpha_{j,\ v}^k$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^k)_v| = q\sigma_v$.}
+        \caption{$\alpha_{j,\ v}^\ell$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^\ell)_v| = q\sigma_v$.}
         \label{fig:alpha}
         \input{figures/gating-intensities.tikz}
     \end{subfigure}
@@ -124,3 +125,37 @@ That being the case, the quality of the update is heavily dependent on the quali
 a prior not being representative of the reference, 
 or a history period with too little data,
 are significant obstacles in the pursuit of a well adjusted posterior.
+
+\begin{note}[Index $v$]
+    Data vectors stack time series of a fields' measurements, 
+    so index $v$ in this chapter's equations specify a datum in place and time simultaneously.
+    %
+    For example, if DSI is being applied on the oil production of two wells of a field, 
+    each with a simulation time vector of 100 elements, 
+    then for any $1\leq j\leq N_e$ $\mathbf{d}_j$ would be 200$\times$1, 
+    with elements $v=1$ through $v=100$ the oil production history of the first well,
+    and elements $v=101$ through $v=200$ the oil production history of the second well.
+\end{note}
+
+\begin{note}[Time vectors]
+    Note that all realization data vectors are implicitly assumed to have a synchronized time vector.
+    Ultimately, this means simulation scheduling was the same for all realizations. 
+    %
+    Reference data, however, is under no obligation to follow this scheduling.
+    %
+    As such, in order for \cref{eq:iteration_dsiesmda} to work,
+    the history period of the realization data is constrained to match the observed data's.
+    %
+    This leads to an important practical requirement of the algorithm:
+    for simulations to cover the time vector of observed data.
+    %
+    \Cref{fig:time-vector-illustration} illustrates this process 
+    for data vectors with a single feature (e.g., field oil production total). 
+    %
+    \begin{center}
+        \captionof{figure}{Synchronization between realization data vector and reference data.}
+        \label{fig:time-vector-illustration}
+        \input{figures/time-vector-illustration.tikz}
+        \fonte{Self-elaboration.}
+    \end{center}
+\end{note}
