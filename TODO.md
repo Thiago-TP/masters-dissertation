@@ -138,18 +138,18 @@ but supporting/context concepts have not been addressed.
 
 - what's left to do/change:
   - [X] subsubsection on a quick review of probability theory (see appendix C of Emerick's book). Definition of probability, Kolmogorov axioms, and Bayes' theorem should be included here, as well as a picture of the classical Vein diagram.
-  - [ ] review notation: sometimes d appears where d_h should be.
-  - [ ] review notation: swap k for l in the update equation.
-  - [ ] finish the derivation of the base update equation (d_map).
-  - [ ] after presentation of the base equation, comment on the "ensemble smoother" portion of DSI-ESMDA.
-  - [ ] covariance localization subsection: adapt comentary from Emerick's book (sections 7.1 and 7.3).
+  - [X] review notation: sometimes d appears where d_h should be.
+  - [X] review notation: swap k for l in the update equation.
+  - [X] finish the derivation of the base update equation (d_map).
+  - [X] after presentation of the base equation, comment on the "ensemble smoother" portion of DSI-ESMDA.
+  - [X] covariance localization subsection: adapt comentary from Emerick's book (sections 7.1 and 7.3).
 - importance (out of 10): 10
 - estimated time required (in hours): 2
 
 #### 3.4 Gated DSI-ESMDA
 
 - what's left to do/change:
-  - [ ] a paragraph commenting on figure 2.6, possibly also absorbing some of the figure's caption text.
+  - [X] a paragraph commenting on figure 2.6, possibly also absorbing some of the figure's caption text.
 - importance (out of 10): 3
 - estimated time required (in hours): 0.1 (5 minutes)
 
@@ -167,7 +167,7 @@ This section is effectively complete, but there might be a table missing.
 #### 4.2 Reservoir case studies
 
 - what's left to do/change:
-  - [ ] there might be a table of fluid properties missing for the Egg ensemble. Check Emanuel's thesis or the SPE paper.
+  - [X] there might be a table of fluid properties missing for the Egg ensemble. Check Emanuel's thesis or the SPE paper.
 - importance (out of 10): 1
 - estimated time required (in hours): 0.2 (10 minutes)
 

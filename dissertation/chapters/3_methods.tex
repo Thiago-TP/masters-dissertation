@@ -334,7 +334,7 @@ Your reader should be able to answer the following questions when they're done r
     how experiments will be set up (\cref{subsec:evaluation-workflow}), 
     how the error covariance matrix $\mathbf{C}_e$ is constructed (\cref{subsec:noise-modeling}),
     what metrics will be used to evaluate the performance of the methods (\cref{subsec:evaluation-metrics}), and
-    what parameters are used (\cref{subsec:evaluation-parameters}). 
+    what parameters  and features are used (\cref{subsec:evaluation-parameters}). 
 
     \subsection{Evaluation workflow}
     \label{subsec:evaluation-workflow}
@@ -494,16 +494,8 @@ Your reader should be able to answer the following questions when they're done r
     \IBGEtab{%
         \caption{Time-related simulation parameters per reservoir.}
         \label{tab:simulation-parameters-time}
-    }{
-        \begin{tabular}{c c R{1.75cm} R{2.75cm} rl rl}
-            \toprule
-            Reservoir  & $N_e$ & Number of time steps & Time step size       & \multicolumn{2}{c}{Simulation life} & \multicolumn{2}{c}{History split} \\ 
-            \midrule
-            Egg        & 100   & 120                  & 30 days              & 3600 days  & (9.8 years)            & 60\% & (5.9 years)\\
-            Olympus    & 49    & 20                   & 1 calendar year      & 7305 days  & (20 years)             & 60\% & (12 years)\\
-            Real field & 200   & 510                  & 1 calendar month$^*$ & 12785 days & (35 years)             & 60\% & (21 years)$^{**}$\\
-            \bottomrule
-        \end{tabular}
+    }{%
+        \input{tables/simulation-parameters-time.tex}
     }{%
         \fonte{Self-elaboration.}
         \nota[$^*$]{The very first time step is the only exception.}
@@ -515,15 +507,20 @@ Your reader should be able to answer the following questions when they're done r
     \IBGEtab{%
         \caption{Localization-related simulation parameters per reservoir.}
         \label{tab:simulation-parameters-localization}
-    }{
-        \begin{tabular}{c C{2cm} C{2cm} r C{2cm}}
-            \toprule
-            Reservoir  & Critical length in $x$ & Critical length in $y$ & Critical time & Anisotropy angle \\ \midrule
-            Egg        & 100                    & 100                    & 3000 days     & 0\textdegree \\
-            Olympus    & 100                    & 100                    & 7200 days     & 0\textdegree \\
-            Real field & -                      & -                      & 10500 days    & 0\textdegree \\
-            \bottomrule
-        \end{tabular}
+    }{%
+        \input{tables/simulation-parameters-localization}
+    }{%
+        \fonte{Self-elaboration.}
+        \nota{Critical lengths are in amount of gridblocks.}
+    }
+    \end{table}
+
+    \begin{table}[htbp]
+    \IBGEtab{%
+        \caption{Localization-related simulation parameters per reservoir.}
+        \label{tab:simulation-parameters-localization}
+    }{%
+        \input{tables/simulation-parameters-localization}
     }{%
         \fonte{Self-elaboration.}
         \nota{Critical lengths are in amount of gridblocks.}
