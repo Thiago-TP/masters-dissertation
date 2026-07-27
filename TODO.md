@@ -65,11 +65,11 @@ but the background context is sorely underdeloped.
 #### 1.2 Background context
 
 - what's left to do/change:
-    - [x] expound contextualization with a paragraph saying models are 3d grids of physical parameters, and list the most important parameters (check Emerick's book, most likely chapter 1)
-    - [x] expound contextualization with a paragraph with general description of subsurface simulators, and list commonly used simulators. Also should introduce the concept of reservoir states, listing the most important ones.
-    - [ ] expound contextualization with a literature review subsection describing and comparing, in order: KF, EKF, EnKF, ES, ES-MDA, PFA, DSI, DSI-ESMDA. The first five are "history match" methods, and the last "data-space inversion methods". Comparisons should be group-focused. Include a timeline of the cited works.
-    - [x] expound contextualization with a scope subsection describing the aims of Gated DSI-ESMDA and where it can be applied.
-    - [ ] expound contextualization with a figure comparing data-space and model-space inversion (possibly added in the literature review subsection).
+  - [X] expound contextualization with a paragraph saying models are 3d grids of physical parameters, and list the most important parameters (check Emerick's book, most likely chapter 1)
+  - [X] expound contextualization with a paragraph with general description of subsurface simulators, and list commonly used simulators. Also should introduce the concept of reservoir states, listing the most important ones.
+  - [ ] expound contextualization with a literature review subsection describing and comparing, in order: KF, EKF, EnKF, ES, ES-MDA, PFA, DSI, DSI-ESMDA. The first five are "history match" methods, and the last "data-space inversion methods". Comparisons should be group-focused. Include a timeline of the cited works.
+  - [X] expound contextualization with a scope subsection describing the aims of Gated DSI-ESMDA and where it can be applied.
+  - [ ] expound contextualization with a figure comparing data-space and model-space inversion (possibly added in the literature review subsection).
 - importance (out of 10): 10
 - estimated time required (in hours): 6
 
@@ -125,19 +125,19 @@ but supporting/context concepts have not been addressed.
 #### 3.2 Elements of reservoir engineering
 
 - what's left to do/change:
-  - [x] A paragraph at the start of the section stating its contents: general characterization of a reservoir and of subsurface simulation.
-  - [x] Reservoir formation subsection: a paragraph or two on how a reservoir is formed and what it can store. Important concepts like facies and faults must be introduced here  (see Emerick's book, then Emanuel's thesis).
-  - [ ] Subsurface simulation subsection: a paragraph briefly describing the role of wells in reservoir production. The types of well (producer, injector) and their geometry (vertical, horizontal) should be described here (see Emerick's book).
-  - [ ] Subsurface simulation subsection: a paragraph on what reservoir states are and how they evolve during oil production (see Emerick's book, then Emanuel's thesis). Reservoir control should be briefly mentioned here.
-  - [ ] Subsurface simulation subsection: a paragraph on the general workings of a subsurface simulator. The main equations employed should be presented here (see Emerick's book, then Emanuel's thesis).
-  - [ ] Subsurface simulation subsection: a paragraph on the forward model and the prediction forward model. The most important features of this work, i.e., OPR, WPR, WIR, WCTP, FOPT and BHP should be highlighted here (see Emerick's book, and Eclipse's manual).
+  - [X] A paragraph at the start of the section stating its contents: general characterization of a reservoir and of subsurface simulation.
+  - [X] Reservoir formation subsection: a paragraph or two on how a reservoir is formed and what it can store. Important concepts like facies and faults must be introduced here  (see Emerick's book, then Emanuel's thesis).
+  - [X] Subsurface simulation subsection: a paragraph briefly describing the role of wells in reservoir production. The types of well (producer, injector) and their geometry (vertical, horizontal) should be described here (see Emerick's book).
+  - [X] Subsurface simulation subsection: a paragraph on what reservoir states are and how they evolve during oil production (see Emerick's book, then Emanuel's thesis). Reservoir control should be briefly mentioned here.
+  - [X] Subsurface simulation subsection: a paragraph on the general workings of a subsurface simulator. The main equations employed should be presented here (see Emerick's book, then Emanuel's thesis).
+  - [X] Subsurface simulation subsection: a paragraph on the forward model and the prediction forward model. The most important features of this work, i.e., OPR, WPR, WIR, WCTP, FOPT and BHP should be highlighted here (see Emerick's book, and Eclipse's manual).
 - importance (out of 10): 10
 - estimated time required (in hours): 3
 
 #### 3.3 DSI-ESMDA
 
 - what's left to do/change:
-  - [ ] subsubsection on a quick review of probability theory (see appendix C of Emerick's book). Definition of probability, Kolmogorov axioms, and Bayes' theorem should be included here, as well as a picture of the classical Vein diagram.
+  - [X] subsubsection on a quick review of probability theory (see appendix C of Emerick's book). Definition of probability, Kolmogorov axioms, and Bayes' theorem should be included here, as well as a picture of the classical Vein diagram.
   - [ ] review notation: sometimes d appears where d_h should be.
   - [ ] review notation: swap k for l in the update equation.
   - [ ] finish the derivation of the base update equation (d_map).
@@ -175,6 +175,8 @@ This section is effectively complete, but there might be a table missing.
 
 - what's left to do/change:
   - [ ] comment on the computational specs used.
+  - [ ] move the parameters subsection into its own section
+  - [ ] table which features were used per case study (this could be in the results section instead)
 - importance (out of 10): 1
 - estimated time required (in hours): 0.2 (10 minutes)
 
