@@ -23,11 +23,26 @@ When your reader is finished with this section, they should be able to answer th
     and the real field in the Brazilian post-salt (\cref{sec:results-real-field}).
     %
     Brief commentaries are made on the trend of findings, 
-    and the computational time of the experiments are tabled.
+    and the computational time of the experiments are shown in \cref{tab:costs}.
     %
     Experiments were run on a commercial personal use laptop whose 
     specifications are presented in \cref{tab:specs}.
 }
+
+\begin{table}[htbp]
+    \centering
+    \IBGEtab{
+        \caption{%
+            Update iteration and localization matrix construction times after 10 runs.
+        }
+        \label{tab:costs}
+    }{%
+        \def\arraystretch{0.5}
+        \input{tables/costs.tex}
+    }{%
+        \fonte{Self-elaboration.}
+    }
+\end{table}
 
 \begin{table}[htbp]
     \centering
