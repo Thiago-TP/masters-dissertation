@@ -16,7 +16,32 @@ When your reader is finished with this section, they should be able to answer th
 }
 
 % Layout of the chapter
-\chapteroutline{}
+\chapteroutline{
+    This chapter presents the main findings of each of the three case studies:
+    the Egg ensemble (\cref{sec:results-egg}),
+    the Olympus ensemble (\cref{sec:results-olympus}),
+    and the real field in the Brazilian post-salt (\cref{sec:results-real-field}).
+    %
+    Brief commentaries are made on the trend of findings, 
+    and the computational time of the experiments are tabled.
+    %
+    Experiments were run on a commercial personal use laptop whose 
+    specifications are presented in \cref{tab:specs}.
+}
+
+\begin{table}[htbp]
+    \centering
+    \IBGEtab{
+        \caption{%
+            Component specifications of the machine used in order to run and benchmark experiments.
+        }
+        \label{tab:specs}
+    }{%
+        \input{tables/specs.tex}
+    }{%
+        \fonte{Self-elaboration.}
+    }
+\end{table}
 
 \input{chapters/4_results-egg.tex}
 \input{chapters/4_results-olympus.tex}
