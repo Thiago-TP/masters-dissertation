@@ -1,5 +1,5 @@
-\begin{tikzpicture}[> = latex]
-    \draw [<->] (0, 1.5) node [above] {$r(\delta)$} |- (2.25, 0) node [right] {$\delta$};
+\begin{tikzpicture}[> = latex, scale=2]
+    \draw [<->] (0, 1.4) node [above] {$r(\delta)$} |- (2.25, 0) node [right] {$\delta$};
     \draw (0, 0) node [below] {$0$};
     
     \draw [very thick, verdeunb, domain=0:1, samples=100, variable={\x}] plot 
@@ -17,5 +17,5 @@
         --++ (-1, 0)
     ;
     \draw (0, 1) node [left] {$1$};
-    \fill [verdeunb] (0, 1) circle (0.06);
+    \fill [verdeunb] (0, 1) circle (0.04);
 \end{tikzpicture}

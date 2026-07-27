@@ -68,6 +68,29 @@ The corrupted vector is the oberved data during the history period, denoted $\ma
     \fonte{Self-elaboration.}
 \end{figure}
 
+\begin{note}[Time vectors]
+    Note that all realization data vectors are implicitly assumed to have a synchronized time vector.
+    Ultimately, this means simulation scheduling was the same for all realizations. 
+    %
+    Reference data, however, is under no obligation to follow this scheduling.
+    %
+    As such, in order for \cref{eq:iteration_dsiesmda} to work,
+    the history period of the realization data is constrained to match the observed data's.
+    %
+    This leads to an important practical requirement of the algorithm:
+    for simulations to cover the time vector of observed data.
+    %
+    \Cref{fig:time-vector-illustration} illustrates this process 
+    for data vectors with a single feature (e.g., field oil production total). 
+    %
+    \begin{center}
+        \captionof{figure}{Synchronization between realization data vector and reference data.}
+        \label{fig:time-vector-illustration}
+        \input{figures/time-vector-illustration.tikz}
+        \fonte{Self-elaboration.}
+    \end{center}
+\end{note}
+
 \subsection{Statistical Framework}
 \label{subsec:statistical-framework}
 This subsection details the statistical frameworks underpinning the DSI-ESMDA algorithm,
@@ -488,7 +511,8 @@ it follows that
 In practice, $\mathbf{C}^0_p$ can't be known, and \cref{eq:covs} must be approximated 
 by sampling the prior distribution.
 %
-This is done through the prediction forward model of an ensemble of model realizations.
+This is done through the prediction forward model of an ensemble of model realizations
+(hence the ``Ensemble Smoother'' in DSI-ESMDA).
 %
 Denoting by $\mathbf{d}^0_j$ the prediction vector obtained by running the forward model on realization $j$,
 $1\leq j\leq N_e$, the following approximations of \cref{eq:covs} are obtained:
@@ -573,17 +597,38 @@ This factor improves the Kalman-like update by diminishing the Kalman gain betwe
 and is addressed in the following subsection. 
 
 \subsection{Improving data match with covariance localization}
+The quality of the approximations in \cref{eq:covs-approximation} 
+increase as the amount of members in the ensemble increase, 
+but the larger the ensemble, the more computational time is spent processing it.
+%
+To make matters worse, the quality of the approximations deteriorate as data dimension increase,
+since more spurious correlations are introduced.
+%
+Hence, small ensembles tend to benefit from some process of correlation adjustment,
+specially when applied to a complex reservoir. 
+
+Covariance localization, or simply localization, 
+is an \emph{ad hoc} procedure employed to mitigate the effects of small ensembles 
+\cite[section 7.5]{Emerick:2025}.
+%
+Its idea is weighting the influence a datum has on another datum 
+in a manner inverse to the distance between the points.
+%
+Localization is applied through Schur product between this matrix of weights $\mathbf{R}$,
+henceforth referred to as the localization matrix,
+and either the Kalman-like gain or the correlation matrices themselves.
+
+\citeonline{Lima:2020} apply localization to the Kalman-like gain,
+so that \cref{eq:iteration_dsiesmda-no-loc} becomes:
+%
 \begin{equation}
     \mathbf{d}_j^{\ell+1} 
     =
     \mathbf{d}_j^\ell + (\mathbf{R}\circ\mathbf{K}^\ell)
-    (\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell - \mathbf{d}_{h,\ j}^\ell),
+    (\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell - \mathbf{d}_{h, j}^\ell),
 \label{eq:iteration_dsiesmda}
 \end{equation}
-$\mathbf{R}$ adjusts the Kalman gain, 
-preserving correlated measures while 
-diminishing the impact of spuriously correlated measures. 
-As such, its entries lie in $[0, 1]$, and pointwisely multiply $\mathbf{K}$.
+
 Intuitively, a correlation is strong if measures of a same quantity were taken closer in space and/or in time, and weaker otherwise. 
 Denoting this ``distance'' by $\delta_{uv}$, 
 where $u$ is an index from $\mathbf{d}_j$ and 
@@ -618,8 +663,12 @@ $\mathbf{R}$ is given by
     \end{bmatrix}
     \begin{bmatrix}
         \Delta x_{uv} \\ \Delta y_{uv}
-    \end{bmatrix}
+    \end{bmatrix},
 \end{align}
+
+where $r$, a common choice in the context of localization, 
+is the Gaspari-Cohn 5th-order correlation function 
+\cite{Gaspari:1999}.
 
 $\Delta x_{uv}$ and $\Delta y_{uv}$ are the $x$ and $y$ differences, respectively, 
 between the points in space from where measure $u$ and $v$ were taken.
@@ -637,3 +686,13 @@ By critical, it is understood the inflection point $\delta=1$ in $r(\delta)$.
 %
 As illustrated by \cref{fig:compact-correlation-function}, the greater the critical value, 
 the more lax the localization, allowing more weakly correlated changes to hold more impact.
+
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Gaspari-Cohen 5th-order compact correlation function.
+    }
+    \label{fig:compact-correlation-function}
+    \input{figures/compact-correlation-function.tikz}
+    \fonte{Self-elaboration.}
+\end{figure}
