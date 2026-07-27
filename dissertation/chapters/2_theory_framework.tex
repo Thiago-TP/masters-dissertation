@@ -4,7 +4,14 @@
 % ----------------------------------------------------------
 
 % Layout of the chapter
-\chapteroutline{}
+\chapteroutline{%
+    This chapter's main aim is to derive the ensemble update equations of DSI-ESMDA and the proposed Gated DSI-ESMDA.
+    This requires, first and foremost, carrying out extensive groundwork on the notation and statistical framework underpinning DSI-ESMDA.
+    \Cref{sec:forward-model} defines the meaning of a forward model, a central concept in reservoir prediction,
+    and introduces notation on data vectors.
+    \Cref{sec:dsi-esmda} builds the statistical framework behind DSI-ESMDA and from it derives the ensemble update equation.
+    \Cref{sec:gated-dsi-esmda} presents and discusses the Gated DSI-ESMDA ensemble update equation, capping off the chapter.
+}
 
 \debug{%
 The theory framework is the scaffolding upon which your thesis is built. 
@@ -25,7 +32,7 @@ That means that a theory framework can take different forms:
 \begin{itemize}
     \item It can state the theoretical assumptions underpinning the study.
     \item It can connect the empirical data to existing knowledge.
-    \item It can allow you to come up with propositions, concepts or hypotheses that you can use to answer ‘how’ and ‘why’ questions.
+    \item It can allow you to come up with propositions, concepts or hypotheses that you can use to answer `how' and `why' questions.
 \end{itemize}
 }
 
@@ -156,14 +163,28 @@ The description of each symbol is given below
     \item[$\mathbf{g}$] gravitational acceleration vector.
 \end{description}
 
-% It is worth noting that the first-order Markov condition holds in reservoir simulations,
-% where the state (say, pressure and saturation) at time tn is solely dependent on static
-% parameters and the state at the preceding time step, tn-1. This property is precisely
-% why we can employ restarts in reservoir simulators.
-    
+\section{DSI-ESMDA}
+\label{sec:dsi-esmda}
 \input{chapters/2_theory_framework-DSIESMDA}
+
+\section{Gated DSI-ESMDA}
+\label{sec:gated-dsi-esmda}
 \input{chapters/2_theory_framework-Gated-DSIESMDA}
 
-
 % Takeaways
-\chaptersummary{}
+\chaptersummary{%
+    This chapter has presented the statistical framework underpinning DSI-ESMDA, and, by extension, the proposed Gated DSI-ESMDA.
+    It was shown that DSI-ESMDA iteratively updates the maximum \emph{a posteriori} solution by assimilating resamplings of observed data multiple times.
+    While the method requires 
+    (i) assuming Gaussian prior and likelihood and 
+    (ii) knowledge of the data error covariance $\mathbf{C}_e$, 
+    it is computationally efficient and statistically sound.
+    It was seen that the negative effects on covariance estimation due to a small ensemble
+    can be mitigated via localization, an \emph{ad hoc} strategy that restricts the influence of spurious correlations.
+    %
+    As an extension of DSI-ESMDA, the proposed approach enjoys and suffers the same benefits and limitations.
+    However, its innovation gating greatly facilitates the recovery of posterior variance by 
+    reverting the posterior to the prior in a roughly uniform fashion. 
+    The intensity of the reversal depends on the gating intensity,  
+    and in the best case a well tuned gating could bypass the need for localization.
+}
