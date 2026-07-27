@@ -1,30 +1,125 @@
-\chapter{Proof for the simplified Kalman gain formula}
+\chapter{Proof of the simplified Kalman gain formula}
 \label{appendix:woodbury}
 
 This appendix presents a proof for the equivalence between \cref{eq:gain-original} and \cref{eq:gain-woodbury}.
+It suffices to use the below identity substituting 
+%
+$\mathbf{U} = (\mathbf{C}^0_p)^{-1}$,
+$\mathbf{V} = (\mathbf{C}^\ell_e)^{-1}$,
+$\mathbf{W} = \mathbf{H}$.
+%
+\begin{theorem}
+\label{theo:woodbury}
+    For $\mathbf{U}\in\mathbb{R}^{n\times n}$ and 
+    $\mathbf{V}\in\mathbb{R}^{m\times m}$ invertible matrices,
+    and 
+    $\mathbf{W}\in\mathbb{R}^{m\times n}$,
+    %
+    \begin{equation}
+        (\mathbf{U} + \mathbf{W}^\top\mathbf{V}\mathbf{W})^{-1} 
+        \mathbf{W}^\top\mathbf{V}
+        =
+        \mathbf{U}^{-1}\mathbf{W}^\top
+        (\mathbf{V}^{-1} + \mathbf{W}\mathbf{U}^{-1}\mathbf{W}^T)^{-1}.
+    \end{equation}
+\end{theorem}
+%
+\begin{proof}
+    By the property of matrix inversion 
+    $(\mathbf{X}\mathbf{Y})^{-1} = 
+      \mathbf{Y}^{-1}\mathbf{X}^{-1}$, with both $\mathbf{X}$ and $\mathbf{Y}$ invertible,
+    %
+    \begin{align}
+        (\mathbf{U} + \mathbf{W}^\top\mathbf{V}\mathbf{W})^{-1} 
+        \mathbf{W}^\top\mathbf{V}
+        &=
+        [(
+            \mathbf{I} + 
+            \mathbf{W}^\top\mathbf{V}\mathbf{W}\mathbf{U}^{-1}
+        )\mathbf{U}]^{-1} 
+        \mathbf{W}^\top\mathbf{V} \\
+        &=
+        \mathbf{U}^{-1}
+        (
+            \mathbf{I} + 
+            \mathbf{W}^\top\mathbf{V}\mathbf{W}\mathbf{U}^{-1}
+        )^{-1} 
+        \mathbf{W}^\top\mathbf{V}.
+    \label{eq:woodbury-wip}
+    \end{align}
+    %
+    Set 
+    $\mathbf{Z}_1 = \mathbf{W}^\top$, 
+    $\mathbf{Z}_2 = \mathbf{V}\mathbf{W}\mathbf{U}^{-1}$.
+    Then 
+    %
+    \begin{align}
+        \mathbf{Z}_1 + \mathbf{Z_1}\mathbf{Z}_2\mathbf{Z}_1
+        =
+        \mathbf{Z}_1 (\mathbf{I} + \mathbf{Z}_2\mathbf{Z}_1)
+        &=
+        (\mathbf{I} + \mathbf{Z}_1\mathbf{Z}_2)\mathbf{Z}_1 
+    \\
+        (\mathbf{I} + \mathbf{Z}_1\mathbf{Z}_2)^{-1} \mathbf{Z}_1
+        &= 
+        \mathbf{Z}_1 (\mathbf{I} + \mathbf{Z}_2\mathbf{Z}_1)^{-1}
+    \end{align}
+    %
+    or
+    %
+    \begin{equation}
+        (
+            \mathbf{I} + 
+            \mathbf{W}^\top\mathbf{V}\mathbf{W}\mathbf{U}^{-1}
+        )^{-1} 
+        \mathbf{W}^\top
+        =
+        \mathbf{W}^\top
+        (
+            \mathbf{I} + 
+            \mathbf{V}\mathbf{W}\mathbf{U}^{-1}\mathbf{W}^\top
+        )^{-1}. 
+    \label{eq:nice}
+    \end{equation}
 
-The Sherman-Morrison-Woodbury formula can be used to do away with some inverses. 
-%
-Given an invertible matrix $\mathbf{S}$ and compatible matrices $\mathbf{U}$ and $\mathbf{V}^\top$, the formula states that 
-%
-\begin{equation}
-    (\mathbf{S} + \mathbf{U}\mathbf{V}^\top)^{-1}
-    =
-    \mathbf{S}^{-1} -
-    \mathbf{S}^{-1}\mathbf{U} 
-    (\mathbf{I} + \mathbf{V}^\top\mathbf{S}^{-1}\mathbf{U})^{-1}
-    \mathbf{V}^\top\mathbf{S}^{-1}.
-\label{eq:woodbury}
-\end{equation}
-
-Substituting $\mathbf{V}=\mathbf{H}$, $\mathbf{U}=\mathbf{H}$ and $\mathbf{S} = \mathbf{C}^1_e$, 
-\cref{eq:woodbury} becomes
-%
-\begin{align}
-    (\mathbf{C}^1_e)^{-1} -
-    (\mathbf{C}^1_e)^{-1}\mathbf{H} 
-    (\mathbf{I} + \mathbf{H}^\top(\mathbf{C}^1_e)^{-1}\mathbf{H})^{-1}
-    \mathbf{H}^\top(\mathbf{C}^1_e)^{-1}
-    =
-    ((\mathbf{C}^1_e) + \mathbf{H}\mathbf{H}^\top)^{-1}
-\end{align}
+    Substituting \cref{eq:nice} in \cref{eq:woodbury-wip} 
+    and using the property of the inverse again,
+    %
+    \begin{align}
+        (\mathbf{U} + \mathbf{W}^\top\mathbf{V}\mathbf{W})^{-1} 
+        \mathbf{W}^\top\mathbf{V}
+        &=
+        \mathbf{U}^{-1}
+        (
+            \mathbf{I} + 
+            \mathbf{W}^\top\mathbf{V}\mathbf{W}\mathbf{U}^{-1}
+        )^{-1} 
+        \mathbf{W}^\top\mathbf{V}.
+    \\
+        (\mathbf{U} + \mathbf{W}^\top\mathbf{V}\mathbf{W})^{-1} 
+        \mathbf{W}^\top\mathbf{V}
+        &=
+        \mathbf{U}^{-1}
+        \mathbf{W}^\top
+        (
+            \mathbf{I} + 
+            \mathbf{V}\mathbf{W}\mathbf{U}^{-1}\mathbf{W}^\top
+        )^{-1}\mathbf{V}
+    \\
+        &=
+        \mathbf{U}^{-1}
+        \mathbf{W}^\top
+        (
+            \mathbf{I} + 
+            \mathbf{V}\mathbf{W}\mathbf{U}^{-1}\mathbf{W}^\top
+        )^{-1}(\mathbf{V}^{-1})^{-1}
+    \\
+        &=
+        \mathbf{U}^{-1}
+        \mathbf{W}^\top
+        (
+            \mathbf{V}^{-1} + 
+            \mathbf{W}\mathbf{U}^{-1}\mathbf{W}^\top
+        )^{-1}.
+    \end{align}
+\end{proof}

@@ -468,7 +468,7 @@ While \cref{eq:gain-original} is a valid expression, it requires several matrix 
 \begin{equation}
     \mathbf{K}^1 = 
     \mathbf{C}^0_p\mathbf{H}^\top
-    (\mathbf{H}^\top (\mathbf{C}^0_p) \mathbf{H} + \mathbf{C}^1_e)^{-1}.
+    (\mathbf{H} (\mathbf{C}^0_p) \mathbf{H}^\top + \mathbf{C}^1_e)^{-1}.
 \label{eq:gain-woodbury}
 \end{equation}
 
@@ -478,7 +478,7 @@ it follows that
 %
 \begin{subequations}
     \begin{alignat}{4}
-        \mathbf{C}^0_{hh,p} &= \mathbf{H}^\top (\mathbf{C}^0_p) \mathbf{H},
+        \mathbf{C}^0_{hh,p} &= \mathbf{H} (\mathbf{C}^0_p) \mathbf{H}^\top,
     \\
         \mathbf{C}^0_{dh,p} &= \mathbf{C}^0_p\mathbf{H}^\top.
     \end{alignat}
