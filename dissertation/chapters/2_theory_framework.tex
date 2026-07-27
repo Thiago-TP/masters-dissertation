@@ -31,9 +31,130 @@ That means that a theory framework can take different forms:
 
 \debug{What is an ensemble, realization, ground-truth? What is a forward model? What is $g(\cdot)$?}
 
-\section{Subsurface simulation}
-This section provides an outline for how subsurfaces dynamics are modeled,
-introducing notation and concepts that will be assumed known after its conclusion.
+\section{Prediction forward model}
+\label{sec:forward-model}
+The aims of this section are twofold:
+to introduce the concept of prediction forward model and other related concepts;
+to introducing notation that will be assumed known after this section.
+
+As discussed in \cref{subsec:inverse-problem}, 
+the inverse problem is part of the process in obtaining forecasts.
+%
+Denoting by $\mathbf{m}$ the vector of model parameters,
+and by $\mathbf{u}$ the set of controls applied on the field,
+and by $\mathbf{d}$ the reservoir production within the time frame of the controls,
+one can write
+%
+\begin{equation}
+    \mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u}; \mathbf{x}_0)
+\label{eq:prediction-forward-model}
+\end{equation} 
+%
+with $\mathbf{x}_0$ the initial value of reservoir states.
+Since $\mathbf{x}_0$ is constant, it is omitted in the remainder of this work for simplification.
+
+Function $\mathbf{g}$ is called the \emph{prediction forward model}, or simply forward model
+\cite[section 1.4]{Emerick:2025}.
+%
+The forward model is the underlying mapping between a 
+model's parameters, controls and initial states to its observable features.
+%
+In this work, the features employed are 
+oil and water production rates (OPR and WPR);
+water injection rates (WIR);
+bottomhole pressures (BHP), i.e., the pressure at a well's completion point;
+water cut percentages (WCTP), i.e., the volume of water relative to the volume of fluid extracted by a producer well, and;
+field oil production total (FOPT), i.e., the total volume of oil extracted from the field within the given time period.
+
+The key assumption behind the forward model is that it is deterministic. 
+Implementation wise, $\mathbf{g}$ consists of evaluating a set of equations 
+at each gridblock of the model.
+%
+Each evaluation evolves the model a little further in time, 
+until the scheduled time period is appreciated, concluding the process.
+%
+For simplicity, the described process will be referred to as a simulation of the reservoir.
+
+In truth, no reservoir simulator can be an unerrant representation of underlying reservoir dynamics, 
+unless the reservoir itself is extremely simple.
+%
+Still, the mathematical equations that constitute the forward model are give reasonable approximations to these dynamics,
+so that data mismatches are mostly caused by model parameters unrepresentative of their true values.
+
+With that said, simulators vary in which equations are used.
+Of the options available, the most commonly used are black-oil equations
+\cite{Rasmussen:2021}.
+Based on the premise that there are three different fluid phases (aqueous, oleic, and gaseous) 
+and three (pseudo)components (water, oil, and gas),
+the equations can be deduced from conservation of mass for each component with suitable closure relationships. 
+%
+A given phase $\alpha$'s component mass $A_\alpha$ satisfies the conservation equation
+%
+\begin{align}
+    \frac{\partial}{\partial t} \left(\phi_{\text{ref}} A_\alpha \right)
+    + \nabla \cdot \mathbf{u}_\alpha + q_\alpha & = 0,
+\label{eq:materialbalance-cont}
+\end{align}
+%
+where 
+%
+\begin{subequations}
+\label{eq:acc}
+\begin{align}
+  A_w &= m_{\phi} b_{w} s_{w},                          & \mathbf{u}_w &= b_{w} \mathbf{v}_{w}, \\
+  A_o &= m_{\phi} (b_{o} s_{o} + r_{og}b_{g}s_{g}), & \mathbf{u}_o &= b_{o} \mathbf{v}_{o} +
+r_{og}b_{g}\mathbf{v}_{g}, \\
+  A_g &= m_{\phi} (b_{g} s_{g} + r_{go}b_{o}s_{o}), & \mathbf{u}_g &= b_{g} \mathbf{v}_{g} +
+r_{go}b_{o}\mathbf{v}_{o}.
+\end{align}
+\end{subequations}
+%
+and the phase fluxes are given by Darcy's law:
+%
+\begin{align}
+    \mathbf{v}_\alpha = -\lambda_\alpha \mathbf{K} (\nabla p_\alpha - \rho_\alpha \mathbf{g}).
+    \label{eq:Darcy-mph}
+\end{align}
+%
+Finally, the following closure equations are imposed:
+%
+\begin{align}
+    s_w + s_o + s_g &= 1, \label{eq:fluids-fill-porevolume} \\
+    p_{c,ow} & = p_{o} - p_{w}, \label{eq:oil-water-capillary} \\
+    p_{c,og} & = p_{o} - p_{g}. \label{eq:oil-gas-capillary}
+\end{align} 
+
+The description of each symbol is given below 
+\cite[adapted]{Rasmussen:2021}.
+
+\begin{description}
+    \item[$m_\phi$] pore volume multiplier as function of pressure.
+    \item[$\phi_{\text{ref}}$] reference porosity, a constant in time
+    but varying in space.
+    \item[$p_\alpha$] phase pressure for phase $\alpha$.
+    \item[$b_\alpha$] shrinkage/expansion factor for phase $\alpha$ defined as the ratio of surface volume at standard conditions to reservoir volume for a given amount of fluid:
+        $b_\alpha = V_{\text{surface}, \alpha}/V_{\text{reservoir}, \alpha}$.
+        For the oil phase, $b_o$ is called shrinkage factor, 
+        whereas $b_g$ is called expansion factor.
+    \item[$r_{go}$] ratio of dissolved gas to oil in the oleic phase.
+    \item[$r_{og}$] ratio of vaporized oil to gas in the gaseous phase.
+    \item[$s_\alpha$] saturation of phase $\alpha$, the pore volume fraction occupied by the phase. The saturations of all phases sum to 1.
+    \item[$p_{c,\alpha \beta}$] capillary pressure between phases $\alpha$ and $\beta$.
+    \item[$\mathbf{K}$] permeability of the porous medium.
+    \item[$k_{r,\alpha}$] relative permeability for phase $\alpha$, modeling the reduction in effective permeability for a fluid phase in the presence of other phases.
+    \item[$\mu_\alpha$] viscosity of phase $\alpha$, typically a function of phase pressure and composition.
+    \item[$\lambda_\alpha$] mobility of phase $\alpha$, given by $\lambda_\alpha = k_{r,\alpha}/\mu_\alpha$.
+    \item[$\mathbf{v}_\alpha$] phase velocity of phase $\alpha$.
+    \item[$\mathbf{u}_\alpha$] component velocity of component $\alpha$.
+    \item[$\rho_{S, \alpha}$] surface density of phase $\alpha$ at one atmosphere, a given constant.
+    \item[$\rho_\alpha$] density of phase $\alpha$ in the reservoir. 
+        For water, $\rho_w = b_w\rho_{S,w}$. 
+        For the oleic phase the relationship is more complex since it must include dissolved gas: 
+            $\rho_o = b_o(\rho_{S,o} + r_{go}\rho_{S,g})$, 
+        similar for the gaseous phase: 
+            $\rho_g = b_g(\rho_{S,g} + r_{og}\rho_{S,o})$.
+    \item[$\mathbf{g}$] gravitational acceleration vector.
+\end{description}
 
 % It is worth noting that the first-order Markov condition holds in reservoir simulations,
 % where the state (say, pressure and saturation) at time tn is solely dependent on static

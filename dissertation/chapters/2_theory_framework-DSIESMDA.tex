@@ -2,8 +2,8 @@
 \subsection{Key concepts and definitions}
 This subsection presents the key mathematical objects and concepts 
 used by both the standard DSI-ESMDA and the proposed Gated DSI-ESMDA,
-many of which are directly tied to the elements of reservoir engineering 
-presented in \cref{sec:reservoir-engineering}.
+many of which are related to the forward model 
+presented in \cref{sec:forward-model}.
 %
 Important nuances, such as the distinction between prediction and forecasting,
 are also pointed here.
@@ -135,7 +135,12 @@ This is called Multiple Data Assimilation (MDA), contrasting with the previous S
 %
 Denoting the number of assimilations by $N_a$,
 assimilation $1\leq l\leq N_a$ with disturbed observations $\mathbf{d}^l_\text{obs}$
-produces posterior $p^l$ such that
+produces posterior $p^l$ such that%
+\footnote{%
+    Writing a conditional distribution as the product of simpler conditional distributions 
+    is sometimes called  the chain rule of conditional probabilities
+    \cite[subsection C.1.8]{Emerick:2025}.
+}
 %
 \begin{align}
     p^1(\mathbf{d}\mid \mathbf{d}^1_\text{obs}) 
