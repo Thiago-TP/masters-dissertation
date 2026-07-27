@@ -174,9 +174,9 @@ This section is effectively complete, but there might be a table missing.
 #### 4.3 Evaluation workflow and parameters
 
 - what's left to do/change:
-  - [ ] comment on the computational specs used.
-  - [ ] move the parameters subsection into its own section
-  - [ ] table which features were used per case study (this could be in the results section instead)
+  - [X] comment on the computational specs used.
+  - [X] move the parameters subsection into its own section
+  - [X] table which features were used per case study (this could be in the results section instead)
 - importance (out of 10): 1
 - estimated time required (in hours): 0.2 (10 minutes)
 
