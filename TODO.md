@@ -31,7 +31,7 @@ Pending changes should then be addressed during the period between deliverance a
 Other optional tasks include:
 
 - [X] decide on a pattern for headers (whether each word is capitalized or only the first one).
-- [ ] fill in the chapter outline and chapter summary sections of each chapter that has them.
+- [X] fill in the chapter outline and chapter summary sections of each chapter that has them.
 
 ## Chapter-by-chapter analysis
 

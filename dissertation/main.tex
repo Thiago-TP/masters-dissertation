@@ -240,13 +240,13 @@
 \membrodabancai{Prof. Dr. Eugênio Libório Feitosa Fortaleza\\ UnB/FT/ENM} % Membro 1 - Geralmente é o orientador
 \membrodabancaifuncao{Orientador} % Em português, mesmo que o trabalho seja em inglês.
 
-\membrodabancaii{} % Membro 2
+\membrodabancaii{Aline Souza de Paula\\ UnB/FT/ENM} % Membro 2
 \membrodabancaiifuncao{Examinador interno}
 
 \membrodabancaiii{} % Membro 3
 \membrodabancaiiifuncao{Examinador interno}
 
-\membrodabancaiv{} % Deixe vazio se não tiver o quarto membro
+\membrodabancaiv{Arthur Bizzi} % Deixe vazio se não tiver o quarto membro
 \membrodabancaivfuncao{Examinador externo}
 
 \membrodabancav{} % Deixe vazio se não tiver o quinto membro
@@ -272,8 +272,10 @@
     \end{itemize}
     }
     Accurate prediction of reservoir performance under uncertainty is essential for decision-making in geological reservoir management.
-    Data-Space Inversion (DSI) \cite{Sun:2017} provides an attractive alternative to traditional history matching by updating ensemble forecasts directly in data space, thereby avoiding repeated subsurface simulations.
-    Recently, \citeonline{Lima:2020} introduced DSI-ESMDA, an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, achieving significant computational efficiency while maintaining competitive posterior forecasts.
+    Data-Space Inversion (DSI) provides an attractive alternative to traditional history matching by updating ensemble forecasts directly in data space, thereby avoiding repeated subsurface simulations.
+    Recently, DSI-ESMDA was proposed. It is an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, 
+    achieving significant computational efficiency while maintaining competitive posterior forecasts.
+    %
     Despite these advantages, DSI-ESMDA, like other ensemble smoothers, remains susceptible to excessive variance loss, which can lead to underestimation of posterior uncertainty.
     Methods such as covariance localization help to ameliorate this issue, but variance underestimation is still observed in practical applications.
     One contributing factor to this progressive loss of variance is that small production mismatches, often dominated by measurement noise or sampling effects, may trigger repeated micro-updates that reduce ensemble diversity without improving predictive skill.
@@ -281,12 +283,14 @@
     The proposed formulation can be interpreted as introducing a smoothing influence function into the Kalman-type update, computed from normalized innovations using an error-function-based gating operator.
     In contrast to covariance localization, which acts on second-order statistics, innovation gating acts directly on the update term, selectively suppressing corrections associated with sufficiently-matched observations while preserving the full impact of significant mismatches.
     Match quality is thresholded by a gating parameter during innovation normalization.
+    %
     The gating methodology is inspired by adaptive filtering developed to mitigate actuator wear in
-    closed-loop control systems \cite{Fortaleza:2022} and is conceptually related to smooth shrinkage and noise-gating strategies in signal processing \cite{Donoho:1994,Donoho:1995}.
+    closed-loop control systems.
     Although the present work focuses on DSI, the proposed formulation is general and can be applied to standard ensemble-based model-space inversion methods, including ES-MDA and related iterative smoothers.
     The approach is evaluated on multiple synthetic reservoirs and one real field application using production rates from producers and injectors.
     Results show that innovation-gated DSI-ESMDA reduces variance loss during and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
-    Furthermore, for moderate gating parameters, posterior forecasts remain close to those obtained with standard DSI-ESMDA, indicating that the proposed method acts as a stabilizing extension rather than a replacement.
+    Furthermore, for moderate gating parameters, posterior forecasts remain close to those obtained with standard DSI-ESMDA, 
+    indicating that the proposed method acts as a stabilizing extension rather than a replacement.
 \end{Abstract}
 % ---
 
@@ -294,20 +298,58 @@
 % Resumo em português
 % ---
 \begin{Resumo}
+    A previsão precisa do desempenho de reservatórios mediante incerteza é essencial para a tomada de decisões no gerenciamento geológico de reservatórios. 
+    A Inversão no Espaço de Dados (DSI - Data-Space Inversion)
+    oferece uma alternativa atraente ao ajuste de histórico tradicional na medida em que 
+    atualiza previsões de ensemble diretamente no espaço de dados e, assim, 
+    evita repetir simulações de subsuperfície. 
+    Recentemente, foi introduzido o DSI-ESMDA, uma extensão do DSI que emprega o Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
+    para substituir as minimizações de Máxima Verossimilhança Aleatorizada (Randomized Maximum Likelihood) 
+    no DSI original por uma atualização iterativa similar ao filtro de Kalman, 
+    alcançando significativa eficiência computacional e mantendo previsões a posteriori competitivas. 
+    Apesar dessas vantagens, o DSI-ESMDA, assim como outros suavizadores de ensemble, 
+    permanece suscetível à perda excessiva de variância, o que pode levar à subestimação da incerteza a posteriori. 
+    Métodos como a localização de covariância ajudam a mitigar esse problema, 
+    mas a subestimação da variância ainda é observada em aplicações práticas. 
+    Um fator que contribui para essa perda progressiva de variância é que pequenas discrepâncias na produção, 
+    frequentemente dominadas por ruído de medição ou efeitos de amostragem, 
+    podem desencadear microatualizações repetidas que reduzem a diversidade do ensemble 
+    sem melhorar a capacidade preditiva. 
+    Este trabalho apresenta uma extensão para o DSI-ESMDA que modifica a influência efetiva de cada observação 
+    por meio de uma ponderação não linear do vetor de inovação, 
+    dependente da discrepância com os dados observados. 
+    A formulação proposta pode ser interpretada como a introdução de uma função de influência de suavização na atualização do tipo Kalman, 
+    calculada a partir de inovações normalizadas utilizando um operador de ponderação baseado na função de erro. 
+    Ao contrário da localização de covariância, que atua sobre estatísticas de segunda ordem, 
+    a filtragem de inovações atua diretamente no termo de atualização, 
+    suprimindo seletivamente correções associadas a observações com ajuste satisfatório, 
+    enquanto preserva o impacto total de discrepâncias significativas. 
+    A qualidade do ajuste é definida por um parâmetro de limiar durante a normalização da inovação. 
+    A metodologia de filtragem é inspirada em técnicas de filtragem adaptativa desenvolvidas 
+    para mitigar o desgaste de atuadores em sistemas de controle em malha fechada. 
+    Embora o presente trabalho foque no DSI, a formulação proposta é geral e pode ser aplicada 
+    a métodos padrão de inversão no espaço do modelo baseados em ensemble, incluindo o ES-MDA e suavizadores iterativos correlatos. 
+    A abordagem é avaliada em múltiplos reservatórios sintéticos e em uma aplicação em campo real, 
+    utilizando taxas de produção de poços produtores e injetores. 
+    Os resultados mostram que o DSI-ESMDA com ponderação de inovação reduz a perda de variância e 
+    gera envelopes de incerteza mais robustos na fase de previsão, sem comprometer o ajuste aos dados. 
+    Além disso, para parâmetros de ponderação moderados, as previsões a posteriori permanecem próximas 
+    daquelas obtidas com o DSI-ESMDA padrão, indicando que o método proposto atua como uma extensão estabilizadora, 
+    ao invés de uma substituição.
 \end{Resumo}
 % ---
 
 % ---
 % Palavras-chave (defina no mínimo 3 e no máximo 5)
 % ---
-\pchavei{}
-\kwordi{}
+\pchavei{Múltipla Assimilação de Dados}
+\kwordi{Multiple Data Assimilation}
 
-\pchaveii{}
-\kwordii{}
+\pchaveii{Predição de reservatório}
+\kwordii{Reservoir prediction}
 
-\pchaveiii{}
-\kwordiii{}
+\pchaveiii{Data-Space Inversion}
+\kwordiii{Data-Space Inversion}
 
 \pchaveiv{} % Deixe vazio se não tiver
 \kwordiv{} % Deixe vazio se não tiver
@@ -396,10 +438,10 @@
 \imprimirfolhadeaprovacao
 
 % Insere dedicatória (elemento opcional)
-% \imprimirdedicatoria
+\imprimirdedicatoria
 
 % Insere agradecimentos (elemento opcional)
-% \imprimiragradecimentos
+\imprimiragradecimentos
 
 % Insere epígrafe (elemento opcional)
 \imprimirepigrafe
@@ -426,13 +468,13 @@
 \imprimirresumos
 
 % Insere lista de figuras
-% \imprimirlistadefiguras
+\imprimirlistadefiguras
 
 % Insere lista de quadros
 %\imprimirlistadequadros
 
 % Insere lista de tabelas
-% \imprimirlistadetabelas
+\imprimirlistadetabelas
 
 % Insere lista de algoritmos
 % \imprimirlistadealgoritmos

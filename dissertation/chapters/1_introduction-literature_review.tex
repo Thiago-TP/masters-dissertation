@@ -17,7 +17,24 @@ leading to further subsurface simulations and analysis.
 
 \subsubsection{Model-space methods}
 
-    \subsubsection{Data-space methods}
+Model space methods employ Kalman or Kalman-like updates on an ensemble of model realizations,
+updating their parameters either by sequentially assimilating data, i.e., processing each time step of a simulation at a time,
+or simultaneously assimilating all observed data at once. 
+%
+While the first approach, whose main representative is the Ensemble Kalman Filter (EnKF)
+\cite{Evensen:1994}, 
+tends to produce good matches to production data, ensemble smoothers (ES)
+\cite{Evensen:1996,Skjervheim:2011}, 
+the algorithms that can simultaneously assimilate data, are attractive due to their low computational costs.
+
+However, the standard ES alone often produced poor matches to data in complex enough reservoirs.
+This lead to the development of the Ensemble Smoother with Multiple Data Assimilation (ES-MDA)
+\cite{Emerick:2013},
+which iterates the original ES update equation (albeit with inflated observation covariances)
+in order to better match the observed data.
+
+
+\subsubsection{Data-space methods}
 
     A Data-Space Inversion (DSI) algorithm tackles the data matching problem 
     by directly updating an ensemble of forecasts, doing away with the update of model parameters.

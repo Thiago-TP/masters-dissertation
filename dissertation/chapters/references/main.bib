@@ -139,3 +139,61 @@ abstract = {Abstract This article focuses on the construction, directly in physi
 year = {1999}
 }
 
+@article{Evensen:1996,
+author = "Peter Jan  van Leeuwen and Geir  Evensen",
+title = "Data Assimilation and Inverse Methods in Terms of a Probabilistic Formulation",
+journal = "Monthly Weather Review",
+year = "1996",
+publisher = "American Meteorological Society",
+address = "Boston MA, USA",
+volume = "124",
+number = "12",
+doi = "10.1175/1520-0493(1996)124<2898:DAAIMI>2.0.CO;2",
+pages=      "2898 - 2913",
+url = "https://journals.ametsoc.org/view/journals/mwre/124/12/1520-0493_1996_124_2898_daaimi_2_0_co_2.xml"
+}
+
+@proceedings{Skjervheim:2011,
+    author = {Skjervheim, J.-A. and Evensen, G. and Hove, J. and Vabø, J. G.},
+    title = {An Ensemble Smoother for assisted History Matching},
+    volume = {SPE Reservoir Simulation Symposium},
+    series = {SPE Reservoir Simulation Conference},
+    pages = {SPE-141929-MS},
+    year = {2011},
+    month = {02},
+    abstract = {This paper compares two ensemble-based data-assimilation methods when solving the history-matching problem in reservoir-simulation models. The methods are the Ensemble Kalman Filter (EnKF) and the Ensemble Smoother (ES). Several publications have discussed the use of EnKF in petroleum applications while ES is now used for the first time for history matching. ES differs from EnKF by computing a global update in the space-time domain, rather than using recursive updates in time as in EnKF. Thus, the sequential updating of the realizations with associated restarts is avoided.EnKF and ES provide identical solutions for state estimation with linear dynamical models. However, for nonlinear dynamical models, and in particular models with chaotic dynamics, EnKF is superior to ES, due to the fact that the recursive updates keep the model on track and close to the true solution. Thus, ES is not much used and EnKF has been the method of choice in most data assimilation studies where ensemble methods are used.On the other hand, reservoir simulation models are rather diffusive systems when compared to the chaotic dynamical models that were previously used to test ES. If we can assume that the model solution is stable with respect to small perturbations in the initial conditions and the history-matching parameters, then ES should give similar results to EnKF, and ES will be a more efficient and much simpler method to implement and apply.The technical advantages of using ES compared to EnKF are severe, especially when the methods are applied with complex real reservoir models. ES provides a significant reduction in simulation time. Furthermore, a more flexible parameterization is possible, which makes it easier to handle structural and geological model parameters in the history-matching process.In this paper we compare EnKF and ES and show that ES indeed provide for an efficient ensemble-based method for history matching.},
+    doi = {10.2118/141929-MS},
+    url = {https://doi.org/10.2118/141929-MS},
+    eprint = {https://onepetro.org/spersc/proceedings-pdf/11RSS/11RSS/SPE-141929-MS/1694913/spe-141929-ms.pdf},
+}
+
+@article{Emerick:2013,
+title = {Ensemble smoother with multiple data assimilation},
+journal = {Computers \& Geosciences},
+volume = {55},
+pages = {3-15},
+year = {2013},
+note = {Ensemble Kalman filter for data assimilation},
+issn = {0098-3004},
+doi = {https://doi.org/10.1016/j.cageo.2012.03.011},
+url = {https://www.sciencedirect.com/science/article/pii/S0098300412000994},
+author = {Alexandre A. Emerick and Albert C. Reynolds},
+keywords = {History matching, Ensemble smoother, Ensemble Kalman filter, Multiple data assimilation},
+abstract = {In the last decade, ensemble-based methods have been widely investigated and applied for data assimilation of flow problems associated with atmospheric physics and petroleum reservoir history matching. This paper focuses entirely on the reservoir history-matching problem. Among the ensemble-based methods, the ensemble Kalman filter (EnKF) is the most popular for history-matching applications. However, the recurrent simulation restarts required in the EnKF sequential data assimilation process may prevent the use of EnKF when the objective is to incorporate the history matching in an integrated geo-modeling workflow. In this situation, the ensemble smoother (ES) is a viable alternative. However, because ES computes a single global update, it may not result in acceptable data matches; therefore, the development of efficient iterative forms of ES is highly desirable. In this paper, we propose to assimilate the same data multiple times with an inflated measurement error covariance matrix in order to improve the results obtained by ES. This method is motivated by the equivalence between single and multiple data assimilation for the linear-Gaussian case. We test the proposed method for three synthetic reservoir history-matching problems. Our results show that the proposed method provides better data matches than those obtained with standard ES and EnKF, with a computational cost comparable with the computational cost of EnKF.}
+}
+
+@article{Evensen:1994,
+author = {Evensen, Geir},
+title = {Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics},
+journal = {Journal of Geophysical Research: Oceans},
+volume = {99},
+number = {C5},
+pages = {10143-10162},
+doi = {https://doi.org/10.1029/94JC00572},
+url = {https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/94JC00572},
+eprint = {https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/94JC00572},
+abstract = {A new sequential data assimilation method is discussed. It is based on forecasting the error statistics using Monte Carlo methods, a better alternative than solving the traditional and computationally extremely demanding approximate error covariance equation used in the extended Kalman filter. The unbounded error growth found in the extended Kalman filter, which is caused by an overly simplified closure in the error covariance equation, is completely eliminated. Open boundaries can be handled as long as the ocean model is well posed. Well-known numerical instabilities associated with the error covariance equation are avoided because storage and evolution of the error covariance matrix itself are not needed. The results are also better than what is provided by the extended Kalman filter since there is no closure problem and the quality of the forecast error statistics therefore improves. The method should be feasible also for more sophisticated primitive equation models. The computational load for reasonable accuracy is only a fraction of what is required for the extended Kalman filter and is given by the storage of, say, 100 model states for an ensemble size of 100 and thus CPU requirements of the order of the cost of 100 model integrations. The proposed method can therefore be used with realistic nonlinear ocean models on large domains on existing computers, and it is also well suited for parallel computers and clusters of workstations where each processor integrates a few members of the ensemble.},
+year = {1994}
+}
+
+
