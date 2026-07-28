@@ -10,9 +10,6 @@
     It's tough to make predictions, especially about the future.
 }{Yogi Berra}
 
-% Layout of the chapter
-\chapteroutline{}
-
 \debug{%
 You are providing sufficient detail that others can draw their own inferences and construct their own explanations. 
 Think of it as presenting the case for a jury.
@@ -66,10 +63,22 @@ When your discussion chapter is finished, your reader should be able to answer t
     \item Comparison with Initial Hypotheses or Research Questions
 \end{itemize}
 }
-
-Mild gating intensities ($\lambda=1$, $\lambda=2$) produce similar results to the standard DSI-ESMDA.
-This indicates that the gating mechanism may act as a substitute to simpler localizations on complexely correlated features, 
-which is a significant advantage since localization tuning isn't straightforward.
+Increase in gating intensity tended to increase 
+observation coverage, mean squared error, and data mismatch,
+albeit with case-dependent sensitivities.
+%
+Localization yielded mixed results: for the Egg and real field cases,
+effects on coverage and MSE were minimal, especially for intense enough gatings,
+while the effect in the Olympus case was drastic.
+%
+Cumulative distribution plots of the field oil production total suggest 
+that ground-truths are unbiased in the Egg and real field cases,
+but somewhat biased for the Olympus case.
+%
+Mild gating intensities (2 in the Egg and Olympus cases, 4 in the real field case) produced similar results 
+to the standard DSI-ESMDA for same localization configuration,
+while small gating (1 for the Egg case, 1 and 2 for the Olympus and real field cases)
+had worse coverages than the standard DSI-ESMDA.
  
 \section{Interpretation of findings}
 \debug{%
@@ -79,6 +88,87 @@ which is a significant advantage since localization tuning isn't straightforward
 \end{itemize}
 }
 
+\subsection{OC, MSE and mismatch increase}
+That the metrics employed tended to increase with the increase in gating intensity is not surprising,
+as the objective of Gated DSI-ESMDA lies exactly in increasing posterior variance,
+i.e., its spread.
+%
+This naturally leads to higher coverages at the cost of higher mismatch and MSE. 
+
+As for the differing standard deviations on the bar plots of the Egg and Olympus cases,
+they are most probably linked to ground-truth representativeness and reservoir complexity.
+As indexed by FOPT range and distribution, 
+the Egg case is very simple and the picked ground-truths, relatively well-represented.
+On the other hand, the Olympus reservoir is much more complex, 
+and picked groundtruths tended to be biased towards low or high oil productions relative to the prior ensemble.
+Indeed, ground-truths such as 40 and 35 showed FOPT that was close only to a handful realizations.
+As such, metrics on the Olympus case varied more, and on the Egg case, less. 
+
+\subsection{Mixed effects of localization}
+Neither the Egg case nor the real field case demonstrated much sensitivity towards localization of the Kalman-like gain,
+but the Olympus case did.
+The reason behind this result is interpreted as combination of five factors:
+reservoir complexity (as indexed by FOPT), 
+ground-truth representativeness, 
+ensemble size,
+data dimentionality,
+feature selection, and 
+localization tuning.
+
+For the Egg case, this could be explained by the rationale that 
+the reservoir is simple enough that the number of realizations contitute a rich enough sampling of the prior distribution.
+Importantly, this is also the case study with the smallest amount of features 
+(\cref{tab:simulation-parameters-features}),
+and reduced dimentionality help with the estimation of covariances.
+%
+Lastly, given the narrow range of this ensemble's FOPT and the roughly uniform sampling of ground-truths,
+it is fair to say no one ground-truth was left unrepresented, which explains the small standard deviations.
+%
+In short, the Egg reservoir is too well-behaved for localization to be effective.
+
+Conversely, the Olympus reservoir is much more complex while also having a much smaller ensemble
+and a lot more features, aggravating covariance estimation.
+Localization was conceived exactly for such situations, so it is not suprising it was effective here.
+
+As for the real case, reservoir complexity and data dimentionality peak,
+but so does ensemble size.
+%
+And unlike the Olympus case, the real field should be well-represented, at least FOPT-wise.
+Rather, the main reason for localization not being effective 
+are more likely to be the adjustment of its parameters 
+(anisotropy, critical lengths and time)
+and feature selection.
+%
+Spacial localization, which was not performed, could have helped improve localization.
+%
+Notedly, feature selection by have been inadequate for this reservoir,
+as indicated by the high MSE and mismatch values.
+Cases like well I3 BHP in \cref{fig:figures-real_field}, 
+where many if not all reference points are at the outskirts of the prior 
+occurred multiple times,
+massively impairing the search for an adequate posterior.
+
+In that situation, methods that sequentially assimilate data points, 
+such as the ensemble Kalman filter, might have an easier time matching data.
+%
+Still, the most adequate thing to do seems to be reselecting the data features used in prediction. 
+
+\subsection{Mild and small gating intensities versus standard DSI-ESMDA}
+It was commented (\cref{sec:gated-dsi-esmda}) 
+that gating intensity reverts the posterior to the prior.
+If the posterior given by the standard DSI-ESMDA is somewhere in that continuum,
+then it stands to reason that Gated DSI-ESMDA could approximate it simply by tuning the gating intensity.
+
+Conversely, small gatings might actually produce worse posterior spreads,
+and exposed in the findings.
+%
+Since Gated DSI-ESMDA does away with observation data resampling,
+small gatings possibly underestimate uncertainty (i.e., likelihood covariance)
+at least when compared to standard DSI-ESMDA,
+producing posteriors that are not well-matched to data. 
+% In practice, knowing the values of such intensities gives a baseline on the performance of DSI-ESMDA itself,
+% and could be used when deciding whether posterior variance should increase or decrease. 
+
 \section{Evaluation of existing theories and models}
 \debug{%
 \begin{itemize}
@@ -86,14 +176,16 @@ which is a significant advantage since localization tuning isn't straightforward
     \item Conceptual Contributions of Your Study
 \end{itemize}
 }
- 
-\section{Limitations and future research}
-\debug{%
-\begin{itemize}
-    \item Acknowledgment of Study Limitations
-    \item Suggestions for Future Research
-\end{itemize}
-}
 
-% Takeaways
-\chaptersummary{}
+Findings are generally in agreement with the theory stablished in 
+\cref{chap:theory-framework}, as discussed above.
+%
+While Gated DSI-ESMDA provides a straightforward, effective mechanism for 
+increasing posterior covariance, too small a gating intensity could produce worse spreads than the standard DSI-ESMDA
+as doing away with observation data resampling could underestimate uncertainty.
+%
+This is remediated as the intensity increases, and mild intensities were shown to produce 
+similar results to DSI-ESMDA.
+%
+How large the intensity should be depends on how tolerable are the 
+increase in MSE and data-mismatch that come as a trade-off.

@@ -224,29 +224,29 @@ This chapter is empty, but should be straightforward to write.
 #### 6.2 Summary of Key Findings
 
 - what's left to do/change:
-  - [ ] a paragraph or two summarizing the comments made in the results chapter.
+  - [X] a paragraph or two summarizing the comments made in the results chapter.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.2 (10 minutes)
 
 #### 6.3 Interpretation of Findings
 
 - what's left to do/change:
-  - [ ] one or two paragraphs per case study analyzing the results on each case (see ECMOR paper)
+  - [X] one or two paragraphs per case study analyzing the results on each case (see ECMOR paper)
 - importance (out of 10): 10
 - estimated time required (in hours): 0.3 (20 minutes)
 
 #### 6.4 Evaluation of Existing Theories and Models
 
 - what's left to do/change:
-  - [ ] a paragraph explaining why the proposal performed better/worse than DSI-ESMDA on each case study.
+  - [X] a paragraph explaining why the proposal performed better/worse than DSI-ESMDA on each case study.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.3 (20 minutes)
 
 #### 6.5 Limitations and Future Research
 
 - what's left to do/change:
-  - [ ] a paragraph commenting the lack of method in localization tuning and lack of spacial element in the real field localization.
-  - [ ] a paragraph commenting on future comparisons with EnKF (specially in cases like I3 BHP) and other data assimilation methods.
+  - [X] a paragraph commenting the lack of method in localization tuning and lack of spacial element in the real field localization.
+  - [X] a paragraph commenting on future comparisons with EnKF (specially in cases like I3 BHP) and other data assimilation methods.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.5 (30 minutes)
 
@@ -262,43 +262,43 @@ As with the discussion chapter, this chapter is empty, but should be straightfor
 #### 7.1 Summary of Findings
 
 - what's left to do/change:
-  - [ ] move research questions to closing statement section.
-  - [ ] adapt the text in the dicussion chapter summary of key findings section into here.
+  - [X] move research questions to closing statement section.
+  - [X] adapt the text in the dicussion chapter summary of key findings section into here.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.5 (30 minutes)
 
 #### 7.2 Contribution to Knowledge
 
 - what's left to do/change:
-  - [ ] a paragraph restating the novelty in the proposal, i.e., a straightforward method for covariance recovery.
+  - [X] a paragraph restating the novelty in the proposal, i.e., a straightforward method for covariance recovery.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.5 (30 minutes)
 
 #### 7.3 Practical Implications
 
 - what's left to do/change:
-  - [ ] a paragraph commenting the ease of implementation of the gating mechanism in both model- and data-space based methods.
+  - [X] a paragraph commenting the ease of implementation of the gating mechanism in both model- and data-space based methods.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.2 (10 minutes)
 
 #### 7.4 Limitations
 
 - what's left to do/change:
-  - [ ] a paragraph commenting the importance of prior representation in cases like I3 BHP
+  - [X] a paragraph commenting the importance of prior representation in cases like I3 BHP
 - importance (out of 10): 10
 - estimated time required (in hours): 0.5 (30 minutes)
 
 #### 7.5 Future Research
 
 - what's left to do/change:
-  - [ ] adapt the text in the dicussion chapter future research section into here.
+  - [X] adapt the text in the dicussion chapter future research section into here.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.2 (10 minutes)
 
 #### 7.6 Closing Statement
 
 - what's left to do/change:
-  - [ ] answers to each research question
+  - [X] answers to each research question
 - importance (out of 10): 10
 - estimated time required (in hours): 1
 

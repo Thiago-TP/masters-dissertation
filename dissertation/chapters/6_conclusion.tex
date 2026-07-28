@@ -32,34 +32,84 @@ By the time the reader has finished reading the conclusion, they should be able 
 
 \section{Summary of findings}	
     \debug{Briefly restate key results}	
+    This work introduces Gated DSI-ESMDA, an extension of DSI-ESMDA 
+    with a nonlinear innovation gating mechanism that increases posterior variance 
+    the more intense the gating.
+
+    The proposed algorithm was evaluated on two synthetic reservoir ensembles, 
+    Egg and Olympus, and on a real field in the Brazilian post-salt.
+    %
+    As expected, observation coverages of the posterior increased with the gating intensity for all case studies,
+    albeit under different sensitivities.
+    %
+    Results indicate that Gated DSI-ESMDA could do away with observation data resampling as long as gating intensity is not too small,
+    since for mild intensities posteriors are similar to, or better than, the posteriors produced by the standard DSI-ESMDA,
+    at least on the metrics considered.
+    
+    Despite good results, Gated DSI-ESMDA is not beyond the limitations of its originator.
+    %
+    In the real field case, it was exposed that both DSI-ESMDA and Gated DSI-ESMDA 
+    are susceptible to poor feature selection and localization tuning,
+    as well as insuficient ground-truth representativeness, 
+    high data dimentionality, and reduced ensemble size. 
+
+\section{Contribution to knowledge}	
+    \debug{State what is new and original}
+    This work's novelty lies in the nonlinear innovation gating mechanism for posterior variance increase,
+    which is a direct adaptation of the work of \citeonline{Fortaleza:2022}.
+
+\section{Practical implications}	
+    \debug{How findings apply in practice}
+    By increasing or decreasing a single positive number, named the gating intensity,
+    practitioners can straightforwardly adjust reservoir predictions.
+    %
+    As discussed in \cref{chap:discussion}, gating adjustment can be tuned as to match
+    DSI-ESMDA outputs.
+    %
+    Practitioners can find and use these values as baselines for data assimilation procedures,
+    increasing or decreasing intensity as they see fit.
+    
+    More generally, the gating mechanism in of itself can be easily adapted into model-space methods such as ES-MDA,
+    acting on outputs of the forward model in order to produce more tempered model parameter estimates,
+    just as it does with predictions in data-space.
+
+
+\section{Limitations and future research}
+\debug{%
+\begin{itemize}
+    \item Acknowledgment of Study Limitations
+    \item Suggestions for Future Research
+\end{itemize}
+}
+As an extension of DSI-ESMDA, Gated DSI-ESMDA shares the same benefits and limitations.
+Feature selection and localization optimization are thought to be two of the main culprits behind
+the lukewarm results in the real field case, and future research could address these problems.
+
+\section{Closing statement}
+    The research questions asked in \cref{sec:research-questions} are answered as follows. 
+    
+    \medskip
 
     \noindent{\itshape Can a gating mechanism be introduced into DSI-ESMDA to selectively modulate the influence of observations based on their match quality?}
     
-    Answer.
+    Yes, and successfully so. However, how much match quality can be feasibly improved is dependent on parameters within and beyond the proposed approach,
+    such as gating intensity tuning, localization tuning, and feature selection. 
 
     \medskip
 
     \noindent{\itshape Does the proposed innovation gating reduce variance loss during assimilation and produce more robust uncertainty envelopes in the prediction phase without degrading the data match?}
     
-    Answer.
+    Yes. Posterior variance was shown to increase with gating intensity regardless of case study, but this does come at the cost of increased MSE and data-mismatch. 
+    Informally speaking, the posterior does ``looser'' for it, and how much variance should be tolerated change between applications. 
 
     \medskip
         
     \noindent{\itshape How does the performance of Gated DSI-ESMDA compare to standard DSI-ESMDA across synthetic and real reservoir case studies?}
     
-    Answer.
+    For too small a gating intensity, the proposed approach tended to perform slightly worse,
+    but mild gating produced similar results to DSI-ESMDA.
 
-\section{Contribution to knowledge}	
-    \debug{State what is new and original}
+    \medskip
 
-\section{Practical implications}	
-    \debug{How findings apply in practice}
-
-\section{Limitations}	
-    \debug{Honest assessment of constraints}
-
-\section{Future research}	
-    \debug{Suggest next steps for the field}
-
-\section{Closing statement}	
-    \debug{Final reflection on significance}
+    In short, while this work has plenty of room for improvement and exploration, 
+    it can be said to have been successful, and future efforts will be concentrated in improving it.
