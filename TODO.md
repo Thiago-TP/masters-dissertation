@@ -190,25 +190,25 @@ Figures and tables are well curated, but not contextualized.
 #### 5.2 Egg ensemble
 
 - what's left to do/change:
-  - [ ] paragraph describing what the tables and figures presented are.
-  - [ ] comment on the trend of results and possible outliers.
+  - [X] paragraph describing what the tables and figures presented are.
+  - [X] comment on the trend of results and possible outliers.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.2 (10 minutes)
 
 #### 5.3 Olympus ensemble
 
 - what's left to do/change:
-  - [ ] paragraph describing what the tables and figures presented are.
-  - [ ] comment on the trend of results and possible outliers.
+  - [X] paragraph describing what the tables and figures presented are.
+  - [X] comment on the trend of results and possible outliers.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.2 (10 minutes)
 
 #### 5.4 Brazilian Post-salt Field
 
 - what's left to do/change:
-  - [ ] move analytical text into the discussion chapter
-  - [ ] paragraph describing what the tables and figures presented are.
-  - [ ] comment on the trend of results and possible outliers.
+  - [X] move analytical text into the discussion chapter
+  - [X] paragraph describing what the tables and figures presented are.
+  - [X] comment on the trend of results and possible outliers.
 - importance (out of 10): 10
 - estimated time required (in hours): 0.2 (10 minutes)
 
