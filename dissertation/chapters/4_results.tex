@@ -27,9 +27,11 @@ When your reader is finished with this section, they should be able to answer th
     %
     Experiments were run on a commercial personal use laptop whose 
     specifications are presented in \cref{tab:specs}.
+    %
+    More detailed results are presented in \cref{chap:detailed-results}.
 }
 
-\begin{table}[htbp]
+\begin{table}[h!]
     \centering
     \IBGEtab{
         \caption{%
@@ -44,7 +46,7 @@ When your reader is finished with this section, they should be able to answer th
     }
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[h!]
     \centering
     \IBGEtab{
         \caption{%
@@ -62,5 +64,20 @@ When your reader is finished with this section, they should be able to answer th
 \input{chapters/4_results-olympus.tex}
 \input{chapters/4_results-real_field.tex}
 
+\newpage
 % Takeaways
-\chaptersummary{}
+\chaptersummary{%
+    This chapter has presented the main findings of each case study.
+    Synthetic reservoirs results needed to be averaged across ground-truths 
+    in order to make presentation feasible, 
+    but more detailed results are presented in \cref{chap:detailed-results}.
+    Increase in gating intensity tended to increase 
+    observation coverage, mean squared error, and data mismatch,
+    albeit with case-dependent sensitivities.
+    Localization had mixed results: for the Egg and real field cases,
+    effects on coverage and MSE were minimal, especially for intense enough gatings,
+    while the effect in the Olympus case was drastic.
+    Cumulative distribution plots of the field oil production total suggest 
+    that ground-truths are unbiased in the Egg and real field cases,
+    but somewhat biased for the Olympus case.
+}

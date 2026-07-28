@@ -1,4 +1,4 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.75]
     \pgfplotsset{minor grid style={color=gray, dashdotted}}
     \begin{axis}[%
         xlabel=FOPT,
@@ -7,7 +7,7 @@
         grid=both,
         legend entries={Realization$\quad$, Ground-truth},
         legend columns=2,
-        legend style={draw=none, at={(0.5, 1.0)}, anchor=south},
+        legend style={draw=none, at={(0.5, 1.01)}, anchor=south},
     ]
         \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/fopt_plots/fopt_cdf.dat};
 
