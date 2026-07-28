@@ -57,8 +57,8 @@ but the background context is sorely underdeloped.
 #### 1.1 Work overview
 
 - what's left to do/change:
-  - [ ] include citations at "Kalman-based ensemble method" that will be referenced again in the literature review (they should all be in Emerick's book, chapters 4 and 5)
-  - [ ] include citation at "Ensemble Smoother with Multiple Data Assimilation (ES-MDA)"
+  - [X] include citations at "Kalman-based ensemble method" that will be referenced again in the literature review (they should all be in Emerick's book, chapters 4 and 5)
+  - [X] include citation at "Ensemble Smoother with Multiple Data Assimilation (ES-MDA)"
 - importance (out of 10): 5
 - estimated time required (in hours): 0.25 (15 minutes)
 
@@ -67,7 +67,7 @@ but the background context is sorely underdeloped.
 - what's left to do/change:
   - [X] expound contextualization with a paragraph saying models are 3d grids of physical parameters, and list the most important parameters (check Emerick's book, most likely chapter 1)
   - [X] expound contextualization with a paragraph with general description of subsurface simulators, and list commonly used simulators. Also should introduce the concept of reservoir states, listing the most important ones.
-  - [ ] expound contextualization with a literature review subsection describing and comparing, in order: KF, EKF, EnKF, ES, ES-MDA, PFA, DSI, DSI-ESMDA. The first five are "history match" methods, and the last "data-space inversion methods". Comparisons should be group-focused. Include a timeline of the cited works.
+  - [X] expound contextualization with a literature review subsection describing and comparing, in order: KF, EKF, EnKF, ES, ES-MDA, PFA, DSI, DSI-ESMDA. The first five are "history match" methods, and the last "data-space inversion methods". Comparisons should be group-focused. Include a timeline of the cited works.
   - [X] expound contextualization with a scope subsection describing the aims of Gated DSI-ESMDA and where it can be applied.
   - [ ] expound contextualization with a figure comparing data-space and model-space inversion (possibly added in the literature review subsection).
 - importance (out of 10): 10

@@ -69,7 +69,9 @@ Once you have finished your thesis, ask yourself the following questions:
     The economic success of oil and gas fields is increasingly contingent on the quality of reservoir management decisions, 
     which are made under uncertainty and based on limited data.
     %
-    Kalman-based ensemble methods are widely used to quantify uncertainty in reservoir forecasts by adjusting reservoir models to match production data, 
+    Kalman-based ensemble methods 
+    \cite{Evensen:1994, Evensen:1996, Emerick:2013, Skjervheim:2011}
+    are widely used to quantify uncertainty in reservoir forecasts by adjusting reservoir models to match production data, 
     but require vast computational resources to perform repeated reservoir simulations.
     %
     In an effort to reduce the computational burden, Data-Space Inversion (DSI) 
@@ -77,7 +79,9 @@ Once you have finished your thesis, ask yourself the following questions:
     was introduced as an alternative to traditional history matching by updating ensemble forecasts directly in data space, 
     thereby avoiding repeated subsurface simulations.
     
-    \citeonline{Lima:2020} introduced DSI-ESMDA, an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
+    \citeonline{Lima:2020} introduced DSI-ESMDA, an extension of DSI that employs the 
+    Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
+    \cite{Emerick:2013}
     to replace the Randomized Maximum Likelihood (RML) minimizations of the original formulation with an iterative Kalman-type update, 
     achieving significant computational efficiency while maintaining competitive posterior forecasts.
     However, DSI-ESMDA, like related ensemble smoothers, remains susceptible to excessive variance loss, 
