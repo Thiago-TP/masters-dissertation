@@ -299,43 +299,57 @@
 % ---
 \begin{Resumo}
     A previsão precisa do desempenho de reservatórios mediante incerteza é essencial para a tomada de decisões no gerenciamento geológico de reservatórios. 
+    %
     A Inversão no Espaço de Dados (DSI - Data-Space Inversion)
     oferece uma alternativa atraente ao ajuste de histórico tradicional na medida em que 
     atualiza previsões de ensemble diretamente no espaço de dados e, assim, 
     evita repetir simulações de subsuperfície. 
-    Recentemente, foi introduzido o DSI-ESMDA, uma extensão do DSI que emprega o Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
+    %
+    Recentemente, foi introduzido o DSI-ESMDA, uma extensão do DSI que emprega 
+    o Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
     para substituir as minimizações de Máxima Verossimilhança Aleatorizada (Randomized Maximum Likelihood) 
     no DSI original por uma atualização iterativa similar ao filtro de Kalman, 
     alcançando significativa eficiência computacional e mantendo previsões a posteriori competitivas. 
+    %
     Apesar dessas vantagens, o DSI-ESMDA, assim como outros suavizadores de ensemble, 
     permanece suscetível à perda excessiva de variância, o que pode levar à subestimação da incerteza a posteriori. 
+    %
     Métodos como a localização de covariância ajudam a mitigar esse problema, 
     mas a subestimação da variância ainda é observada em aplicações práticas. 
-    Um fator que contribui para essa perda progressiva de variância é que pequenas discrepâncias na produção, 
+    %
+    A perda progressiva de variância é em parte causada por pequenas discrepâncias na produção, 
     frequentemente dominadas por ruído de medição ou efeitos de amostragem, 
     podem desencadear microatualizações repetidas que reduzem a diversidade do ensemble 
     sem melhorar a capacidade preditiva. 
-    Este trabalho apresenta uma extensão para o DSI-ESMDA que modifica a influência efetiva de cada observação 
+    %
+    Este trabalho apresenta uma extensão do DSI-ESMDA que modifica a influência efetiva de cada observação 
     por meio de uma ponderação não linear do vetor de inovação, 
     dependente da discrepância com os dados observados. 
-    A formulação proposta pode ser interpretada como a introdução de uma função de influência de suavização na atualização do tipo Kalman, 
-    calculada a partir de inovações normalizadas utilizando um operador de ponderação baseado na função de erro. 
+    %
+    A formulação proposta pode ser interpretada como a introdução 
+    de uma função de influência de suavização na atualização do ensemble. 
+    %
     Ao contrário da localização de covariância, que atua sobre estatísticas de segunda ordem, 
     a filtragem de inovações atua diretamente no termo de atualização, 
-    suprimindo seletivamente correções associadas a observações com ajuste satisfatório, 
-    enquanto preserva o impacto total de discrepâncias significativas. 
-    A qualidade do ajuste é definida por um parâmetro de limiar durante a normalização da inovação. 
-    A metodologia de filtragem é inspirada em técnicas de filtragem adaptativa desenvolvidas 
-    para mitigar o desgaste de atuadores em sistemas de controle em malha fechada. 
-    Embora o presente trabalho foque no DSI, a formulação proposta é geral e pode ser aplicada 
-    a métodos padrão de inversão no espaço do modelo baseados em ensemble, incluindo o ES-MDA e suavizadores iterativos correlatos. 
-    A abordagem é avaliada em múltiplos reservatórios sintéticos e em uma aplicação em campo real, 
+    suprimindo correções associadas ajustes satisfatórios, 
+    e preservando correções de discrepâncias significativas. 
+    %
+    % A qualidade do ajuste é limiarizada após normalização da inovação. 
+    % A metodologia de filtragem é inspirada em uma técnica de filtragem adaptativa desenvolvida 
+    % para mitigar o desgaste de atuadores em sistemas de controle em malha fechada. 
+    %
+    A formulação proposta é geral e pode ser aplicada 
+    a métodos padrão de inversão no espaço do modelo baseados em ensemble, 
+    incluindo o ES-MDA e suavizadores correlatos. 
+    %
+    A abordagem é avaliada em reservatórios sintéticos e em uma aplicação em campo real 
     utilizando taxas de produção de poços produtores e injetores. 
-    Os resultados mostram que o DSI-ESMDA com ponderação de inovação reduz a perda de variância e 
+    %
+    Resultados mostram que o DSI-ESMDA Ponderado reduz a perda de variância e 
     gera envelopes de incerteza mais robustos na fase de previsão, sem comprometer o ajuste aos dados. 
-    Além disso, para parâmetros de ponderação moderados, as previsões a posteriori permanecem próximas 
-    daquelas obtidas com o DSI-ESMDA padrão, indicando que o método proposto atua como uma extensão estabilizadora, 
-    ao invés de uma substituição.
+    %
+    Ponderações moderadas apresentam comportamento similar ao DSI-ESMDA padrão, indicando que o método proposto 
+    atua como uma extensão estabilizadora, ao invés de uma substituição.
 \end{Resumo}
 % ---
 
