@@ -1,0 +1,153 @@
+% Setting common aspect ratios:
+% - 169 for 16:9
+% - 1610 for 16:10
+% - 43 for 4:3
+% - 32 for 3:2
+% IMPORTANT: 
+%	Aspect ratio may affect presentation quality! 
+%	Make sure it fits your machine!
+\documentclass[
+	% 10pt, 
+	aspectratio=1610,
+]{beamer}
+
+% Path to the watermark, cover in the title
+% IMPORTANT: if cover figure is too small, magenta will appear!
+\newcommand{\watermark}{figures/frontmatter/watermark.pdf}
+\newcommand{\coverfigure}{figures/frontmatter/cover.pdf}
+
+% Credits 
+\newcommand{\watermarkcredit}{the authors}
+\newcommand{\covercredit}{the authors}
+
+% Figure is right justified, and will be horizontally/vertically offset by the amount below.
+% Positive: figure goes to the right/up
+% Negative: figure goest to the left/down
+\newcommand{\coverXoffset}{0cm}
+\newcommand{\coverYoffset}{0cm}
+
+% Watermark is left justified, and will be horizontally/vertically offset by the amount below.
+% Positive: watermark goes to the right/up
+% Negative: watermark goest to the left/down
+\newcommand{\watermarkXoffset}{0.8cm}
+\newcommand{\watermarkYoffset}{-0.85cm}
+\newcommand{\watermarkOpacity}{0.5} % Watermark opcity
+
+\usetheme[
+	sectionpages, 		% show section pages
+	logo={figures/logo_UnB.pdf},
+]{UniNA}
+
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel} % if text is in portuguese, change "english" to "brazilian"
+
+\usepackage[sfdefault]{carlito} % IMPORTANT: load carlito AFTER fontenc!
+\usepackage{multicol}
+
+\usepackage{bm}
+
+\usepackage{csquotes}
+\usepackage{biblatex}
+\addbibresource{%
+    ./../dissertation/chapters/references/main.bib}
+
+\title[Gated DSI-ESMDA] %shown at the top of frames
+{Gated Data-Space Inversion for\\ Reservoir Prediction} %shown in title frame
+\subtitle[Reducing variance loss in posteriors]{Reducing variance loss in posteriors}  
+\date[08/04/2026]{August 4th, 2026} %explicitly set date instead of \today
+
+\author[Thiago]%shown at the top of frames
+{%shown in title frame
+	Thiago Tomás de Paula
+}
+
+\institute[%
+	University of Brasília
+]
+{% is placed on the bottom of the title page
+	Graduate students at
+	University of Brasília, Brazil
+}
+
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+\usepackage{empheq} % for boxing equations
+% Useful libs (TiKz and Dvipsnames packages are assumed loaded)
+\usetikzlibrary{
+    shapes, 
+    positioning, 
+    decorations.pathmorphing, 
+    decorations.markings,
+    patterns,
+    calc,
+}
+
+% Colors
+\definecolor{startstop}{HTML}{FF3867}
+\definecolor{io}{HTML}{2E8B57}
+\definecolor{process}{HTML}{1CA1DA}
+\definecolor{decision}{HTML}{D8C303}
+
+% Flowchart blocks
+\tikzstyle{startstop} = [
+    rectangle, 
+    rounded corners, 
+    minimum width=2cm, 
+    minimum height=1cm,
+    text centered, 
+    draw=black, 
+    fill=startstop!50,
+]
+
+\tikzstyle{process} = [
+    rectangle, 
+    minimum width=2cm, 
+    minimum height=1cm, 
+    text centered, 
+    draw=black, 
+    trapezium stretches=true,
+    fill=process!50,
+]
+\tikzstyle{io} = [
+    trapezium, 
+    trapezium left angle=70, 
+    trapezium right angle=110, 
+    minimum width=2cm, 
+    minimum height=1cm, 
+    text centered, 
+    draw=black, 
+    trapezium stretches=true,
+    fill=io!30,
+]
+\tikzstyle{decision} = [
+    diamond, 
+    minimum width=1cm, 
+    minimum height=1cm, 
+    text centered, 
+    draw=black, 
+    fill=decision!50,
+]
+
+\begin{document}
+
+\maketitle
+
+% Optional agenda
+% \begin{frame}{Agenda}{}
+% 	\tableofcontents
+% \end{frame}
+
+\include{sections/1-introduction}
+\include{sections/2-theory-framework}
+\include{sections/3-methods}
+\include{sections/4-results}
+\include{sections/5-discussion}
+\include{sections/6-conclusion}
+
+% Optional ending slide
+\begin{frame}[noframenumbering]
+	\usebeamertemplate{endpage}
+\end{frame}
+
+\end{document}
+		
