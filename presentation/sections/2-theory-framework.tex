@@ -7,10 +7,51 @@
 \end{frame}
 
 \begin{frame}{Theory Framework}{The base equation}
+    \begin{subequations}
+        \begin{alignat}{4}
+            \mathbf{d}_j^{\ell+1} 
+            &=
+            \mathbf{d}_j^\ell + \mathbf{K}^\ell
+            (\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell - \mathbf{d}_{h,j}^\ell),
+            \\
+            \mathbf{K}^\ell 
+            &=  
+            \Delta\mathbf{D}^\ell\Delta\mathbf{D}^\ell_h
+            (\Delta\mathbf{D}^\ell_h\Delta\mathbf{D}^\ell_h + \alpha^\ell\mathbf{C}_e)^{-1}.
+            \label{eq:kalman-gain-l}
+        \end{alignat}
+    \label{eq:iteration_dsiesmda-no-loc}
+    \end{subequations}
 \end{frame}
 
 \begin{frame}{Theory Framework}{Covariance localization}
+    \begin{equation}
+        \mathbf{d}_j^{\ell+1} 
+        =
+        \mathbf{d}_j^\ell + (\mathbf{R}\circ\mathbf{K}^\ell)
+        (\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell - \mathbf{d}_{h, j}^\ell),
+    \label{eq:iteration_dsiesmda}
+    \end{equation}
 \end{frame}
 
 \begin{frame}{Theory Framework}{Proposal}
+    \begin{subequations}
+        \begin{align}
+            \mathbf{d}_j^{\ell+1} 
+            &=
+            \mathbf{d}_j^\ell + (\mathbf{R} \circ \mathbf{K}^\ell) 
+            [
+            \bm{\alpha}_j^\ell \circ 
+            (\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)], 
+        \label{eq:iteration_gated}
+            \\
+            \alpha_{j, v}^\ell 
+            &= \mathrm{erf}
+            \left(
+                \frac{1}{\lambda \sqrt{2\sigma_v^2}} 
+                |(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_v|
+            \right)
+        \label{eq:alpha_lambda}
+        \end{align}
+    \end{subequations}
 \end{frame}

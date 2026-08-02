@@ -29,17 +29,7 @@ The arrangement of these cells forms an egg-shaped grid, hence the name \cite{Ja
         \caption{Some geometry and fluid properties of the Egg ensemble.}  
         \label{tab:egg-fluid-properties}
     }{%
-        \begin{tabular}{c c c}
-            \toprule
-            Property                        & Value      & Unit       \\ \midrule
-            Rock Compressibility            & 0.0        & 1/Pa       \\  
-            Water Compressibility           & 1.0\e{-10} & 1/Pa       \\
-            Oil Dynamic Viscosity           & 5.0\e{-3}  & Pa$\cdot$s \\
-            Water Dynamic Viscosity         & 1.0\e{-3}  & Pa$\cdot$s \\
-            Well Diameter                   & 20         & cm         \\
-            Simulation Time                 & 3600       & days       \\
-            \bottomrule
-        \end{tabular}
+        \input{tables/egg-fluid-properties}
     }{%
         Adapted from \citeonline{Jansen:2014}.
     }
@@ -127,16 +117,7 @@ Permeabilities in the $x$ and $y$ directions were identical, while in the $z$ di
     \caption{Types and distribution range intervals of facies properties in Olympus.}
     \label{tab:olympus-facies-properties}
 }{
-    \begin{tabular}{ccccc}
-    \toprule
-    Type            & Presence zones        & NG        & Porosity      & Permeability ($\mu$m$^\text{2}$)     \\ \midrule
-    Channel sand    & Upper                 & 0.8-1     & 0.2-0.35      & 0.4-1      \\
-    Shale           & Upper, perimeter      & 0.0       & 0.03          & 0.001      \\
-    Coarse sand     & Lower                 & 0.7-0.9   & 0.2-0.3       & 0.15-0.4   \\
-    Medium sand     & Lower                 & 0.75-0.95 & 0.1-0.2       & 0.075-0.15 \\
-    Fine sand       & Lower                 & 0.9-1     & 0.05-0.1      & 0.01-0.05  \\
-    \bottomrule
-    \end{tabular}
+    \input{tables/olympus-facies-properties}
 }{%
     \fonte{\citeonline{Fonseca:2020}.}
 }
@@ -153,19 +134,8 @@ The reservoir's fluid was similar to oil without dissolved gas, and some of its 
 \IBGEtab{%
     \caption{Olympus' fluid properties.}
     \label{tab:olympus-fluid-properties}
-}{
-    \begin{tabular}{c c c}
-        \toprule
-        Property                        & Value           & Unit  \\
-        \midrule
-        Rock compressibility            & 1.42\e{-10}   & 1/Pa       \\  
-        Water compressibility           & 3.97\e{-10}   & 1/Pa       \\  
-        Oil dynamic viscosity           & 2.8-3.5\e{-3} & Pa$\cdot$s \\  
-        Water dynamic viscosity         & 0.398\e{-3}   & Pa$\cdot$s \\ 
-        Well diameter                   & 19            & cm         \\  
-        Simulation Time                 & 7380          & days       \\
-        \bottomrule
-    \end{tabular} 
+}{%
+    \input{tables/olympus-fluid-properties}
 }{%
     \fonte{Adapted from \citeonline{Fonseca:2020}.}
 }

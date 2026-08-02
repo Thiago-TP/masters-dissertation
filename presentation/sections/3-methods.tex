@@ -1,13 +1,96 @@
 \section{Methods}
 
 \begin{frame}{Methods}{Case studies}
+    \centering
+    \begin{tabular}{c c c c c c}
+        \includegraphics[width=1.75cm]{figures/realizations/EGG_1.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/EGG_2.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/EGG_3.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/EGG_4.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/EGG_5.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/EGG_5.png} 
+    \\
+        \includegraphics[width=1.75cm]{figures/realizations/OLYMPUS_11.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/OLYMPUS_15.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/OLYMPUS_16.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/OLYMPUS_42.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/OLYMPUS_43.png} &
+        \includegraphics[width=1.75cm]{figures/realizations/OLYMPUS_43.png}
+    \end{tabular}
+    \vfill
+    {\def\arraystretch{0.9}
+    \begin{tabular}{l l l l l}
+        % \toprule
+        Property                & Egg        & Olympus       & Real field & Unit       \\ \midrule
+        Rock compressibility    & 0.0        & 1.42\e{-10}   & -          & 1/Pa       \\
+        Water compressibility   & 1.0\e{-10} & 3.97\e{-10}   & -          & 1/Pa       \\
+        Oil dynamic viscosity   & 5.0\e{-3}  & 2.8-3.5\e{-3} & -          & Pa$\cdot$s \\
+        Water dynamic viscosity & 1.0\e{-3}  & 0.398\e{-3}   & -          & Pa$\cdot$s \\
+        Well diameter           & 20         & 19            & -          & cm         \\
+        Wells                   & 8(P) 4(I)  & 11(P) 7(I)    & 16(P) 8(I) & -          \\
+        Active cells            & 18,533     & 192,750       & -          & -          \\
+        Cell size               & 8$\times$8$\times$4      
+                                & 50$\times$50$\times$3     
+                                & -  
+                                & m$\times$m$\times$m                                  \\
+        Ensemble size           & 101 & 50 & 201 & -                                   \\
+        \bottomrule
+    \end{tabular}}
+    \vfill
 \end{frame}
 
 \begin{frame}{Methods}{Workflow}
+    \scalebox{0.95}{%
+        \input{figures/flowchart-evaluation.tikz}
+    }
 \end{frame}
 
 \begin{frame}{Methods}{Metrics}
+    Four metrics are considered on the evaluation of posterior/prior distributions
+    \cite[subsection 9.4.2]{Emerick:2025}:
+        history observation coverage,
+        validation observation coverage,
+        mean squared error, 
+        and data-mismatch.
+        Denoting an ensemble by $\mathbf{Y} = \begin{bmatrix}
+            \mathbf{y}_1 & \cdots & \mathbf{y}_{N_e}
+        \end{bmatrix}$, these metrics are defined as:
+    %
+    \begin{align}
+        \text{OC}_h(\mathbf{Y}) &= \frac{1}{N_h} \sum_{i=1}^{N_h} 
+        \mathbbm{1}\left(
+            \min(\mathbf{Y})_i \leq d_{h, i} \leq \max(\mathbf{Y})_i
+        \right)\\
+        \text{OC}_v(\mathbf{Y}) &= \frac{1}{N_v} \sum_{i=1}^{N_v} 
+        \mathbbm{1}\left(
+            \min(\mathbf{Y})_i \leq d_{v, i} \leq \max(\mathbf{Y})_i
+        \right)\\
+        %
+        \text{MSE}(\mathbf{Y}) &= 
+        \frac{1}{N_h} 
+        (\mathbf{d}_h - \overline{\mathbf{y}})^\top \mathbf{C}^{-1} 
+        (\mathbf{d}_h - \overline{\mathbf{y}}),
+        \quad 
+        \mathbf{C} = \Delta\mathbf{Y}\Delta\mathbf{Y}^\top + \mathbf{C}_e \\
+        %
+        \mathcal{O}(\mathbf{y}_j) &= 
+        \frac{1}{2N_h}
+        (\mathbf{d}_h - \mathbf{y}_{j, h})^\top
+        \mathbf{C}_e^{-1}
+        (\mathbf{d}_h - \mathbf{y}_{j, h})
+    \end{align}
 \end{frame}
 
 \begin{frame}{Methods}{Parameters and features}
+    {%
+        \def\arraystretch{0.6}
+        \input{tables/simulation-parameters-time.tex}
+    \vfill%
+        \def\arraystretch{0.6}
+        \input{tables/simulation-parameters-localization}
+    \vfill%
+        \def\arraystretch{0.6}
+        \input{tables/simulation-parameters-features}
+    }
+    \vfill
 \end{frame}

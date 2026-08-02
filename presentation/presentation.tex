@@ -42,10 +42,16 @@
 \usepackage[english]{babel} % if text is in portuguese, change "english" to "brazilian"
 
 \usepackage[sfdefault]{carlito} % IMPORTANT: load carlito AFTER fontenc!
+
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{subcaption}
+
 \usepackage{booktabs}
+\usepackage{colortbl}
+    \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+    \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+    \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \usepackage{tikz}
     \usetikzlibrary{shapes,positioning,decorations.pathreplacing,arrows.meta,calc}
@@ -53,17 +59,38 @@
     \definecolor{azulunb}{cmyk}{1,0.65,0,0.2}
     \definecolor{darkred}{HTML}{CA3A27}
     \definecolor{highlight}{HTML}{FFA300}
+    \definecolor{steelblue}{HTML}{6EA4BF}
+
 \usepackage{pgfplots}
     \pgfplotsset{compat=1.18}
 
-
+% Erf special function rough approximation
+\makeatletter
+    \pgfmathdeclarefunction{erf}{1}{%
+        \begingroup
+            \pgfmathparse{#1 > 0 ? 1 : -1}%
+            \edef\sign{\pgfmathresult}%
+            \pgfmathparse{abs(#1)}%
+            \edef\x{\pgfmathresult}%
+            \pgfmathparse{1/(1+0.3275911*\x)}%
+            \edef\t{\pgfmathresult}%
+            \pgfmathparse{%
+            1 - (((((1.061405429*\t -1.453152027)*\t) + 1.421413741)*\t 
+            -0.284496736)*\t + 0.254829592)*\t*exp(-(\x*\x))}%
+            \edef\y{\pgfmathresult}%
+            \pgfmathparse{(\sign)*\y}%
+            \pgfmath@smuggleone\pgfmathresult%
+        \endgroup
+    }
+\makeatother
+\providecommand{\e}[1]{\ensuremath{~\times~\text{10}^\text{#1}}}
 
 \usepackage{bm}
+\usepackage{bbm}
 
 \usepackage{csquotes}
 \usepackage{biblatex}
-\addbibresource{%
-    ../dissertation/chapters/references/main.bib}
+\addbibresource{references/main.bib}
 
 \title[Gated DSI-ESMDA] %shown at the top of frames
 {Gated Data-Space Inversion for\\ Reservoir Prediction} %shown in title frame
@@ -86,21 +113,12 @@
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \usepackage{empheq} % for boxing equations
-% Useful libs (TiKz and Dvipsnames packages are assumed loaded)
-\usetikzlibrary{
-    shapes, 
-    positioning, 
-    decorations.pathmorphing, 
-    decorations.markings,
-    patterns,
-    calc,
-}
 
-% Colors
-\definecolor{startstop}{HTML}{FF3867}
-\definecolor{io}{HTML}{2E8B57}
-\definecolor{process}{HTML}{1CA1DA}
-\definecolor{decision}{HTML}{D8C303}
+% Flowchart colors
+\colorlet{startstopcolor}{highlight!50}
+\colorlet{processcolor}{steelblue!50}
+\colorlet{iocolor}{verdeunb!30}
+\colorlet{decisioncolor}{steelblue!25}
 
 % Flowchart blocks
 \tikzstyle{startstop} = [
@@ -110,17 +128,16 @@
     minimum height=1cm,
     text centered, 
     draw=black, 
-    fill=startstop!50,
+    fill=startstopcolor,
 ]
-
 \tikzstyle{process} = [
     rectangle, 
     minimum width=2cm, 
     minimum height=1cm, 
     text centered, 
     draw=black, 
+    fill=processcolor,
     trapezium stretches=true,
-    fill=process!50,
 ]
 \tikzstyle{io} = [
     trapezium, 
@@ -130,8 +147,8 @@
     minimum height=1cm, 
     text centered, 
     draw=black, 
+    fill=iocolor,
     trapezium stretches=true,
-    fill=io!30,
 ]
 \tikzstyle{decision} = [
     diamond, 
@@ -139,8 +156,10 @@
     minimum height=1cm, 
     text centered, 
     draw=black, 
-    fill=decision!50,
+    fill=decisioncolor,
 ]
+
+\usepackage{cleveref}
 
 \begin{document}
 
@@ -157,6 +176,11 @@
 \include{sections/4-results}
 \include{sections/5-discussion}
 \include{sections/6-conclusion}
+
+\begin{frame}[t,allowframebreaks]
+   \frametitle{Bibliography}
+   \printbibliography[heading=none]
+\end{frame}
 
 % Optional ending slide
 \begin{frame}[noframenumbering]
