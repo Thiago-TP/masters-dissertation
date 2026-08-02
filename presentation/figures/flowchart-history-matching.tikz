@@ -1,0 +1,52 @@
+\begin{tikzpicture}[> = latex]
+    % Blocks
+    \node [startstop] (start)
+        {Start};
+
+    \node [io, below=0.5 of start] (data)
+    {
+        \begin{minipage}{2.25cm}\centering
+            Get field observations
+        \end{minipage}
+    };
+
+    \node [process, below=.6 of data] (adjustment)
+    {
+        \begin{minipage}{2.5cm}\centering
+            Adjust model parameters
+        \end{minipage}
+    };
+
+    \node [process, right=1.5 of adjustment] (simulation)
+    {
+        \begin{minipage}{2.5cm}\centering
+            Run subsurface simulation
+        \end{minipage}
+    };
+
+    \node [process, below=1.65 of simulation] (comparison)
+    {
+        \begin{minipage}{3cm}\centering
+            Compare results with observations
+        \end{minipage}
+    };
+
+    \node [decision, below=0.75 of adjustment] (decision)
+    {
+        \begin{minipage}{2.5cm}\centering
+            Good enough match?
+        \end{minipage}
+    };
+    
+    \node [startstop, below=0.75 of decision] (stop)
+        {Stop};
+
+    % Arrows
+    \draw [->] (start) -- (data);
+    \draw [->] (data) -- (adjustment);
+    \draw [->] (adjustment) -- (simulation);
+    \draw [->] (simulation) -- (comparison);
+    \draw [->] (comparison) -- (decision);
+    \draw [->] (decision) -- (adjustment) node [midway, left] {No};
+    \draw [->] (decision) -- (stop) node [midway, left] {Yes};
+\end{tikzpicture}

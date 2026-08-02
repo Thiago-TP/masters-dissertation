@@ -1,10 +1,109 @@
 \section{Results}
 
 \begin{frame}{Results}{Egg case}
+	\begin{figure}[htbp]
+		% \centering
+		% \caption{%
+		% 	Average posterior coverage and MSE values found in the Egg ensemble.
+		% }
+		\label{fig:egg-summaries}
+		\begin{subfigure}[b]{.49\linewidth}
+			\centering
+			% \caption{Average history period coverages.}
+			\input{figures/results/egg/summary_plots/summary_history_coverage.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}[b]{.49\linewidth}
+			\centering
+			% \caption{Average validation period coverage.}
+			\input{figures/results/egg/summary_plots/summary_validation_coverage.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}[b]{.49\linewidth}
+			\centering
+			% \caption{Average history period MSEs.}
+			\input{figures/results/egg/summary_plots/summary_history_mse.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}[b]{.49\linewidth}
+			\centering
+			% \caption{
+			% 	Ground-truths' FOPT.
+			% }
+			\label{fig:fopt-egg}
+			\input{figures/results/egg/fopt_plots/fopt-groundtruths.tikz}
+		\end{subfigure}
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Results}{Olympus case}
+	\begin{figure}[htbp]
+		% \caption{%
+		% 	Summary of results for the Olympus ensemble.
+		% 	Posterior coverage and MSE are averaged across ground-truths.
+		% }
+		\label{fig:olympus-summaries}
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{Average history period coverages.}
+			\input{figures/results/olympus/summary_plots/summary_history_coverage.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{Average validation period coverages.}
+			\input{figures/results/olympus/summary_plots/summary_validation_coverage.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{Average history period MSEs.}
+			\input{figures/results/olympus/summary_plots/summary_history_mse.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{
+			% 	Ground-truths' FOPT.
+			% }
+			\label{fig:fopt-olympus} 
+			\input{figures/results/olympus/fopt_plots/fopt-groundtruths.tikz}
+		\end{subfigure}
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Results}{Real field case}
+	\begin{figure}[htbp]
+		% \caption{%
+		% 	Summary of results for the real field ensemble.
+		% 	Posterior coverage and MSE are averaged across ground-truths.
+		% }
+		\label{fig:real_field-summaries}
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{Average history period coverages.}
+			\input{figures/results/real_field/summary_plots/summary_history_coverage.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{Average validation period coverages.}
+			\input{figures/results/real_field/summary_plots/summary_validation_coverage.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{Average history period MSEs.}
+			\input{figures/results/real_field/summary_plots/summary_history_mse.tikz}
+		\end{subfigure}
+		%
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			% \caption{
+			% 	Ground-truths' FOPT.
+			% }
+			\label{fig:fopt-real_field} 
+			\input{figures/results/real_field/fopt_plots/fopt-groundtruths.tikz}
+		\end{subfigure}
+	\end{figure}
 \end{frame}

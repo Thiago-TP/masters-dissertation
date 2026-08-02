@@ -43,13 +43,27 @@
 
 \usepackage[sfdefault]{carlito} % IMPORTANT: load carlito AFTER fontenc!
 \usepackage{multicol}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+\usepackage{tikz}
+    \usetikzlibrary{shapes,positioning,decorations.pathreplacing,arrows.meta,calc}
+    \definecolor{verdeunb}{cmyk}{1,0,1,0.2}
+    \definecolor{azulunb}{cmyk}{1,0.65,0,0.2}
+    \definecolor{darkred}{HTML}{CA3A27}
+    \definecolor{highlight}{HTML}{FFA300}
+\usepackage{pgfplots}
+    \pgfplotsset{compat=1.18}
+
+
 
 \usepackage{bm}
 
 \usepackage{csquotes}
 \usepackage{biblatex}
 \addbibresource{%
-    ./../dissertation/chapters/references/main.bib}
+    ../dissertation/chapters/references/main.bib}
 
 \title[Gated DSI-ESMDA] %shown at the top of frames
 {Gated Data-Space Inversion for\\ Reservoir Prediction} %shown in title frame

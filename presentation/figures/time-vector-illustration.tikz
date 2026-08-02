@@ -1,0 +1,76 @@
+\begin{tikzpicture}
+    % Space between vector entries (circles) and entry symbol radius
+    \def\s{-0.5}
+    \def\r{-\s/3}
+
+    % History, validation period slices
+    \draw [dashed]
+        (-0.5, 0*\s) --++ (9*\r+0.5, 0)
+        (-0.5, 3*\s) --++ (9*\r+0.5, 0)
+        (-0.5, 5*\s) --++ (9*\r+0.5, 0)
+    ;
+    \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
+        (-0.55, 0) --++ (0, 3*\s) node [midway, left, xshift=-0.25cm] {%
+            \ABNTEXfontereduzida
+            History period
+        }
+    ;
+    \draw
+        (-0.55, 5*\s) node [left, xshift=-0.25cm] {%
+            \ABNTEXfontereduzida
+            Validation period
+        }
+    ;
+
+    % Reference vector - full
+    \draw
+        (0, -1.75*\s) node [anchor=north] {{$\mathbf{d}$}} 
+        (0, 0) circle (\r)
+        (0, 2*\s) circle (\r)
+        (0, 3*\s) circle (\r)
+        (0, 5*\s) circle (\r)
+    ;
+    \fill [verdeunb!50]
+        (0, 0) circle (\r)
+        (0, 2*\s) circle (\r)
+        (0, 3*\s) circle (\r)
+    ;
+    \fill [azulunb!50]
+        (0, 5*\s) circle (\r)
+    ;
+
+    % Realization vector
+    \begin{scope}[shift={(9*\r, 0)}]
+    \draw 
+        (0, -1.75*\s) node [anchor=north] {{$\mathbf{d}_j$}} 
+        (0, 0) circle (\r)
+        (0, 1*\s) circle (\r)
+        (0, 2*\s) circle (\r)
+        (0, 3*\s) circle (\r)
+        (0, 4*\s) circle (\r)
+        (0, 5*\s) circle (\r)
+        (0, 6*\s) circle (\r)
+    ;
+    \fill [verdeunb!50]
+        (0, 0) circle (\r)
+        (0, 2*\s) circle (\r)
+        (0, 3*\s) circle (\r)
+    ;
+    \fill [azulunb!50]
+        (0, 5*\s) circle (\r)
+    ;
+    \draw [-{>[scale=1.5]}, fill=white, inner sep=1]
+        (3, 3*\s) node (end) {}
+        (\r, 1*\s) .. controls ++(0:1) and ++(0:-1) .. (end)
+        (\r, 4*\s) .. controls ++(0:1) and ++(0:-1) .. (end)
+        (\r, 6*\s) .. controls ++(0:1) and ++(0:-1) .. (end)
+        (end) node [right] {%
+            \begin{minipage}{3cm}
+                \centering
+                \ABNTEXfontereduzida
+                Simulations outside the reference time vector
+            \end{minipage}
+        }
+    ;
+    \end{scope}
+\end{tikzpicture}

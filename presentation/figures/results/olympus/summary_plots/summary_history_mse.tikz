@@ -1,0 +1,56 @@
+\begin{tikzpicture}[scale=0.55]
+    \begin{axis}[%
+        xlabel={Gating instensity},
+        ylabel={History period MSE},
+        ybar,
+        xtick={0, 1, 2, 3, 4, 5},
+        xticklabels={$0$, $1$, $2$, $4$, $8$, $16$},
+        % ymin=0,
+        grid=major,
+        legend style={draw=none, font=\small, at={(0.5, 1.01)}, anchor=south},
+        legend columns=3,
+    ]
+        \addplot [fill=azulunb!50, error bars/.cd, y dir=both, y explicit] 
+            table [
+                col sep=semicolon, 
+                x expr=\coordindex, 
+                y={Mean Without Localization}, 
+                y error={Std Without Localization}
+            ] {figures/results/olympus/summary_plots/summary_history_mse.dat};
+        \addlegendentry{Without loc.}
+    
+        \addplot [fill=verdeunb!50, error bars/.cd, y dir=both, y explicit] 
+            table [
+                col sep=semicolon, 
+                x expr=\coordindex, 
+                y={Mean With Localization}, 
+                y error={Std With Localization}
+            ] {figures/results/olympus/summary_plots/summary_history_mse.dat};
+        \addlegendentry{With loc.}
+    
+        \addplot [fill=gray, error bars/.cd, y dir=both, y explicit] 
+            table [
+                col sep=semicolon, 
+                skip coords between index={1}{6},
+                x expr=5, 
+                y={Prior Mean}, 
+                y error={Prior Std}
+            ] {figures/results/olympus/summary_plots/summary_history_mse.dat};
+        \addlegendentry{Prior}
+
+        \addplot [very thick, verdeunb, dashed, line legend, sharp plot, update limits=false] coordinates {
+            (-0.5, 1) (5.5, 1) 
+        };        
+        \label{ok_lim-olympus}
+        \addplot [very thick, darkred, dashed, line legend, sharp plot, update limits=false] coordinates {
+            (-0.5, 2) (5.5, 2) 
+        };     
+        \label{fair_lim-olympus}   
+        \node [fill=white, anchor=north west] at (rel axis cs: 0.0, 1.0) {%
+            \shortstack[l]{%
+                \ref{ok_lim-olympus} ``Ok'' limit\\
+                \ref{fair_lim-olympus} ``Fair'' limit 
+            }
+        };
+    \end{axis}
+\end{tikzpicture}

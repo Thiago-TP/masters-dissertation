@@ -1,0 +1,26 @@
+\begin{tikzpicture}[scale=0.555]
+    \pgfplotsset{minor grid style={color=gray, dashdotted}}
+    \begin{axis}[%
+        xlabel=FOPT,
+        ylabel=CDF,
+        minor tick num=1,
+        grid=both,
+        legend entries={Realization$\quad$, Ground-truth},
+        legend columns=2,
+        legend style={draw=none, at={(0.5, 1.01)}, anchor=south},
+    ]
+        \addplot [highlight, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/real_field/fopt_plots/fopt_cdf.dat};
+
+        \addplot [verdeunb, mark=*, only marks] coordinates {
+            (0.6541689131076032, 0.4875621890547264)
+        };
+        
+        \tikzstyle{every pin}=[
+            fill=white,
+            draw=black,
+            font=\small,
+        ]
+
+        \node [coordinate,pin=right:{Real data}]  at (axis cs:0.6541689131076032, 0.4875621890547264) {};
+    \end{axis}
+\end{tikzpicture}

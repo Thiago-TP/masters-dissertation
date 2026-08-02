@@ -4,7 +4,7 @@
         ylabel={Validation period coverage},
         ybar,
         xtick={0, 1, 2, 3, 4, 5},
-        xticklabels={0, 1, 2, 4, 8, 16},
+        xticklabels={$0$, $1$, $2$, $4$, $8$, $16$},
         ymin=0, ymax=1.1,
         grid=major,
         legend style={draw=none, font=\small, at={(0.5, 1.01)}, anchor=south},

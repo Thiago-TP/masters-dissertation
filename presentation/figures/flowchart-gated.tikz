@@ -1,0 +1,33 @@
+\begin{tikzpicture}[> = latex]
+    % Blocks
+    \node [startstop] (start) 
+        {Start};
+
+    \node [io, below=0.5 of start] (data) 
+        {
+            Receive $\mathbf{d}_\text{obs}$, 
+            $\{\mathbf{d}_j\}_{1\leq j\leq N_e}$,
+            $\mathbf{C}_e$, 
+            $L_x'$, $L_y'$, $T_c$, $\theta$ and 
+            $N_a$
+        };
+
+    \node [process, below=0.5 of data] (localization) 
+        {Compute $\mathbf{R}$};
+
+    \node [process, below=0.5 of localization] (dsiesmda) 
+        {Fix $\lambda$ and run \cref{eq:iteration_gated} from $k=1$ to $k=N_a$};
+
+    \node [io, below=0.5 of dsiesmda] (posterior) 
+        {Return $\mathbf{d}^{N_a+1}_j$, $1\leq j\leq N_e$, the posterior};
+
+    \node [startstop, below=0.5 of posterior] (stop) 
+        {Stop};
+
+    % Arrows
+    \draw [->] (start) -- (data);
+    \draw [->] (data) -- (localization);
+    \draw [->] (localization) -- (dsiesmda);
+    \draw [->] (dsiesmda) -- (posterior);
+    \draw [->] (posterior) -- (stop);
+\end{tikzpicture}

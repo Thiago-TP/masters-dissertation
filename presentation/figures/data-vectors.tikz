@@ -1,0 +1,207 @@
+\begin{tikzpicture}[domain=0:2, smooth]
+    % Figures: reference and realizations
+    \node (m) at (0, 0) {\includegraphics[width=1.5cm]{realizations/EGG_10.png}};
+    \node [below=0.5 of m] (m1) {\includegraphics[width=1.5cm]{realizations/EGG_1.png}};
+    \node [below=0.5 of m1] (m2) {\includegraphics[width=1.5cm]{realizations/EGG_2.png}};
+    \node [below=0.5 of m2] (m3) {\includegraphics[width=1.5cm]{realizations/EGG_3.png}};
+
+    % Annotation: model parameters vectors
+    \draw [decorate,decoration={brace,amplitude=3pt}]
+        (m.south west) -- (m.north west) node [midway, left] {$\mathbf{m}$}
+    ;
+    \draw [decorate,decoration={brace,amplitude=3pt}]
+        (m1.south west) -- (m1.north west) node [midway, left] {$\mathbf{m}_1$}
+    ;
+    \draw [decorate,decoration={brace,amplitude=3pt}]
+        (m2.south west) -- (m2.north west) node [midway, left] {$\mathbf{m}_2$}
+    ;
+    \draw [decorate,decoration={brace,amplitude=3pt}]
+        (m3.south west) -- (m3.north west) node [midway, left] {$\mathbf{m}_3$}
+    ;
+
+    % Annotation: reference and realizations labels
+    % \draw [fill] (m.north)  ++(0, 0.25) circle (0.05) --++ (-1.75, 0) node [anchor=east] {Ground-truth};
+    % \draw [fill] (m1.north) ++(0, 0.25) circle (0.05) --++ (-1.75, 0) node [anchor=east] {Realizations};
+
+    % Annotation: subsurface simulation
+    \draw [->] (m.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}, \mathbf{u})$}
+    ;
+    \draw [->] (m1.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_1, \mathbf{u})$}
+    ;
+    \draw [->] (m2.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_2, \mathbf{u})$}
+    ;
+    \draw [->] (m3.east) --++ (2.25, 0)
+        node [midway, fill=white, inner sep=1] {$\mathbf{g}(\mathbf{m}_3, \mathbf{u})$}
+    ;
+
+    % Figures: production curves
+    %% reference
+    \node [right=2.75 of m.south east, yshift=-0.1cm] (plots_d) {};
+    \begin{scope}[shift={(plots_d)}]
+        %% axis
+        \draw [-Latex]
+            (0, 0) --++ (2, 0)
+        ;
+        \draw [-Latex]
+            (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}$}
+        ;
+        %% curves
+        \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+        \draw[color=darkred]  plot (\x,{1+0.5*sin(5*\x r)})     node[right] {BHP};
+        \draw[color=azulunb]  plot (\x,{2*(1-exp(-1.5*\x))})    node[right] {WCTP};
+        \draw[color=verdeunb] plot (\x,{1.5*exp(-\x*\x)})       node[right] {OPR};
+        %% d_h
+        \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
+            %% axis
+            \draw [-Latex]
+                (0, 0) --++ (2, 0)
+            ;
+            \draw [-Latex]
+                (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_h$}
+            ;
+            %% curves
+            \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+            \draw[color=darkred]  plot (\x,{1+0.5*sin(5*\x r) });
+            \draw[color=azulunb]  plot (\x,{2*(1-exp(-1.5*\x))});
+            \draw[color=verdeunb] plot (\x,{1.5*exp(-\x*\x)   });
+            %% history end
+            \draw [thick, highlight] (1.5, 0) --++ (0, 2);
+            %% d_obs
+            \begin{scope}[shift={(3, 0)},domain=0:1.5]
+                %% axis
+                \draw [-Latex]
+                    (0, 0) --++ (2, 0)
+                ;
+                \draw [-Latex]
+                    (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_\text{obs}$}
+                ;
+                %% curves
+                \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+                \draw[color=darkred]  plot[domain=0:1.5] (\x,{1+0.5*sin(5*\x r)  + 0.05*sin(20*\x r)});
+                \draw[color=azulunb]  plot[domain=0:1.5] (\x,{2*(1-exp(-1.5*\x)) + 0.05*sin(20*\x r)});
+                \draw[color=verdeunb] plot[domain=0:1.5] (\x,{1.5*exp(-\x*\x)    + 0.05*sin(20*\x r)});
+                %% history end
+                \draw [thick, highlight] (1.5, 0) --++ (0, 2);
+            \end{scope}
+            %% connection between d_h and d_obs
+            \draw [->]
+                (1, 2 +0.1) .. controls ++(75:1) and ++(-75:-1) .. (1 +3, 2 +0.1)
+                node [midway, fill=white, inner sep=1] {\ABNTEXfontereduzida Noise}
+            ;
+        \end{scope}
+    \end{scope}
+    %% m1
+    \node [right=2.75 of m1.south east, yshift=-0.1cm] (plots_d1) {};
+    \begin{scope}[shift={(plots_d1)}]
+        %% axis
+        \draw [-Latex]
+            (0, 0) --++ (2, 0)
+        ;
+        \draw [-Latex]
+            (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_1$}
+        ;
+        %% curves
+        \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+        \draw[color=darkred]  plot (\x,{0.8+0.25*sin(5*\x r +0.1)}) node[right] {BHP};
+        \draw[color=azulunb]  plot (\x,{2*(1-exp(-0.5*\x))})        node[right] {WCTP};
+        \draw[color=verdeunb] plot (\x,{1.75*exp(-\x*\x/2)})        node[right] {OPR};
+        %% d_h
+        \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
+            %% axis
+            \draw [-Latex]
+                (0, 0) --++ (2, 0)
+            ;
+            \draw [-Latex]
+                (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_{h,1}$}
+            ;
+            %% curves
+            \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+            \draw[color=darkred]  plot (\x,{0.8+0.25*sin(5*\x r +0.1)});
+            \draw[color=azulunb]  plot (\x,{2*(1-exp(-0.5*\x))})       ;
+            \draw[color=verdeunb] plot (\x,{1.75*exp(-\x*\x/2)})       ;
+            %% history end
+            \draw [thick, highlight] (1.5, 0) --++ (0, 2);
+        \end{scope}
+    \end{scope}
+    %% m2
+    \node [right=2.75 of m2.south east, yshift=-0.1cm] (plots_d2) {};
+    \begin{scope}[shift={(plots_d2)}]
+        %% axis
+        \draw [-Latex]
+            (0, 0) --++ (2, 0)
+        ;
+        \draw [-Latex]
+            (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_2$}
+        ;
+        %% curves
+        \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+        \draw[color=darkred]  plot (\x,{1+0.5*sin(2*\x r -0.1)}) node[right] {BHP};
+        \draw[color=azulunb]  plot (\x,{1.8*(1-exp(-2.5*\x))})   node[right] {WCTP};
+        \draw[color=verdeunb] plot (\x,{1.5*exp(-\x*\x/0.5)})    node[right] {OPR};
+        %% d_h
+        \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
+            %% axis
+            \draw [-Latex]
+                (0, 0) --++ (2, 0)
+            ;
+            \draw [-Latex]
+                (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_{h,2}$}
+            ;
+            %% curves
+            \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+            \draw[color=darkred]  plot (\x,{1+0.5*sin(2*\x r -0.1)});
+            \draw[color=azulunb]  plot (\x,{1.8*(1-exp(-2.5*\x))})  ;
+            \draw[color=verdeunb] plot (\x,{1.5*exp(-\x*\x/0.5)})   ;
+            %% history end
+            \draw [thick, highlight] (1.5, 0) --++ (0, 2);
+        \end{scope}
+    \end{scope}
+    %% m3
+    \node [right=2.75 of m3.south east, yshift=-0.1cm] (plots_d3) {};
+    \begin{scope}[shift={(plots_d3)}]
+        %% axis
+        \draw [-Latex]
+            (0, 0) --++ (2, 0) node [midway, below] {\ABNTEXfontereduzida Time}
+        ;
+        \draw [-Latex]
+            (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_3$}
+        ;
+        %% curves
+        \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+        \draw[color=darkred]  plot (\x,{0.6+0.4*sin(6*\x r)})   node[right] {BHP};
+        \draw[color=azulunb]  plot (\x,{1.8*(1-exp(-1.25*\x))}) node[right] {WCTP};
+        \draw[color=verdeunb] plot (\x,{1.75*exp(-\x*\x/0.25)}) node[right] {OPR};
+        %% d_h
+        \begin{scope}[shift={(4.25, 0)},domain=0:1.5]
+            %% axis
+            \draw [-Latex]
+                (0, 0) --++ (2, 0) node [midway, below] {\ABNTEXfontereduzida Time}
+            ;
+            \draw [-Latex]
+                (0, 0) --++ (0, 2) node [midway, left] {\ABNTEXfontereduzida $\mathbf{d}_{h,3}$}
+            ;
+            %% curves
+            \draw[very thin,color=gray,opacity=0.3,dashed,step=0.5] (0,0) grid ++(2, 2);
+            \draw[color=darkred]  plot (\x,{0.6+0.4*sin(6*\x r)})  ;
+            \draw[color=azulunb]  plot (\x,{1.8*(1-exp(-1.25*\x))});
+            \draw[color=verdeunb] plot (\x,{1.75*exp(-\x*\x/0.25)});
+            %% history end
+            \draw [thick, highlight] (1.5, 0) --++ (0, 2);
+        \end{scope}
+    \end{scope}
+
+    % Annotation: end of history period (yellow line and triangle)
+    \draw 
+        (plots_d) ++ (1.5, 2) node (history_line_start) {}
+        (plots_d3) ++ (1.5, 0) node (history_line_end) {}
+    ;
+    \fill [highlight] 
+        (history_line_start.center) --++ 
+        (60:0.3) --++ (180:0.3) node [midway, above] {\ABNTEXfontereduzida History end}
+        -- cycle
+    ;
+    \draw [thick, highlight] (history_line_start.center) -- (history_line_end.center);
+\end{tikzpicture}
