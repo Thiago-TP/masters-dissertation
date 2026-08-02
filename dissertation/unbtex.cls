@@ -303,7 +303,7 @@
 \RequirePackage[disable=ifdraft,protrusion=false]{microtype} % Para melhorias de justificação
 \RequirePackage{icomma} % Configura casas decimais separadas por vírgula
 \frenchspacing % Retira espaço extra entre as frases (após o ponto final)
-\pdfminorversion=7 % Configuração da versão do arquivo pdf produzido
+% \pdfminorversion=7 % Configuração da versão do arquivo pdf produzido
 
 % Configurações dos cabeçalhos
 \makepagestyle{simple} % Cabeçalho com número de pagina e linha horizontal
