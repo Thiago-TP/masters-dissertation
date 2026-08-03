@@ -1,13 +1,30 @@
-\section{Conclusion}
+% \section{Conclusion}
 
-\begin{frame}{Conclusion}{Recap}
-\end{frame}
-
-\begin{frame}{Conclusion}{Practical implications}
-\end{frame}
-
-\begin{frame}{Conclusion}{Limitations and future research}
-\end{frame}
-
-\begin{frame}{Conclusion}{Closing statement}
+\begin{frame}{Conclusion}
+    \def\arraystretch{1.5}
+    \begin{tabular}{l p{12cm}}
+        $\triangleright$ &
+            This work introduced Gated DSI-ESMDA, an extension of DSI-ESMDA 
+            with a nonlinear innovation gating mechanism that increases posterior variance 
+            the more intense the gating.
+    \\
+        $\triangleright$ &
+            Observation coverages of the posterior increased with the gating intensity for all case studies,
+            albeit under different sensitivities.
+    \\
+        $\triangleright$ &
+        Small gatings tend to underestimate uncertatinty, while mild gatings produced similar results to standard DSI-ESMDA.
+    \\
+        $\triangleright$ &
+            The gating mechanism in of itself can be easily adapted into model-space methods such as ES-MDA.
+    \\
+        $\triangleright$ &
+            Gated DSI-ESMDA 
+            remains susceptible to poor feature selection and localization tuning,
+            as well as insuficient ground-truth representativeness, 
+            high data dimentionality, and reduced ensemble size. 
+            Future research should address these problems.
+            % Feature selection and localization optimization are thought to be two of the main culprits behind
+            % lukewarm results in the real field case, and future research could address these problems.
+    \end{tabular}
 \end{frame}
