@@ -255,12 +255,12 @@ where $\mathcal{O}_\mathcal{L}$ is defined as
     &=
     \frac{1}{2} 
     (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)^\top 
-    \mathbf{C}_e
+    \mathbf{C}_e^{-1}
     (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)\\
     &=
     \frac{1}{2} 
     (\mathbf{d}_\text{obs} - \mathbf{d}_h)^\top 
-    \mathbf{C}_e
+    \mathbf{C}_e^{-1}
     (\mathbf{d}_\text{obs} - \mathbf{d}_h),
 \end{align}
 %
@@ -292,7 +292,7 @@ where $\mathcal{O}^\ell_\mathcal{L}$ is defined as
     \mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*) =
     \frac{1}{2} 
     (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)^\top 
-    \mathbf{C}^\ell_e
+    (\mathbf{C}^\ell_e)^{-1}
     (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*),
 \end{equation}
 %
@@ -364,7 +364,7 @@ so that assimilations with larger $\alpha^\ell$ incur smaller corrections.
 The next step towards an implementable update equation is assuming the prior distribution is also Gaussian, i.e.,
 %
 \begin{equation}
-    p(\mathbf{d}) = c_\text{prior} \exp(-\mathcal{O}_p(\mathbf{d}^*, \mathbf{d}_\text{prior}))
+    p(\mathbf{d}^*) = c_\text{prior} \exp(-\mathcal{O}_p(\mathbf{d}^*, \mathbf{d}_\text{prior}))
 \label{eq:prior}
 \end{equation}
 %

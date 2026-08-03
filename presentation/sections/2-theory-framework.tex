@@ -203,7 +203,7 @@
 
     \medskip
 
-    Multiple Data Assimilation mitigates this problem by making $N_a$ optimizations with resampled reference data: 
+    Multiple Data Assimilation (MDA) mitigates this problem by making $N_a$ optimizations with resampled reference data: 
     %
     \begin{align}
         {\color{darkred}p^1(\mathbf{d}^*\mid \mathbf{d}^1_\text{obs})} 
@@ -231,6 +231,90 @@
 \end{frame}
 
 \begin{frame}{Theory framework}{The base equation}
+    MDA makes the following suppositions on the likelihoods:
+    \begin{itemize}
+        \item $\mathcal{L}^\ell$ is Gaussian
+        \item $\mathcal{L}^\ell$ has covariance 
+              $\mathbf{C}^\ell_e = \alpha^\ell \mathbf{C}_e$, $\alpha^\ell > 0$
+    \end{itemize}
+    %
+    This leads to 
+    %
+    \begin{equation}
+        \mathcal{L}^\ell(\mathbf{d}^\ell_\text{obs} \mid \mathbf{d}^*)
+        \propto 
+        \exp\left(-
+            \frac{1}{2} 
+            (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)^\top 
+            \frac{\mathbf{C}_e^{-1}}{\alpha^\ell}
+            (\mathbf{d}_\text{obs} - \mathbf{H}\mathbf{d}^*)
+        \right),
+    \end{equation}
+    %
+    $\mathbf{H}$ a matrix that extracts $\mathbf{d}^*_h$ from $\mathbf{d}^*$.
+    %
+    \vfill
+    %
+    \begin{block}{Equivalence to ES}
+        For Gaussian likelihoods, MDA is equivalent to ES if 
+        \begin{equation}
+            \sum_{\ell=1}^{N_a} \frac{1}{\alpha^\ell} = 1,
+        \end{equation}
+        highlighting the importance of having inflation factors on the covariance.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Theory framework}{The base equation}
+    The priors are also supposed Gaussian:
+    %
+    \begin{equation}
+        p^\ell(\mathbf{d}^* \mid \mathbf{d}^\ell_\text{prior}) \propto \exp\left(-
+            \frac{1}{2}
+            (\mathbf{d}^* - \mathbf{d}_\text{prior})^\top 
+            (\mathbf{C}^\ell_p)^{-1}
+            (\mathbf{d}^* - \mathbf{d}_\text{prior})
+        \right),
+    \end{equation}
+    %
+    where 
+    
+    \medskip
+
+    \def\arraystretch{1.5}
+    \begin{tabular}{lll}
+        $\triangleright$ & $\mathbf{d}^\ell_\text{prior}$ 
+            & is the prediction with highest belief of occurring prior to assimilating $\mathbf{d}^\ell_\text{obs}$\\
+        $\triangleright$ & $\mathbf{C}^\ell_p$ & is the prior covariance matrix (i.e., $\mathbf{d}^* \sim \mathcal{N}(\mathbf{d}^\ell_\text{prior}, \mathbf{C}^\ell_p)$)\\ 
+    \end{tabular}
+\end{frame}
+
+\begin{frame}{Theory framework}{The base equation}
+    The maximum \emph{a posteriori} (MAP) estimate of the $\ell$-th assimilation becomes
+    %
+    \begin{subequations}
+        \begin{align}
+            \mathbf{d}^{\ell+1}_\text{map}
+            &=
+            \mathbf{d}^\ell_\text{map} +
+            \mathbf{K}^\ell (\mathbf{d}^\ell_\text{obs} - \mathbf{d}^\ell_{h, \text{map}}), 
+        \\
+            \mathbf{K}^\ell 
+            &= 
+            \mathbf{C}^\ell_p \mathbf{H}^\top 
+            (\mathbf{H}\mathbf{C}_p^\ell \mathbf{H}^\top + \alpha^\ell\mathbf{C}_e)^{-1}
+        \end{align}
+    \end{subequations}
+    %
+    with $\mathbf{d}^0_\text{map} = \mathbf{d}^0_\text{prior}$.
+    %
+    \vfill
+    %
+    Using an ensemble of $N_e$ model realizations, one can estimate the prior covariances with 
+    $\Delta\mathbf{D} = \begin{bmatrix}
+        \mathbf{d}_1 - \overline{\mathbf{d}} & \cdots & 
+        \mathbf{d}_{N_e} - \overline{\mathbf{d}}
+    \end{bmatrix}$:
+    %
     \begin{subequations}
         \begin{alignat}{4}
             \mathbf{d}_j^{\ell+1} 
@@ -246,9 +330,29 @@
         \end{alignat}
     \label{eq:iteration_dsiesmda-no-loc}
     \end{subequations}
+
+    $\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell$, 
+    with $\mathbf{e}_j\sim\mathcal{N}(\mathbf{0}, \mathbf{C}_e)$,
+    is a way of sampling 
+    $\mathbf{d}_\text{obs}^\ell \sim 
+    \mathcal{N}(\mathbf{d}_\text{obs}, \alpha^\ell\mathbf{C}_e)$. 
 \end{frame}
 
 \begin{frame}{Theory framework}{Covariance localization}
+    Covariance localization, or simply localization, 
+    is an \emph{ad hoc} procedure employed to mitigate the effects of small ensembles 
+    \cite[section 7.5]{Emerick:2025}.
+    %
+    \vfill
+    %
+    The influence a datum has on another datum is weighted
+    in a inverse manner to the distance between the points.
+    %
+    \vfill
+    %
+    Localization is applied to the Kalman-like gain,
+    so that the base equation becomes:
+    %
     \begin{equation}
         \mathbf{d}_j^{\ell+1} 
         =
@@ -259,6 +363,8 @@
 \end{frame}
 
 \begin{frame}{Theory framework}{Proposal}
+    This work introduces gating $\bm{\alpha}$ on the innovation vector:  
+
     \begin{subequations}
         \begin{align}
             \mathbf{d}_j^{\ell+1} 
@@ -272,10 +378,26 @@
             \alpha_{j, v}^\ell 
             &= \mathrm{erf}
             \left(
-                \frac{1}{\lambda \sqrt{2\sigma_v^2}} 
-                |(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_v|
-            \right)
+                \frac{1}{\lambda \sqrt{2}}
+                \frac{|(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_v|}{\sigma_v} 
+            \right).
         \label{eq:alpha_lambda}
         \end{align}
     \end{subequations}
+    
+    The gating recovers variance loss in the posterior ensemble by diminishing Kalman-like updates on reasonably matched data.
+    The smaller the mismatch of a measurement relative to the noise at that datum, the smaller the update.
+
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{0.39\textwidth}
+            \centering
+            \input{figures/erf.tikz}
+        \end{subfigure}
+        %
+        \begin{subfigure}[b]{0.59\textwidth}
+            \centering
+            \input{figures/gating-intensities.tikz}
+        \end{subfigure}
+    \end{figure}
 \end{frame}
