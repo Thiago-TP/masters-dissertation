@@ -24,6 +24,7 @@
         \draw [thick, darkred, variable=\x] 
             plot ({\x}, {0.75 * exp(-(\x * \x)/0.25)});
         \fill [darkred] (0, 0.75) circle (0.04);
+        \node [highlight] at (1.1, 1) {$\mathcal{L}^1$};
     \end{scope}
 
     % Iteration 1 (SDA and first posterior of MDA)
@@ -54,6 +55,7 @@
             \draw [thick, darkred, variable=\x, domain=-1:1, smooth]
                 plot ({\x}, {0.5 * exp(-((\x-0.35) * (\x-0.35))/0.1)});
             \fill [darkred] (0.35, 0.5) circle (0.04);
+            \node [highlight] at (0.75, 1) {$\mathcal{L}^2$};
         \end{scope}
     \end{scope}
 
