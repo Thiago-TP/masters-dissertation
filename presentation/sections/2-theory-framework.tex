@@ -103,27 +103,27 @@
     \end{align} 
 \end{frame}
 
-\begin{frame}{Theory framework}{Important concepts and notation}
-    \begin{block}{Predicting versus forecasting}
-        Prediction refers to the estimation of any datum at a given time,
-        while forecasting refers to the estimation of any datum beyond the observation period.
-        %
-        Forecasting is a type of prediction, but in particular prediction of new data.
-    \end{block}
-    %
-    \vfill
-    %
-    \begin{block}{History and validation}
-        In Data Science literature, a common way of estimating forecast quality is splitting
-        available data into a training partition and a test partition. The training partition is used to
-        freely adjust predictions within a given period, and the test, to verify how close predictions
-        will be on new data.
-    \end{block}
-    \vfill
-    In the context of this work, data from a given reference will be split into two disjointed periods in time:
-    \textbf{history} period, and \textbf{validation} period,
-    mirroring the train and test splits.
-\end{frame}
+% \begin{frame}{Theory framework}{Important concepts and notation}
+%     \begin{block}{Predicting versus forecasting}
+%         Prediction refers to the estimation of any datum at a given time,
+%         while forecasting refers to the estimation of any datum beyond the observation period.
+%         %
+%         Forecasting is a type of prediction, but in particular prediction of new data.
+%     \end{block}
+%     %
+%     \vfill
+%     %
+%     \begin{block}{History and validation}
+%         In Data Science literature, a common way of estimating forecast quality is splitting
+%         available data into a training partition and a test partition. The training partition is used to
+%         freely adjust predictions within a given period, and the test, to verify how close predictions
+%         will be on new data.
+%     \end{block}
+%     \vfill
+%     In the context of this work, data from a given reference will be split into two disjointed periods in time:
+%     \textbf{history} period, and \textbf{validation} period,
+%     mirroring the train and test splits.
+% \end{frame}
 
 \begin{frame}{Theory framework}{Important concepts and notation}
     Let $\mathbf{d}$ denote the true production data vector of a reference reservoir across time,
@@ -134,25 +134,22 @@
     \begin{equation}
         \mathbf{d} = 
         \begin{bmatrix}
-            \mathbf{d}^\top_h & \mathbf{d}^\top_v
-        \end{bmatrix}^\top
+            \mathbf{d}_h \\
+            \mathbf{d}_v
+        \end{bmatrix}
     \end{equation}
     %
     with $\mathbf{d}_h$ the ground-truth history data, and $\mathbf{d}_v$ the ground-truth validation data.
     %
     \vfill
     %
-    Let $\mathbf{u}$ and $\mathbf{m}$ be 
-    the controls applied to the ground-truth and the parameters of the ground-truth, respectively.
-    Then
+    Ground-truth data come from the forward model,
     %
     \begin{equation}
         \mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u}).
     \end{equation}
     %
-    \vfill
-    %
-    Observed data is $\mathbf{d}_h$ corrupted by measurement noise:
+    and observed data, from a corruption of $\mathbf{d}_h$:
     %
     \begin{equation}
         \mathbf{d}_\text{obs} = \mathbf{d}_h + \mathcal{N}(\mathbf{0}, \mathbf{C}_e),

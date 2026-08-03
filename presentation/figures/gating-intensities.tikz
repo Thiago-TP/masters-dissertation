@@ -18,7 +18,7 @@
     \draw [very thick, verdeunb!20, dashed] plot[domain=0.05:1, samples=200] (\x, {erf(2.5/(\x*sqrt(2)))});
     \draw [very thick, verdeunb!20] plot[domain=1:4, samples=200] (\x, {erf(2.5/(\x*sqrt(2)))});
 
-    \draw [azulunb, ->, dashdotted, thick] (1.5, 0.1) --++ (45:1.5) node [above, xshift=1cm] {%
+    \draw [azulunb, ->, dashdotted, thick] (1.5, 0.1) --++ (45:1.5) node [yshift=0.5cm, xshift=0.25cm] {%
         $\dfrac{|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,j}^\ell)_v|}{\sigma_v}$
     };
 
