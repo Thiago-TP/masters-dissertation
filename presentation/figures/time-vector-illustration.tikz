@@ -11,13 +11,13 @@
     ;
     \draw [decorate,decoration={brace,mirror,amplitude=5pt}]
         (-0.55, 0) --++ (0, 3*\s) node [midway, left, xshift=-0.25cm] {%
-            \ABNTEXfontereduzida
+            \small
             History period
         }
     ;
     \draw
         (-0.55, 5*\s) node [left, xshift=-0.25cm] {%
-            \ABNTEXfontereduzida
+            \small
             Validation period
         }
     ;
@@ -67,7 +67,7 @@
         (end) node [right] {%
             \begin{minipage}{3cm}
                 \centering
-                \ABNTEXfontereduzida
+                \small
                 Simulations outside the reference time vector
             \end{minipage}
         }

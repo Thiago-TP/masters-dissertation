@@ -1,6 +1,137 @@
 \section{Theory Framework}
 
 \begin{frame}{Theory Framework}{Important concepts and notation}
+    \begin{block}{Prediction forward model}
+        The prediction forward model, or forward model, 
+        is the underlying mapping between a  model's parameters, controls and initial states to its observable features.
+    \end{block}
+    %
+    \vfill
+    %
+    Denoting by $\mathbf{m}$ the vector of model parameters,
+    and by $\mathbf{u}$ the set of controls applied on the field,
+    and by $\mathbf{d}$ the reservoir production within the time frame of the controls,
+    one can write
+    %
+    \begin{equation}
+        \mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u}; \mathbf{x}_0)
+    \label{eq:prediction-forward-model}
+    \end{equation} 
+    %
+    with $\mathbf{x}_0$ the initial value of reservoir states.
+    %
+    \vfill
+\end{frame}
+
+\begin{frame}{Theory Framework}{Important concepts and notation}
+    The key assumption behind the forward model is that it is deterministic. 
+    Implementation wise, $\mathbf{g}$ consists of evaluating a set of equations 
+    at each gridblock of the model.
+    %
+    \vfill
+    %
+    Each evaluation evolves the model a little further in time, 
+    until the scheduled time period is appreciated, concluding the process.
+    %
+    \vfill
+    %
+    Black-oil equations are the most common implementations of the forward model
+    \cite{Rasmussen:2021} due to their fair simplicity and accuracy.
+    The fluid is assumed composed of three liquid phases, water, oil and gas.
+    %
+    \vfill
+\end{frame}
+
+\begin{frame}{Theory Framework}{Important concepts and notation}
+    A given phase $\alpha$'s component mass $A_\alpha$ satisfies the conservation equation
+    %
+    \begin{align}
+        \frac{\partial}{\partial t} \left(\phi_{\text{ref}} A_\alpha \right)
+        + \nabla \cdot \mathbf{u}_\alpha + q_\alpha & = 0,
+    \label{eq:materialbalance-cont}
+    \end{align}
+    %
+    where 
+    %
+    \begin{subequations}
+        \label{eq:acc}
+        \begin{align}
+            A_w &= m_{\phi} b_{w} s_{w},                      & \mathbf{u}_w &= b_{w} \mathbf{v}_{w}, \\
+            A_o &= m_{\phi} (b_{o} s_{o} + r_{og}b_{g}s_{g}), & \mathbf{u}_o &= b_{o} \mathbf{v}_{o} +
+            r_{og}b_{g}\mathbf{v}_{g}, \\
+            A_g &= m_{\phi} (b_{g} s_{g} + r_{go}b_{o}s_{o}), & \mathbf{u}_g &= b_{g} \mathbf{v}_{g} +
+            r_{go}b_{o}\mathbf{v}_{o}.
+        \end{align}
+    \end{subequations}
+    %
+    and the phase fluxes are given by Darcy's law:
+    %
+    \begin{align}
+        \mathbf{v}_\alpha = -\lambda_\alpha \mathbf{K} (\nabla p_\alpha - \rho_\alpha \mathbf{g}).
+        \label{eq:Darcy-mph}
+    \end{align}
+    %
+    Finally, the following closure equations are imposed:
+    %
+    \begin{align}
+        s_w + s_o + s_g &= 1,
+        &p_{c,ow} &= p_{o} - p_{w},
+        &p_{c,og} &= p_{o} - p_{g}. \label{eq:capillary}
+    \end{align} 
+\end{frame}
+
+\begin{frame}{Theory Framework}{Important concepts and notation}
+    \begin{block}{Predicting versus forecasting}
+        Prediction refers to the estimation of any datum at a given time,
+        while forecasting refers to the estimation of any datum beyond the observation period.
+        %
+        Forecasting is a type of prediction, but in particular prediction of new data.
+    \end{block}
+    %
+    \vfill
+    %
+    \begin{block}{History and validation}
+        In Data Science literature, a common way of estimating forecast quality is splitting
+        available data into a training partition and a test partition. The training partition is used to
+        freely adjust predictions within a given period, and the test, to verify how close predictions
+        will be on new data.
+    \end{block}
+    \vfill
+    In the context of this work, data from a given reference will be split into two disjointed periods in time:
+    history period, and validation period,
+    mirroring the common train and test splits respectively.
+\end{frame}
+
+\begin{frame}{Theory framework}{Important concepts and notation}
+    Let $\mathbf{d}$ denote the true production data vector of a reference reservoir across time,
+    free of observation error.
+    %
+    Data is separated into a history period and a validation period,
+    so that $\mathbf{d} = \begin{bmatrix}
+        \mathbf{d}^\top_h & \mathbf{d}^\top_v
+    \end{bmatrix}^\top$
+    with $\mathbf{d}_h$ the ground-truth history data, and $\mathbf{d}_v$ the ground-truth validation data.
+    %
+    \vfill
+    %
+    Analogously, let $\mathbf{u}$ and $\mathbf{m}$ be 
+    the controls applied to the ground-truth and the parameters of the ground-truth, respectively.
+    %
+    Denoting the prediction forward model by $\mathbf{g}(\cdot, \cdot)$,
+    ground-truth data is given by $\mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u})$.
+    %
+    \vfill
+    %
+    Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim N(\mathbf{0}, \mathbf{C}_e)$,
+    where $\mathbf{C}_e$ is the noise covariance matrix.
+    The corrupted vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
+\end{frame}
+
+\begin{frame}{Theory Framework}{Important concepts and notation}
+    \centering
+    \scalebox{0.8}{%
+        \input{figures/data-vectors.tikz}
+    }
 \end{frame}
 
 \begin{frame}{Theory Framework}{Statistical framework}
