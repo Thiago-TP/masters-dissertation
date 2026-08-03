@@ -51,7 +51,7 @@ each of which associated to its own parameters vector.
 
 Following the pattern established in the ground-truth, 
 $\mathbf{d}_{h,\ j}$ denotes the history period data output by realization $j$.
-Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim N(\mathbf{0}, \mathbf{C}_e)$,
+Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim \mathcal{N}(\mathbf{0}, \mathbf{C}_e)$,
 where $\mathbf{C}_e$ is the noise covariance matrix.
 The corrupted vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
 %
@@ -126,8 +126,8 @@ validation ($\mathbf{d}^*_h$) periods.
 From Bayes' theorem, one can write the posterior as
 %
 \begin{equation}
-    p(\mathbf{d}\mid \mathbf{d}_\text{obs}) =
-    c_\text{pos} \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}) p(\mathbf{d}^*)
+    p(\mathbf{d}^*\mid \mathbf{d}_\text{obs}) =
+    c_\text{pos} \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}^*) p(\mathbf{d}^*)
 \label{eq:bayes}
 \end{equation}  
 %

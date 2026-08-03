@@ -1,6 +1,6 @@
-\section{Theory Framework}
+\section{Theory framework}
 
-\begin{frame}{Theory Framework}{Important concepts and notation}
+\begin{frame}{Theory framework}{Important concepts and notation}
     \begin{block}{Prediction forward model}
         The prediction forward model, or forward model, 
         is the underlying mapping between a  model's parameters, controls and initial states to its observable features.
@@ -18,12 +18,35 @@
     \label{eq:prediction-forward-model}
     \end{equation} 
     %
-    with $\mathbf{x}_0$ the initial value of reservoir states.
+    with $\mathbf{x}_0$ the initial value of reservoir states (usually omitted).
     %
     \vfill
 \end{frame}
 
-\begin{frame}{Theory Framework}{Important concepts and notation}
+\begin{frame}{Theory framework}{Important concepts and notation}
+    \begin{exampleblock}{Data features}
+        In this work, the features inside $\mathbf{d}$ are the following well measurements:
+
+        \medskip 
+
+        \def\arraystretch{1.5}
+        \begin{tabular}{r l l l}
+            $\triangleright$ & oil and water production rates & (OPR and WPR) & [m$^3$/day] \\
+            $\triangleright$ & water injection rate           & (WIR)         & [m$^3$/day] \\
+            $\triangleright$ & bottomhole pressure            & (BHP)         & [Bar]       \\
+            $\triangleright$ & water cut percentage           & (WCTP)        & [\%]
+        \end{tabular}
+    \end{exampleblock}
+    %
+    \vfill 
+    %
+    \begin{alertblock}{Field oil production total}
+        Field oil production total (FOPT, SI unit of m$^3$)
+        is also relevant to this work, despite not being part of $\mathbf{d}$.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Theory framework}{Important concepts and notation}
     The key assumption behind the forward model is that it is deterministic. 
     Implementation wise, $\mathbf{g}$ consists of evaluating a set of equations 
     at each gridblock of the model.
@@ -42,7 +65,7 @@
     \vfill
 \end{frame}
 
-\begin{frame}{Theory Framework}{Important concepts and notation}
+\begin{frame}{Theory framework}{Important concepts and notation}
     A given phase $\alpha$'s component mass $A_\alpha$ satisfies the conservation equation
     %
     \begin{align}
@@ -80,7 +103,7 @@
     \end{align} 
 \end{frame}
 
-\begin{frame}{Theory Framework}{Important concepts and notation}
+\begin{frame}{Theory framework}{Important concepts and notation}
     \begin{block}{Predicting versus forecasting}
         Prediction refers to the estimation of any datum at a given time,
         while forecasting refers to the estimation of any datum beyond the observation period.
@@ -98,8 +121,8 @@
     \end{block}
     \vfill
     In the context of this work, data from a given reference will be split into two disjointed periods in time:
-    history period, and validation period,
-    mirroring the common train and test splits respectively.
+    \textbf{history} period, and \textbf{validation} period,
+    mirroring the train and test splits.
 \end{frame}
 
 \begin{frame}{Theory framework}{Important concepts and notation}
@@ -107,37 +130,107 @@
     free of observation error.
     %
     Data is separated into a history period and a validation period,
-    so that $\mathbf{d} = \begin{bmatrix}
-        \mathbf{d}^\top_h & \mathbf{d}^\top_v
-    \end{bmatrix}^\top$
+    so that 
+    \begin{equation}
+        \mathbf{d} = 
+        \begin{bmatrix}
+            \mathbf{d}^\top_h & \mathbf{d}^\top_v
+        \end{bmatrix}^\top
+    \end{equation}
+    %
     with $\mathbf{d}_h$ the ground-truth history data, and $\mathbf{d}_v$ the ground-truth validation data.
     %
     \vfill
     %
-    Analogously, let $\mathbf{u}$ and $\mathbf{m}$ be 
+    Let $\mathbf{u}$ and $\mathbf{m}$ be 
     the controls applied to the ground-truth and the parameters of the ground-truth, respectively.
+    Then
     %
-    Denoting the prediction forward model by $\mathbf{g}(\cdot, \cdot)$,
-    ground-truth data is given by $\mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u})$.
+    \begin{equation}
+        \mathbf{d} = \mathbf{g}(\mathbf{m}, \mathbf{u}).
+    \end{equation}
     %
     \vfill
     %
-    Assume $\mathbf{d}_h$ is corrupted by additive measurement noise $\mathbf{e}_d\sim N(\mathbf{0}, \mathbf{C}_e)$,
+    Observed data is $\mathbf{d}_h$ corrupted by measurement noise:
+    %
+    \begin{equation}
+        \mathbf{d}_\text{obs} = \mathbf{d}_h + \mathcal{N}(\mathbf{0}, \mathbf{C}_e),
+    \end{equation}
+    %
     where $\mathbf{C}_e$ is the noise covariance matrix.
-    The corrupted vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
 \end{frame}
 
-\begin{frame}{Theory Framework}{Important concepts and notation}
+\begin{frame}{Theory framework}{Important concepts and notation}
     \centering
     \scalebox{0.8}{%
         \input{figures/data-vectors.tikz}
     }
 \end{frame}
 
-\begin{frame}{Theory Framework}{Statistical framework}
+\begin{frame}{Theory framework}{Statistical framework}
+    DSI-ESMDA can be conceptulized as a Bayesian approach to the forecasting problem,
+    aiming to estimate the underlying conditional probability distribution of 
+    predictions given the reference data.
+    %
+    \vfill
+    %
+    \begin{alertblock}{The DSI-ESMDA problem}
+        Find the posterior distribution
+        %
+        \begin{equation}
+            p(\mathbf{d}^*\mid \mathbf{d}_\text{obs}) \propto
+            \mathcal{L}(\mathbf{d}_\text{obs} \mid \mathbf{d}^*) p(\mathbf{d}^*).
+        \end{equation}
+        %
+        where $\mathbf{d}^*$ maximizes $p(\mathbf{d}^*\mid \mathbf{d}_\text{obs})$.
+    \end{alertblock}
+    %
+    \vfill
+    %
+    For given data, the algorithm returns samples from this posterior distribution,
+    outputing a range of values rather than a single value.
+    %
+    While this makes evaluating the algorithm less straightforward, 
+    it allows for quantification of uncertainty.
 \end{frame}
 
-\begin{frame}{Theory Framework}{The base equation}
+\begin{frame}{Theory framework}{Statistical framework}
+    Ensemble Smoothers share this approach at a conceptual level, 
+    but they perform a single maximization.
+    %
+    This leads to poor matches to real data if assumptions on the likelihood $\mathcal{L}$ are not met.
+
+    \medskip
+
+    Multiple Data Assimilation mitigates this problem by making $N_a$ optimizations with resampled reference data: 
+    %
+    \begin{align}
+        {\color{darkred}p^1(\mathbf{d}^*\mid \mathbf{d}^1_\text{obs})} 
+        &\propto \mathcal{L}(\mathbf{d}^1_\text{obs}\mid \mathbf{d}^*) 
+                            p(\mathbf{d}^*) 
+    \label{eq:p1}
+        \\
+        p^2(\mathbf{d}^*\mid \mathbf{d}^2_\text{obs}, \mathbf{d}^1_\text{obs}) 
+        &\propto \mathcal{L}(\mathbf{d}^2_\text{obs}\mid \mathbf{d}^*) 
+                            {\color{darkred}p^1(\mathbf{d}^*\mid \mathbf{d}^1_\text{obs})} 
+    \label{eq:p2} 
+        \\
+        &\ \ \vdots 
+        \\
+        p^{N_a}(\mathbf{d}^*\mid \mathbf{d}^{N_a}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})
+        &\propto \mathcal{L}(\mathbf{d}^{N_a}_\text{obs} \mid \mathbf{d}^*)
+            {\color{darkred}p^{N_a-1}(\mathbf{d}^*\mid \mathbf{d}^{N_a-1}_\text{obs}, \dots, \mathbf{d}^1_\text{obs})} 
+    \label{eq:pNa} 
+    \end{align}  
+\end{frame}
+
+\begin{frame}{Theory framework}{Statistical framework}
+    \centering 
+    \input{figures/sda-versus-mda.tikz}
+\end{frame}
+
+\begin{frame}{Theory framework}{The base equation}
     \begin{subequations}
         \begin{alignat}{4}
             \mathbf{d}_j^{\ell+1} 
@@ -155,7 +248,7 @@
     \end{subequations}
 \end{frame}
 
-\begin{frame}{Theory Framework}{Covariance localization}
+\begin{frame}{Theory framework}{Covariance localization}
     \begin{equation}
         \mathbf{d}_j^{\ell+1} 
         =
@@ -165,7 +258,7 @@
     \end{equation}
 \end{frame}
 
-\begin{frame}{Theory Framework}{Proposal}
+\begin{frame}{Theory framework}{Proposal}
     \begin{subequations}
         \begin{align}
             \mathbf{d}_j^{\ell+1} 

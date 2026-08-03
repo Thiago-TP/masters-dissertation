@@ -15,7 +15,7 @@
     \fill (1.25, 1.5) circle (0.05);
     \draw (1.25, 1.5) --++ (160:0.75) node [left] {$\mathbf{d}_\text{obs}$};
     % Annotation: iteration step
-    \node at (1, 2) [above] {$l=0$};
+    \node at (1, 2) [above] {$\ell=0$};
 
     % Iteration 1 (SDA and first posterior of MDA)
     \begin{scope}[shift={(2.25, 0)}]
@@ -41,7 +41,7 @@
         \fill [highlight!90] (1.35, 1.1) circle (0.05);
 
         %% Annotation: iteration step
-        \node at (1, 2) [above] {$l=1$};
+        \node at (1, 2) [above] {$\ell=1$};
 
         \draw [-Latex] (0, 0) -- (2, 0) node [midway, below] {Datum 1};
         \draw [-Latex] (0, 0) -- (0, 2);
@@ -76,7 +76,7 @@
         \fill [highlight] (1.4, 1.4) circle (0.05);
 
         %% Annotation: iteration step
-        \node at (1, 2) [above] {$l=2$};
+        \node at (1, 2) [above] {$\ell=2$};
 
         \draw [-Latex] (0, 0) -- (2, 0) node [midway, below] {Datum 1};
         \draw [-Latex] (0, 0) -- (0, 2);
