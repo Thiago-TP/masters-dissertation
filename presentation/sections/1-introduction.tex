@@ -25,55 +25,26 @@
 \end{frame}
 
 \begin{frame}{Introduction}{Context (research)}
-    As subsurface geological formations, 
-    hydrocarbon reservoirs are extremely difficult systems to handle:
-    they are nonlinear, stochastic, multivariate, and difficult to sensor.
-    %
-    \vfill
-    %
-    However, they are also extremely profitable.
-    %
-    \vfill
-    %
-    The better you \emph{\bfseries understand} a reservoir, 
-    the better you \emph{\bfseries predict} its production/behavior,
-    the more reliable your \emph{\bfseries control},
-    and the greater your net \emph{\bfseries revenue}.
-    %
-    \vfill 
-    %
-    \begin{minipage}{.4\linewidth}
-        \centering
-        % \rule{\linewidth}{.5pt}
-        \scalebox{0.8}{%
-            \begin{tikzpicture}
-                \wheelchart[
-                    arc data=\WCvarB,
-                    % arc data angle shift=7,
-                    % arc data expand=f,
-                    arc data pos=0.5,
-                    arc data style={text color=white},
-                    data=,
-                    gap=0.05,
-                    radius={1.25}{2},
-                    slices arrow={0.5}{0.2},
-                    slices style=\WCvarA,
-                    value=0.3,
-                ]{%
-                    darkred/Predict,
-                    azulunb/Control,
-                    azulunb/Profit,
-                    darkred/Understand
-                }
-            \end{tikzpicture}
-        }
+    \begin{minipage}{.6\linewidth}
+        As subsurface geological formations, 
+        hydrocarbon reservoirs are extremely difficult systems to handle:
+        they are nonlinear, stochastic, multivariate, and difficult to sensor.
+        
+        \bigskip
+        
+        However, they are also extremely profitable.
+        
+        \bigskip
+        
+        The better you \emph{\bfseries understand} a reservoir, 
+        the better you \emph{\bfseries predict} its production/behavior,
+        the more reliable your \emph{\bfseries control},
+        and the greater your \emph{\bfseries revenue}.
     \end{minipage}
     %
-    \begin{minipage}{.59\linewidth}
+    \begin{minipage}{.39\linewidth}
         \centering
-        % \rule{\linewidth}{.5pt}
-        \includegraphics[width=\linewidth]{figures/reservoir-model.png}
-        Source: \cite[fig. 2]{Rasmussen:2021}
+        \input{figures/wheelchart-context.tex}
     \end{minipage}
 \end{frame}
 
@@ -86,14 +57,46 @@
     \vfill
     %
     Reservoirs are approximated as gridblocks imbued with petrophysical properties.
+
     These values are adjusted in order to match observed data in a process called \emph{history matching}.
     %
     \vfill
     %
-    However, even the most efficient history matching algorithms 
+    However, even the most efficient history matching algorithms
+    \cite{Evensen:1994,Evensen:1996,Skjervheim:2011,Emerick:2013} 
     are computationally expensive (i.e., slow)
     since they require several subsurface simulations.
+    %
+    \begin{center}
+        \includegraphics[height=3cm]{figures/reservoir-model.png}\\
+        Source: \cite[fig. 2]{Rasmussen:2021}
+    \end{center}
 \end{frame}
 
-\begin{frame}{Introduction}{Model-Space Inversion vs. Data-Space Inversion}
+\begin{frame}{Introduction}{Data-Space}
+    \textbf{Data-Space Inversion (DSI)}
+    \cite{Sun:2017}
+    updates the predictions of reservoir model realizations directly,
+    doing away with sluggish model updates.
+    %
+    \vfill
+    %
+    \textbf{Ensemble Smoother with Multiple Data Assimilation (ESMDA)}
+    \cite{Emerick:2013},
+    a seminal Model-Space algorithm, has been adapted to DSI,
+    resulting in \textbf{DSI-ESMDA} \cite{Lima:2020}.
+    %
+    \vfill
+    %
+    Despite recent advances
+    \cite{Jiang:2021,Xiao:2023,Jiang:2024}, 
+    DSI-ESMDA remains suscetible to excessive variance loss.
+    This work proposes \textbf{Gated DSI-ESMDA}, 
+    an extension of DSI-ESMDA with a gating mechanism for variance recovery.
+    %
+    \vfill
+    %
+    \includegraphics[width=.32\linewidth]{figures/results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_false/WELLS_P11_WWCTP.pdf}
+    \includegraphics[width=.32\linewidth]{figures/results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_4.0/WELLS_P11_WWCTP.pdf}
+    \includegraphics[width=.32\linewidth]{figures/results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_16.0/WELLS_P11_WWCTP.pdf}
 \end{frame}

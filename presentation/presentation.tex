@@ -90,8 +90,9 @@
 \usepackage{bbm}
 
 \usepackage{csquotes}
-\usepackage{biblatex}
-\addbibresource{references/main.bib}
+\usepackage[backend=biber]{biblatex}
+    \addbibresource{references/main.bib}
+    \addbibresource{references/literature_review.bib}
 
 \title[Gated DSI-ESMDA] %shown at the top of frames
 {Gated Data-Space Inversion for\\ Reservoir Prediction} %shown in title frame
@@ -178,10 +179,10 @@
 \include{sections/5-discussion}
 \include{sections/6-conclusion}
 
-\begin{frame}[plain,noframenumbering]
+\begin{frame}[plain,allowframebreaks,noframenumbering]
     % \vspace{-1.5cm}
     \Large \textbf{Bibliography}
-    \vfill
+    \small
     \printbibliography[heading=none]
 \end{frame}
 
