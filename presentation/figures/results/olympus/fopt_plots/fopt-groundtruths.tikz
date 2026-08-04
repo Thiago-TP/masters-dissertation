@@ -7,7 +7,7 @@
         grid=both,
         legend entries={Realization$\quad$, Ground-truth},
         legend columns=2,
-        legend style={draw=none, at={(0.5, 1.0)}, anchor=south},
+        legend style={draw=none, at={(0.5, 1.01)}, anchor=south},
         ymax=1.3,
     ]
         \addplot [verdeunb, mark=*, const plot] table [y=Percentile, x=FOPT] {figures/results/olympus/fopt_plots/fopt_cdf.dat};

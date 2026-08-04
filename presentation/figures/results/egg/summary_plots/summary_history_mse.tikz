@@ -46,7 +46,7 @@
         %     (-0.5, 2) (5.5, 2) 
         % };     
         % \label{fair_lim}   
-        \node [fill=white, anchor=north west] at (rel axis cs: 0.0, 1.0) {%
+        \node [fill=white, anchor=north west] at (rel axis cs: 0.01, 0.99) {%
             \shortstack[l]{%
                 \ref{ok_lim-egg} ``Ok'' limit%\\
                 % \ref{fair_lim} ``Fair'' limit 

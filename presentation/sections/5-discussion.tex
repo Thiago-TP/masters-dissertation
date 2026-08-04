@@ -5,11 +5,13 @@
         albeit with case-dependent sensitivities.
     \end{block}
     \vfill
-    \begin{itemize}
-        \item [$\triangleright$] Gating reduces posterior variance loss, so increase in coverages, but also MSE and mismatch, are expected as gating intensifies.
-        \item [$\triangleright$] Egg standard deviations are lesser than Olympus on two accounts:
+    \def\arraystretch{2}
+    \begin{tabular}{rp{0.9\linewidth}}
+        $\triangleright$ & Gating reduces posterior variance loss, so increase in coverages, but also MSE and mismatch, are expected as gating intensifies.
+    \\
+        $\triangleright$ & Egg standard deviations are lesser than Olympus on two accounts:
         reservoir complexity, and ground-truth representativeness. Olympus' ground-truths were somewhat biased.
-    \end{itemize}
+    \end{tabular}
     \vfill
 \end{frame}
 
@@ -24,33 +26,24 @@
         % but somewhat biased for the Olympus case.
     \end{block}
     \vfill
-    \begin{itemize}
-        % \item [$\triangleright$] 
-        % Combination of 5 factors:
-        %     reservoir complexity, 
-        %     ground-truth representativeness, 
-        %     ensemble size,
-        %     data dimentionality,
-        %     feature selection, and 
-        %     localization tuning.
-
-        \item [$\triangleright$] 
+    \def\arraystretch{1.75}
+    \begin{tabular}{rp{0.93\linewidth}}
+        $\triangleright$ & 
         \textbf{Egg case}:
             narrow FOPT range and roughly uniform sampling of ground-truths leave no ground-truth unrepresented,
             reduced dimentionality help with covariance estimation.
-
-        \item [$\triangleright$]
+    \\
+        $\triangleright$ &
         \textbf{Olympus case}:
             much more complex while also having a much smaller ensemble
             and a lot more features, aggravating covariance estimation.
             Localization was conceived exactly for such situations, so it is not suprising it was effective here.
-
-        \item [$\triangleright$]
+    \\
+        $\triangleright$ &
         \textbf{Real field case}:
             peak complexity and dimentionality, but also ensemble size.
             Localization may have inadequately adjusted, and some features are not well-represented.
-    \end{itemize}
-    \vfill
+    \end{tabular}
 \end{frame}
 
 \begin{frame}{Results}{Discussion}
@@ -78,17 +71,17 @@
         had worse coverages than the standard DSI-ESMDA.
     \end{block}
     \vfill
-    \begin{itemize}
-        \item [$\triangleright$]
+    \def\arraystretch{1.75}
+    \begin{tabular}{rp{0.93\linewidth}}
+        $\triangleright$ & 
         Gating intensity ``reverts'' the posterior to the prior.
         If the posterior given by the standard DSI-ESMDA is somewhere in that continuum,
         then it stands to reason that Gated DSI-ESMDA could approximate it simply by tuning the gating intensity.
-    
-        \item [$\triangleright$] 
+    \\
+        $\triangleright$ & 
         Since Gated DSI-ESMDA does away with observation data resampling,
         small gatings possibly underestimate uncertainty (i.e., likelihood covariance)
         at least when compared to standard DSI-ESMDA,
         producing posteriors that are not well-matched to data.
-    \end{itemize}
-    \vfill
+    \end{tabular}
 \end{frame}

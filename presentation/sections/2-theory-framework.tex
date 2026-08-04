@@ -310,7 +310,7 @@
     $\Delta\mathbf{D} = \begin{bmatrix}
         \mathbf{d}_1 - \overline{\mathbf{d}} & \cdots & 
         \mathbf{d}_{N_e} - \overline{\mathbf{d}}
-    \end{bmatrix}$:
+    \end{bmatrix}/\sqrt{N_e-1}$:
     %
     \begin{subequations}
         \begin{alignat}{4}
@@ -329,7 +329,7 @@
     \end{subequations}
 
     $\mathbf{d}_\text{obs} + \sqrt{\alpha^\ell}\mathbf{e}_j^\ell$, 
-    with $\mathbf{e}_j\sim\mathcal{N}(\mathbf{0}, \mathbf{C}_e)$,
+    with $\mathbf{e}^\ell_j\sim\mathcal{N}(\mathbf{0}, \mathbf{C}_e)$,
     is a way of sampling 
     $\mathbf{d}_\text{obs}^\ell \sim 
     \mathcal{N}(\mathbf{d}_\text{obs}, \alpha^\ell\mathbf{C}_e)$. 
@@ -372,11 +372,11 @@
             (\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)], 
         \label{eq:iteration_gated}
             \\
-            \alpha_{j, v}^\ell 
+            \alpha_{j, d}^\ell 
             &= \mathrm{erf}
             \left(
                 \frac{1}{\lambda \sqrt{2}}
-                \frac{|(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_v|}{\sigma_v} 
+                \frac{|(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_d|}{\sigma_d} 
             \right).
         \label{eq:alpha_lambda}
         \end{align}
