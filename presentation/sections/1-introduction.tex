@@ -1,13 +1,99 @@
 \section{Introduction}
 
 \begin{frame}{Introduction}{Context (graduate program)}
+    The master's program in Mechanical Engineering at University of Brasília requires 
+    
+    \medskip
+
+    \def\arraystretch{1.5}
+    \begin{tabular}{ll}
+        $\triangleright$ & the completion of a minimum of 360 hours of coursework (24 credits) \\
+        $\triangleright$ & at least one publication in a national or international conference/journal \\
+        $\triangleright$ & \textbf{presentation and approval of the master's dissertation}
+    \end{tabular}
+    %
+    \vfill
+    \begin{center}
+        \includegraphics[height=2cm]{figures/banner-sbse.png}\hfill
+        \includegraphics[height=2cm]{figures/banner-axia.png}\hfill
+        \includegraphics[height=2cm]{figures/banner-cba.png}\hfill
+        \includegraphics[height=2cm]{figures/banner-ecmor.png}
+
+        $\dots$ plus 36 credits. 
+        Next up: two research projects (ongoing since December 2025).
+    \end{center}
 \end{frame}
 
 \begin{frame}{Introduction}{Context (research)}
+    As subsurface geological formations, 
+    hydrocarbon reservoirs are extremely difficult systems to handle:
+    they are nonlinear, stochastic, multivariate, and difficult to sensor.
+    %
+    \vfill
+    %
+    However, they are also extremely profitable.
+    %
+    \vfill
+    %
+    The better you \emph{\bfseries understand} a reservoir, 
+    the better you \emph{\bfseries predict} its production/behavior,
+    the more reliable your \emph{\bfseries control},
+    and the greater your net \emph{\bfseries revenue}.
+    %
+    \vfill 
+    %
+    \begin{minipage}{.4\linewidth}
+        \centering
+        % \rule{\linewidth}{.5pt}
+        \scalebox{0.8}{%
+            \begin{tikzpicture}
+                \wheelchart[
+                    arc data=\WCvarB,
+                    % arc data angle shift=7,
+                    % arc data expand=f,
+                    arc data pos=0.5,
+                    arc data style={text color=white},
+                    data=,
+                    gap=0.05,
+                    radius={1.25}{2},
+                    slices arrow={0.5}{0.2},
+                    slices style=\WCvarA,
+                    value=0.3,
+                ]{%
+                    darkred/Predict,
+                    azulunb/Control,
+                    azulunb/Profit,
+                    darkred/Understand
+                }
+            \end{tikzpicture}
+        }
+    \end{minipage}
+    %
+    \begin{minipage}{.59\linewidth}
+        \centering
+        % \rule{\linewidth}{.5pt}
+        \includegraphics[width=\linewidth]{figures/reservoir-model.png}
+        Source: \cite[fig. 2]{Rasmussen:2021}
+    \end{minipage}
 \end{frame}
 
 \begin{frame}{Introduction}{The inverse problem}
+    To understand a reservoir, that is to say,
+    to ascertain its distributions of relevant petrophysical parameters
+    given its history, is called the \emph{inverse problem}
+    \cite{Oliver:2011}.
+    %
+    \vfill
+    %
+    Reservoirs are approximated as gridblocks imbued with petrophysical properties.
+    These values are adjusted in order to match observed data in a process called \emph{history matching}.
+    %
+    \vfill
+    %
+    However, even the most efficient history matching algorithms 
+    are computationally expensive (i.e., slow)
+    since they require several subsurface simulations.
 \end{frame}
 
-\begin{frame}{Introduction}{Literature review}
+\begin{frame}{Introduction}{Model-Space Inversion vs. Data-Space Inversion}
 \end{frame}

@@ -54,7 +54,8 @@
     \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \usepackage{tikz}
-    \usetikzlibrary{shapes,positioning,decorations.pathreplacing,arrows.meta,calc}
+\usepackage{wheelchart}
+    \usetikzlibrary{shapes,positioning,decorations.pathreplacing,decorations.text,arrows.meta,calc}
     \definecolor{verdeunb}{cmyk}{1,0,1,0.2}
     \definecolor{azulunb}{cmyk}{1,0.65,0,0.2}
     \definecolor{darkred}{HTML}{CA3A27}
@@ -178,7 +179,7 @@
 \include{sections/6-conclusion}
 
 \begin{frame}[plain,noframenumbering]
-    \vspace{-1.5cm}
+    % \vspace{-1.5cm}
     \Large \textbf{Bibliography}
     \vfill
     \printbibliography[heading=none]
