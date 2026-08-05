@@ -15,7 +15,6 @@
     % -- Selecione o estilo de numeração de figuras, tabelas, etc.
     numb=chap, % Numeração por capítulo
     %numb=abnt, % Numeração para o documento inteiro
-    review=false, % Para gerar versão de revisão do trabalho
 ]{unbtex}
 
 % ---
@@ -55,16 +54,7 @@
             #1
         \end{mdframed}
 }
-% 1 = debug mode with guiding questions and comments
-% 0 = normal mode with no guiding questions and comments
-\newcommand{\debugmode}{0}
-\newcommand{\debug}[1]{%
-    \if\debugmode1
-        \color{darkred}
-        \noindent #1
-        \color{black}
-    \fi%
-}
+
 % Erf special function rough approximation
 \makeatletter
     \pgfmathdeclarefunction{erf}{1}{%
@@ -157,7 +147,7 @@
 % ---
 % Compila a nomenclatura
 % ---
-% \makenomenclature
+\makenomenclature
 % ---
 
 % ---
@@ -260,17 +250,6 @@
 % Resumo em inglês
 % ---
 \begin{Abstract}
-    \debug{%
-    Guiding questions
-    \begin{itemize}
-        \item What is the reason for writing the thesis?
-        \item What are the current approaches and gaps in the literature?
-        \item What are your research question(s) and aims?
-        \item Which methodology have you used?
-        \item What are the main findings?
-        \item What are the main conclusions and implications?
-    \end{itemize}
-    }
     Accurate prediction of reservoir performance under uncertainty is essential for decision-making in geological reservoir management.
     Data-Space Inversion (DSI) provides an attractive alternative to traditional history matching by updating ensemble forecasts directly in data space, thereby avoiding repeated subsurface simulations.
     Recently, DSI-ESMDA was proposed. It is an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, 
@@ -452,13 +431,13 @@
 \imprimirfolhadeaprovacao
 
 % Insere dedicatória (elemento opcional)
-% \imprimirdedicatoria
+\imprimirdedicatoria
 
 % Insere agradecimentos (elemento opcional)
-% \imprimiragradecimentos
+\imprimiragradecimentos
 
 % Insere epígrafe (elemento opcional)
-% \imprimirepigrafe
+\imprimirepigrafe
 
 % Insere nota sobre uso de inteligência artificial
 \chapter*{Artificial Intelligence Disclaimer}
@@ -482,13 +461,13 @@
 \imprimirresumos
 
 % Insere lista de figuras
-% \imprimirlistadefiguras
+\imprimirlistadefiguras
 
 % Insere lista de quadros
 %\imprimirlistadequadros
 
 % Insere lista de tabelas
-% \imprimirlistadetabelas
+\imprimirlistadetabelas
 
 % Insere lista de algoritmos
 % \imprimirlistadealgoritmos
@@ -497,7 +476,7 @@
 % \imprimirlistadecodigos
 
 % Insere a lista de abreviaturas e siglas e a lista de símbolos
-% \imprimirlistadesiglasesimbolos
+\imprimirlistadesiglasesimbolos 
 
 % Insere o sumário
 \imprimirsumario
@@ -512,6 +491,7 @@
 % Imprime uma página para agrupar um conjunto de capítulos (parte)
 %\part{Nome da parte}
 
+\include{chapters/nomenclature.tex}
 \include{chapters/1_introduction}
 \include{chapters/2_theory_framework}
 \include{chapters/3_methods}
@@ -546,8 +526,7 @@
     \partapendices
     \include{chapters/a_productions}
     \include{chapters/b_kalman_gain}
-    \include{chapters/c_deducing_alpha}
-    \include{chapters/d_detailed_results}
+    \include{chapters/c_detailed_results}
 \end{apendicesenv}
 % ---
  

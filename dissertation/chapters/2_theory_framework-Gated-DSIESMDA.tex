@@ -9,7 +9,172 @@ DSI-ESMDA may suffer the inherent history matching problem of making poor predic
 The ensemble posterior narrows around a curve that is not representative of the reservoir.
 
 The inherent problem of history matching may be impossible to solve, but it may be mitigated by allowing the posterior to spread more.
-This work proposes doing so by adaptively adjusting the importance of the history mismatch when running the update iterations:
+The proposed Gated DSI-ESMDA introduces a gating mechanism into \cref{eq:iteration_dsiesmda}
+in order to increase posterior variance.
+%
+This section derives the proposal's update equation by 
+first deriving the gating coefficient (\cref{subsec:deriving-alpha})
+and then coupling it with the standard DSI-ESMDA equation (\cref{subsec:deriving-gated-equation}).
+
+\subsection{Deriving the gating coefficient}
+\label{subsec:deriving-alpha}
+
+This subsection provides a self-contained derivation of the alpha parameter 
+used in the innovation gating mechanism. 
+The derivation follows closely the work of \citeonline{Fortaleza:2022}, 
+from where the gating mechanism was inspired.
+
+Let $Y \in \mathbb{R}$ be a random variable representing the output of a given process in time, and $Y_I$ the observation of $Y$.
+It is assumed that the observation is affected by a Gaussian noise $N \sim \mathcal{N}(0, \sigma_n^2)$, such that
+%
+\begin{equation}
+    Y_I = Y + N.
+\end{equation}
+
+Let $y_I$ be a realization of $Y_I$.
+Denoting by $y_M$ the prediction of $y$ from a given model, 
+$y_O$ is defined to be the adjusted prediction after the observation $y_I$ is taken into account.
+For the sake of simplicity, $y_O$ is given by the following exponential moving average (EMA) relationship:
+%
+\begin{equation}
+    \begin{cases}
+        y_O[0] = y_I[0], & k = 0, \\
+        y_O[k] = \alpha[k] y_I[k] + (1 - \alpha[k]) y_M[k-1], & k > 0
+    \end{cases}
+\end{equation}
+%
+where $\alpha[k] \in [0, 1]$ is the smoothing factor of the EMA at time step index $k$.
+
+Parameter $\alpha[k]$ represents the statistical confidence that 
+the filter output reflects the same direction of the process output at sample $k$. 
+More precisely, $\alpha[k]$ is given by the following expression:
+%
+\begin{align}
+    \alpha[k] = \ \
+    &P(\mathrm{sign}(Y_M[k-1] - Y_I[k]) =    \mathrm{sign}(\mu_{Y_M[k-1]} - \mu_{Y_I[k]})) \nonumber\\ -
+    &P(\mathrm{sign}(Y_M[k-1] - Y_I[k]) \neq \mathrm{sign}(\mu_{Y_M[k-1]} - \mu_{Y_I[k]})),
+\label{eq:alpha}
+\end{align}
+%
+where $Y_M[k-1]$ is an observation of $Y_M$ with mean $\mu_{Y_M[k-1]}$
+and $Y_I$ an observation of $Y_I$ with mean $\mu_{Y_I[k]}$. 
+Here $\mathrm{sign}(x)$ represents the sign function, which is defined as:
+%
+\begin{equation}
+    \mathrm{sign}(x) =
+    \begin{cases}
+        1, & x > 0, \\
+        0, & x = 0, \\
+        -1, & x < 0.
+    \end{cases}
+\end{equation}
+
+\Cref{eq:alpha} can be rewritten as follows:
+%
+\begin{equation}
+    \alpha[k] = 
+    2 P(\mathrm{sign}(Y_M[k-1] - Y_I[k]) = \mathrm{sign}(\mu_{Y_M[k-1]} - \mu_{Y_I[k]})) 
+    - 1.
+\label{eq:alpha2}
+\end{equation}
+
+Defining a radom variable $Y_{MI}$ whose observation at time $k$ have mean and variance given by
+%
+\begin{align}
+    \mu_{Y_{MI}[k]} &= |\mu_{Y_M[k-1]} - \mu_{Y_I[k]}|, \\
+    \sigma^2_{Y_{MI}[k]} &= \sigma^2_{Y_M[k-1]} + \sigma^2_{Y_I[k]} - 2 \mathrm{Cov}(Y_M[k-1], Y_I[k]),
+\end{align}
+%
+where $\mathrm{Cov}(Y_M[k-1], Y_I[k])$ is the covariance between $Y_M[k-1]$ and $Y_I[k]$, 
+\cref{eq:alpha2} can be expressed as follows:
+%
+\begin{equation}
+    \alpha[k] = 2 P(Y_{MI}[k] > 0) - 1.
+\label{eq:alpha3}
+\end{equation}
+
+In order to find a practical implementation of $\alpha[k]$, \cref{eq:alpha3} is analyzed under the following
+technical assumptions.
+
+\begin{assumption}
+    The random variable $Y_{MI}[k]$ can be approximated by a normal distribution 
+    with mean $\mu_{Y_{MI}[k]}$ and variance $\sigma^2_{Y_{MI}[k]}$.
+\label{assumption:normal}
+\end{assumption}
+
+\begin{assumption}
+    Both high frequency and random behavior of the measurement noise implies that 
+    the observations $Y_M[k - 1]$ and $Y_I[k]$ can be considered approximately statistically independent of each other. 
+    Mathematically, $\mathrm{Cov} (Y_M[k-1], Y_I[k]) \approx 0$.
+\label{assumption:independence}
+\end{assumption}
+
+\begin{assumption}
+    The variance of the model's prediction is much smaller than the variance of the measured observation.
+    Mathematically, $\sigma^2_{Y_M[k-1]} \ll \sigma^2_{Y_I[k]}$.
+\label{assumption:variances}
+\end{assumption}
+
+\begin{assumption}
+    By considering an additive zero-mean measurement noise, the samples $y_M[k-1]$ and $y_I[k]$ 
+    can be used to estimate $\mu_{Y_M[k-1]}$ and $\mu_{Y_I[k]}$, respectively.
+\label{assumption:means}
+\end{assumption}
+
+From \cref{assumption:normal}, \cref{eq:alpha3} can be rewritten as:
+%
+\begin{align}
+    \alpha[k] 
+    &= 2 P(\mathcal{N}(\mu_{Y_{MI}[k]}, \sigma^2_{Y_{MI}[k]}) > 0) - 1 \nonumber\\
+    &= 2 P(\mathcal{N}(0, \sigma^2_{Y_{MI}[k]}) \leq \mu_{Y_{MI}[k]}) - 1,
+\end{align}
+%
+which can be expressed in terms of the Gauss error function
+$\mathrm{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-x^2} \ dx$:
+%
+\begin{align}
+    \alpha[k] 
+    &= \mathrm{erf}\left(\frac{\mu_{Y_{MI}[k]}}{\sqrt{2 \sigma^2_{Y_{MI}[k]}}}\right) \nonumber \\
+    &= \mathrm{erf}\left(
+        \frac{|\mu_{Y_M[k-1]} - \mu_{Y_I[k]}|}
+             {\sqrt{2[\sigma^2_{Y_M[k-1]} + \sigma^2_{Y_I[k]} - 2 \mathrm{Cov}(Y_M[k-1], Y_I[k])]}}
+        \right).
+\label{eq:alpha4}
+\end{align}
+%
+Applying \cref{assumption:independence,assumption:variances,assumption:means}, 
+\cref{eq:alpha4} becomes
+%
+\begin{equation}
+    \alpha[k] 
+    = \mathrm{erf}\left(
+        \frac{|y_M[k-1] - y_I[k]|}
+             {\sqrt{2\sigma^2_{Y_I[k]}}}
+        \right)
+    = \mathrm{erf}\left(
+        \frac{|y_M[k-1] - y_I[k]|}
+             {\sqrt{2\sigma^2_n[k]}}
+        \right).
+\end{equation}
+
+Since knowledge of the measurement noise variance $\sigma^2_n[k]$ is not always available in practice,
+a fixed $\lambda \geq 1$ is introduced to scale the noise standard deviation.
+Thus, the final expression for $\alpha[k]$ is given by
+%
+\begin{equation}
+    \alpha[k] 
+    = \mathrm{erf}\left(
+        \frac{1}{\lambda\sqrt{2}}
+        \frac{|y_M[k-1] - y_I[k]|}
+             {\sigma_n[k]}
+        \right)
+\end{equation}
+%
+which is equivalent to \cref{eq:alpha_lambda} in \cref{chap:theory-framework}.
+
+\subsection{Deriving the update equation}
+\label{subsec:deriving-gated-equation}
+Gated DSI-ESMDA applies the gating coefficient directly into the innovation vector:
 %
 \begin{subequations}
     \begin{align}
@@ -21,31 +186,27 @@ This work proposes doing so by adaptively adjusting the importance of the histor
         (\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)], 
     \label{eq:iteration_gated}
         \\
-        \alpha_{j, v}^\ell 
+        \alpha_{j, d}^\ell 
         &= \mathrm{erf}
         \left(
-            \frac{1}{\lambda \sqrt{2\sigma_v^2}} 
-            |(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_v|
+            \frac{1}{\lambda \sqrt{2}} 
+            \frac{|(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_d|}{\sigma_d}
         \right)
     \label{eq:alpha_lambda}
     \end{align}
 \end{subequations}
 %
-The equation above is based on the work of \citeonline{Fortaleza:2022}. 
-%
-Statistically, the gating coefficient $\alpha^\ell_{j,v}\in[0, 1)$ (see \cref{fig:erf}) is the probability that 
-the prediction of datum $v$ of realization $j$ reflects the same direction of its target value 
-given the uncertainty in the data.
-%
-A detailed derivation of \cref{eq:alpha_lambda} is provided in \cref{chap:deriving-alpha}.
-
+Constant $\lambda\geq 1$ is named the gating intensity,
+and it inflates the estimate of the standard deviation of the measurement error at datum $d$.
+% 
 The gating recovers variance loss in the posterior ensemble by diminishing Kalman-like updates on reasonably matched data.
 As \cref{fig:alpha} shows, the smaller the mismatch of a measurement relative to the noise at that datum, 
 the smaller the coefficients, and thus the smaller the update.
-Constant $\lambda\geq 1$ inflates the deviation, further softening the Kalman-like update.
-At the extreme ($\lambda\to\infty$ or $\mathbf{d}_\text{obs}=\mathbf{d}_{h,\ j}^\ell$), 
+%
+Gating intensity further softens the update by bringing the coefficient closer to zero.
+At the extreme ($\lambda\to\infty$), 
 $\bm{\alpha}_j^\ell = \mathbf{0}$ and the Kalman-like update is fully undone. 
-
+%
 \begin{figure}[htbp]
     \centering
     \caption{%
@@ -61,22 +222,22 @@ $\bm{\alpha}_j^\ell = \mathbf{0}$ and the Kalman-like update is fully undone.
     %
     \begin{subfigure}[b]{0.59\textwidth}
         \centering
-        \caption{$\alpha_{j, v}^\ell$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h,\ j}^\ell)_v| = q\sigma_v$.}
+        \caption{$\alpha_{j, d}^\ell$ when $|(\mathbf{d}_\text{obs} - \mathbf{d}_{h, j}^\ell)_d| = q\sigma_d$.}
         \label{fig:alpha}
         \input{figures/gating-intensities.tikz}
     \end{subfigure}
     \fonte{Self-elaboration.}
 \end{figure}
 
-\begin{note}[Index $v$]
+\begin{note}[Index $d$]
     Data vectors stack time series of a fields' measurements, 
-    so index $v$ in this chapter's equations specify a datum in place and time simultaneously.
+    so index $d$ in this chapter's equations specify a datum in place and time simultaneously.
     %
     For example, if DSI is being applied on the oil production of two wells of a field, 
     each with a simulation time vector of 100 elements, 
     then for any $1\leq j\leq N_e$ $\mathbf{d}_j$ would be 200$\times$1, 
-    with elements $v=1$ through $v=100$ the oil production history of the first well,
-    and elements $v=101$ through $v=200$ the oil production history of the second well.
+    with elements $d=1$ through $d=100$ the oil production history of the first well,
+    and elements $d=101$ through $d=200$ the oil production history of the second well.
 \end{note}
 
 \Cref{fig:gating-example} illustrates the effect of gating.
@@ -104,22 +265,22 @@ the effects of gating are roughly uniform.
         Illustration of the effect of $\lambda$ on the posterior ensemble for fixed $\mathbf{R}$ and $N_a$.
     }
     \label{fig:gating-example}
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.32\linewidth}
         \centering
         \caption{}
-        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_false/WELLS_P11_WWCTP.pdf}
+        \includegraphics[width=\linewidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_false/WELLS_P11_WWCTP.pdf}
     \end{subfigure}
     %
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.32\linewidth}
         \centering
         \caption{}
-        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_4.0/WELLS_P11_WWCTP.pdf}
+        \includegraphics[width=\linewidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_4.0/WELLS_P11_WWCTP.pdf}
     \end{subfigure}
     %
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.32\linewidth}
         \centering
         \caption{}
-        \includegraphics[width=\textwidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_16.0/WELLS_P11_WWCTP.pdf}
+        \includegraphics[width=\linewidth]{results/real_field/gt_0/noise_magnitude_0.01/n_iterations_1/localization_false/gating_true/gating_intensity_16.0/WELLS_P11_WWCTP.pdf}
     \end{subfigure}
 \end{figure}
 

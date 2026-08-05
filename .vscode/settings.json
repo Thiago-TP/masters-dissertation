@@ -1,4 +1,0 @@
-{
-    // Change if you requires a different engine
-    "latex-workshop.latex.recipe.default": "latexmk (lualatex)",
-}

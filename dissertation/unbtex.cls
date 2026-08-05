@@ -69,11 +69,11 @@
 % Repassa demais opções à classe abntex2
 % ---
 \DeclareOption*{
-    \PassOptionsToClass{\CurrentOption}{abntex2}
+    \PassOptionsToClass{\CurrentOption}{abntex2-modified}
 }
 \PassOptionsToPackage{english,brazilian}{babel}
 \ProcessOptions\relax
-\LoadClass[12pt,a4paper]{abntex2}
+\LoadClass[12pt,a4paper]{abntex2-modified}
 % ---
 
 % ------------------------------------------------------------------------
@@ -438,6 +438,7 @@
 % Configurações das legendas
 % ---
 % Legenda das figuras/tabelas na parte superior, tamanho da fonte e espaçamento
+\captionsetup{hypcap=false}
 \captionsetup{font=small,belowskip=2pt}
 % Espaçamento vertical do comando \legend
 \renewcommand{\legend}[1]{%
