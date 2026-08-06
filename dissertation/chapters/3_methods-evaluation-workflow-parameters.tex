@@ -56,8 +56,8 @@ and not an essential parameter of the methods themselves.
 Next, observed data is constructed by adding noise to the normalized ground-truth data restricted to the history period:
 %
 \begin{equation}
-    \widetilde{\mathbf{d}}_\text{obs} = \widetilde{\mathbf{d}}_h + \mathbf{e}, \quad
-    \mathbf{e} \sim \mathcal{N}(\mathbf{0}, \mathbf{C}_e).
+    \widetilde{\mathbf{d}}_\text{obs} = \widetilde{\mathbf{d}}_h + \mathbf{e}_d, \quad
+    \mathbf{e}_d \sim \mathcal{N}(\mathbf{0}, \mathbf{C}_e).
 \end{equation}
 %
 Since real field data already contains noise, this step is skipped for that case, 

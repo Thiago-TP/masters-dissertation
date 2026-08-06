@@ -56,16 +56,6 @@ where $\mathbf{C}_e$ is the noise covariance matrix.
 The corrupted vector is the oberved data during the history period, denoted $\mathbf{d}_\text{obs}$.
 %
 \Cref{fig:data-vectors} summarizes the concepts and notations in this section.
-%
-\begin{figure}[htbp]
-    \centering
-    \caption{%
-        Relationship between model parameters and data vectors. 
-    }
-    \label{fig:data-vectors}
-    \input{figures/data-vectors.tikz}
-    \fonte{Self-elaboration.}
-\end{figure}
 
 \begin{note}[Time vectors]
     Note that all realization data vectors are implicitly assumed to have a synchronized time vector.
@@ -76,8 +66,8 @@ The corrupted vector is the oberved data during the history period, denoted $\ma
     As such, in order for \cref{eq:iteration_dsiesmda} to work,
     the history period of the realization data is constrained to match the observed data's.
     %
-    This leads to an important practical requirement of the algorithm:
-    for simulations to cover the time vector of observed data.
+    % This leads to an important practical requirement of the algorithm:
+    % for simulations to cover the time vector of observed data.
     %
     \Cref{fig:time-vector-illustration} illustrates this process 
     for data vectors with a single feature (e.g., field oil production total). 
@@ -89,6 +79,16 @@ The corrupted vector is the oberved data during the history period, denoted $\ma
         \fonte{Self-elaboration.}
     \end{center}
 \end{note}
+
+\begin{figure}[htbp]
+    \centering
+    \caption{%
+        Relationship between model parameters and data vectors. 
+    }
+    \label{fig:data-vectors}
+    \input{figures/data-vectors.tikz}
+    \fonte{Self-elaboration.}
+\end{figure}
 
 \subsection{Statistical Framework}
 \label{subsec:statistical-framework}
@@ -161,7 +161,7 @@ by successively assimilating disturbed versions of observed data.
 This is called Multiple Data Assimilation (MDA), contrasting with the previous Single Data Assimilation (SDA).
 %
 Denoting the number of assimilations by $N_a$,
-assimilation $1\leq l\leq N_a$ with disturbed observations $\mathbf{d}^\ell_\text{obs}$
+assimilation $1\leq \ell \leq N_a$ with disturbed observations $\mathbf{d}^\ell_\text{obs}$
 produces posterior $p^\ell$ such that%
 \footnote{%
     Writing a conditional distribution as the product of simpler conditional distributions 
@@ -317,7 +317,7 @@ The associated posterior can then be rewritten as
     c^{N_a}_{\text{pos},\mathcal{L}} 
     p(\mathbf{d}^*)
     \exp\left(
-        -\sum_{l=1}^{N_a} \mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*)
+        -\sum_{\ell=1}^{N_a} \mathcal{O}^\ell_\mathcal{L}(\mathbf{d}^\ell_\text{obs}, \mathbf{d}^*)
     \right) 
 \label{eq:posterior-MDA}
 \end{align}

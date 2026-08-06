@@ -1,26 +1,114 @@
 % A - abbreviation
 % B - roman symbol
 % C - greek symbol
+\nomenclature[A]{BHP}{Bottomhole Pressure}
+\nomenclature[A]{CDF}{Cumulative Distribution Function}
 \nomenclature[A]{DSI}{Data-Space Inversion}
 \nomenclature[A]{DSI-ESMDA}{Data-Space Inversion with Ensemble Smoother with Multiple Data Assimilation}
 \nomenclature[A]{EKF}{Extended Kalman Filter}
 \nomenclature[A]{EnKF}{Ensemble Kalman Filter}
 \nomenclature[A]{ES}{Ensemble Smoother}
+\nomenclature[A]{ENM}{Department of Mechanical Engineering}
 \nomenclature[A]{ESMDA}{Ensemble Smoother with Multiple Data Assimilation}
+\nomenclature[A]{FOPT}{Field Oil Production Total}
+\nomenclature[A]{FT}{Faculty of Technology}
 \nomenclature[A]{KF}{Kalman Filter}
+\nomenclature[A]{MDA}{Multiple Data Assimilation}
+\nomenclature[A]{NG}{Net to Gross}
+\nomenclature[A]{OPR}{Oil Production Rate}
+\nomenclature[A]{RML}{Randomized Maximum Likelihood}
+\nomenclature[A]{SDA}{Single Data Assimilation}
+\nomenclature[A]{UnB}{University of Brasília}
+\nomenclature[A]{WCTP}{Water Cut Percentage}
+\nomenclature[A]{WIR}{Water Injection Rate}
+\nomenclature[A]{WPR}{Water Production Rate}
+\nomenclature[A]{OC}{Observation Coverage}
+\nomenclature[A]{MSE}{Mean Square Error}
 
-\nomenclature[B]{$\mathbf{C}_e$}{data error covariance matrix}
-\nomenclature[B]{$\mathbf{C}_p$}{prior distribution covariance matrix}
-
-\nomenclature[B]{$\mathbf{d}$}{ground-truth data vector}
-\nomenclature[B]{$\mathbf{d}_h$}{history period ground-truth data vector}
-\nomenclature[B]{$\mathbf{d}_v$}{validation period ground-truth data vector}
-
-\nomenclature[B]{$\mathbf{d}_j$}{realization $j$ data vector}
-\nomenclature[B]{$\mathbf{d}_{h,j}$}{history period realization $j$ data vector}
-\nomenclature[B]{$\mathbf{d}_{v,j}$}{validation period realization $j$ data vector}
-
+\nomenclature[B]{$\mathbf{C}_e$}{Data error covariance matrix}
+\nomenclature[B]{$\mathbf{C}^\ell_e$}{Data error covariance matrix of the $\ell$-th data assimilation}
+\nomenclature[B]{$\mathbf{C}_p$}{Prior distribution covariance matrix}
+\nomenclature[B]{$\mathbf{C}_{hh,p}$}{Prior distribution history period covariance matrix}
+\nomenclature[B]{$\mathbf{C}_{dh,p}$}{Prior distribution history period cross-covariance matrix}
+\nomenclature[B]{$\mathbf{d}$}{Ground-truth data vector}
+\nomenclature[B]{$\mathbf{d}_f$}{Ground-truth feature $f$ data vector}
+\nomenclature[B]{$\widetilde{\mathbf{d}}_f$}{Ground-truth normalized feature $f$ data vector}
+\nomenclature[B]{$\mathbf{d}_h$}{History period ground-truth data vector}
+\nomenclature[B]{$\mathbf{d}_\text{obs}$}{Observed data vector}
+\nomenclature[B]{$\mathbf{d}^\ell_\text{obs}$}{Resampled/perturbed observed data vector of the $\ell$-th data assimilation}
+\nomenclature[B]{$\mathbf{d}_v$}{Validation period ground-truth data vector}
+\nomenclature[B]{$\mathbf{d}_j$}{Realization $j$ data vector}
+\nomenclature[B]{$\mathbf{d}_{h,j}$}{History period realization $j$ data vector}
+\nomenclature[B]{$\mathbf{d}_{v,j}$}{Validation period realization $j$ data vector}
+\nomenclature[B]{$\mathbf{d}_{j,f}$}{Realization $j$ feature $f$ data vector}
+\nomenclature[B]{$\widetilde{\mathbf{d}}_f$}{Realization $j$ normalized feature $f$ data vector}
+\nomenclature[B]{$\overline{\mathbf{d}}$}{Ensemble mean average}
+\nomenclature[B]{$\overline{\mathbf{d}}_h$}{History period ensemble mean average}
+\nomenclature[B]{$\overline{\Delta\mathbf{D}}_h$}{History period ensemble spread}
+\nomenclature[B]{$\overline{\Delta\mathbf{D}}$}{Ensemble spread}
+\nomenclature[B]{$\mathbf{e}_d$}{Measurement noise}
+\nomenclature[B]{$\mathbf{e}^\ell_j$}{Realization $j$ observed data perturbation of the $\ell$-th data assimilation}
+\nomenclature[B]{$\mathbf{g}(\cdot, \cdot)$}{Prediction forward model}
+\nomenclature[B]{$\mathbf{H}$}{History period extractor matrix}
+\nomenclature[B]{$\mathbf{I}$}{Identity matrix}
+\nomenclature[B]{$\mathbf{K}^\ell$}{Kalman-like gain of the $\ell$-th data assimilation}
 \nomenclature[B]{$\ell$}{Data assimilation index}
+\nomenclature[B]{$\mathcal{L}(\cdot)$}{Likelihood function}
+\nomenclature[B]{$\mathcal{L}^\ell(\cdot)$}{Likelihood function of the $\ell$-th data assimilation}
+\nomenclature[B]{$L_x'$}{Critical localization distance along anisotropic $x'$-axis}
+\nomenclature[B]{$L_y'$}{Critical localization distance along anisotropic $y'$-axis}
+\nomenclature[B]{$\mathbf{m}$}{Ground-truth model parameters}
+\nomenclature[B]{$\mathbf{m}_j$}{Realization $j$ model parameters}
+\nomenclature[B]{$\mathcal{N}(\cdot, \cdot)$}{Normal distribution}
 \nomenclature[B]{$N_a$}{Number of data assimilations}
+\nomenclature[B]{$N_e$}{Number of ensemble realizations}
+\nomenclature[B]{$N_h$}{Number of data points in the history period}
+\nomenclature[B]{$N_v$}{Number of data points in the validation period}
+\nomenclature[B]{$\mathcal{O}_\mathcal{L}(\cdot,\cdot)$}{Likelihood objective function}
+\nomenclature[B]{$\mathcal{O}_p(\cdot,\cdot)$}{Prior objective function}
+\nomenclature[B]{$\mathcal{O}(\cdot,\cdot,\cdot)$}{Posterior objective function}
+\nomenclature[B]{$\mathcal{O}(\cdot)$}{Data-mismatch objective function}
+\nomenclature[B]{$\mathcal{O}_\mathcal{L}^\ell(\cdot,\cdot)$}{Likelihood objective function of the $\ell$-th data assimilation}
+\nomenclature[B]{$p(\cdot)$}{Probability distribution}
+\nomenclature[B]{$p^\ell(\cdot)$}{Posterior distribution after $\ell$ data assimilations}
+\nomenclature[B]{$\mathbf{R}$}{Localization matrix}
+\nomenclature[B]{$R_{uv}$}{Localization factor between datum $u$ and $v$}
+\nomenclature[B]{$r(\cdot)$}{Localization function}
+\nomenclature[C]{$\delta_{uv}$}{Localization distance between datum $u$ and $v$}
+\nomenclature[C]{$\Delta x'_{uv}$}{$x'$-axis distance between datum $u$ and $v$}
+\nomenclature[C]{$\Delta y'_{uv}$}{$y'$-axis distance between datum $u$ and $v$}
+\nomenclature[C]{$\theta$}{Anisotropy angle}
+\nomenclature[C]{$\Delta x_{uv}$}{$x$-axis distance between datum $u$ and $v$}
+\nomenclature[C]{$\Delta y_{uv}$}{$y$-axis distance between datum $u$ and $v$}
+\nomenclature[C]{$\Delta t_{uv}$}{Time difference between datum $u$ and $v$}
+\nomenclature[B]{$\mathbb{1}$}{Indicator function}
+\nomenclature[B]{$\mathbb{R}$}{Set of real numbers}
+\nomenclature[B]{$\mathbb{R}^{x\times y}$}{Set of real $x\times y$ matrices}
+\nomenclature[B]{$T_c$}{Critical localization time}
+\nomenclature[B]{$\mathbf{u}$}{Reservoir control vector}
+\nomenclature[B]{$\mathbf{x}_0$}{Initial reservoir state}
 
-\nomenclature[B]{$\mathbf{H}$}{history period extractor matrix}
+\nomenclature[C]{$\lambda$}{Gating intensity}
+\nomenclature[C]{$\alpha^\ell$}{Covariance inflation factor of the $\ell$-th data assimilation}
+\nomenclature[C]{$\alpha^\ell_{j,d}$}{Gating coefficient at datum $d$ for the $j$-th realization during the $\ell$-th data assimilation}
+\nomenclature[C]{$\bm{\alpha}^\ell_j$}{Gating coefficient vector for the $j$-th realization during the $\ell$-th data assimilation}
+\nomenclature[C]{$\sigma_d$}{Standard deviation of measurement noise on datum $d$}
+\nomenclature[C]{$\varphi_\text{ref}$}{Reference porosity}
+\nomenclature[C]{$A_\alpha$}{Phase $\alpha$'s component mass}
+\nomenclature[C]{$\mathbf{u}_\alpha$}{component velocity of component $\alpha$}
+\nomenclature[C]{$q_\alpha$}{Well outflux density of pseudo component $\alpha$}
+\nomenclature[C]{$m_\varphi$}{Pore volume multiplier}
+\nomenclature[C]{$b_\varphi$}{Shrinkage/expansion factor for phase $\alpha$}
+\nomenclature[C]{$s_\varphi$}{Saturation of phase $\alpha$}
+\nomenclature[B]{$r_\text{og}$}{Ratio of vaporized oil to gas in the gaseous phas}
+\nomenclature[B]{$r_\text{go}$}{Ratio of dissolved gas to oil in the oleic phase}
+\nomenclature[C]{$\lambda_\alpha$}{Mobility of phase $\alpha$}
+\nomenclature[B]{$\mathbf{K}$}{Permeability tensor of the porous medium}
+\nomenclature[C]{$p_\alpha$}{Phase pressure for phase $\alpha$}
+\nomenclature[C]{$\rho_\alpha$}{Density of phase $\alpha$}
+\nomenclature[C]{$\mu_\alpha$}{Viscosity of phase $\alpha$}
+\nomenclature[B]{$\mathbf{g}$}{Gravitational acceleration vector}
+\nomenclature[C]{$p_{c,\alpha\beta}$}{Capillary pressure between phases $\alpha$ and $\beta$}
+\nomenclature[C]{$\rho_{S,\alpha}$}{Surface density of phase $\alpha$ at one atmosphere}
+\nomenclature[C]{$k_{r,\alpha}$}{Relative permeability for phase $\alpha$}
+\nomenclature[C]{$\nu$}{Noise magnitude}

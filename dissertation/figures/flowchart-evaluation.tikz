@@ -56,7 +56,7 @@
         {%
             \begin{minipage}{3cm}
             \centering
-                Run \cref{eq:iteration_gated}\\ for $1\leq k \leq N_a$
+                Run \cref{eq:iteration_gated}\\ for $1\leq \ell \leq N_a$
             \end{minipage}
         };
     \node [io, above=0.5 of gated_dsiesmda] (gating_intensity) 
@@ -65,7 +65,7 @@
         {%
             \begin{minipage}{3cm}
             \centering
-                Run \cref{eq:iteration_dsiesmda}\\ for $1\leq k\leq N_a$
+                Run \cref{eq:iteration_dsiesmda}\\ for $1\leq \ell \leq N_a$
             \end{minipage}
         };
 
