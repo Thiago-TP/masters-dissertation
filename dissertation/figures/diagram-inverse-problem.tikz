@@ -1,0 +1,32 @@
+\begin{tikzpicture}[thick]
+    \fill [gray!10] (2+0.5, 2.75) rectangle ++ (-2-2*0.5, -2.75-3-1-0.25);
+    \fill [highlight!10] (2+0.5, 2.75) rectangle ++ (2+2*0.5, -2.75-3-1-0.25);
+
+    \draw [rounded corners=5, azulunb, fill=azulunb!25] (0, 0) rectangle (2, 2) node [midway] {?};
+    \draw [Latex-] (0, 0.666) --++ (-1, 0);
+    \draw [Latex-] (0, 1.333) --++ (-1, 0);
+    \draw [-Latex] (2, 0.666) --++ (1, 0);
+    \draw [-Latex] (2, 1.333) --++ (1, 0);
+    \node [rotate=90, above] at (-1, 1) {Inputs};
+    \node [above] at (1, 2) {System};
+    \node [rotate=90, below, draw, dashed, rectangle, rounded corners=3] (outputs) at (3, 1) {Outputs};
+    
+    \node [draw, rectangle, darkred, fill=darkred!25, rounded corners=3] (build) at (4.5, -0.5) {Build};
+    \draw [->, gray] (outputs) .. controls ++(0:1) and ++(90:1) .. (build);
+    \draw [->, gray] (build) .. controls ++(0:-1) and ++(45:0.75) .. (2, -1) --++ (45:-2pt);
+
+    \begin{scope}[shift={(0, -3)}]
+        \draw [rounded corners=5, verdeunb, fill=verdeunb!25] (0, 0) rectangle (2, 2) node [midway, fill=verdeunb!25] {Params};
+        \draw [Latex-] (0, 0.666) --++ (-1, 0);
+        \draw [Latex-] (0, 1.333) --++ (-1, 0);
+        \draw [-Latex] (2, 0.666) --++ (1, 0);
+        \draw [-Latex] (2, 1.333) --++ (1, 0);
+        \node [rotate=90, above] at (-1, 1) {Inputs};
+        \node [below] at (1, 0) {Model};
+        \node [rotate=90, below] at (3, 1) {Outputs};
+        \draw [->, gray] (1, 1.25) --++ (0, 2.5) node [midway, fill=gray!10, text=darkred, inner sep=2] {$\approx$};
+
+        \node [highlight!50] at (4, -0.9) {Data Space};
+        \node [gray!50] at (1, -0.9) {Model Space};
+    \end{scope}
+\end{tikzpicture}

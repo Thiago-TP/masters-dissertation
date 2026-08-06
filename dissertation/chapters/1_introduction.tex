@@ -122,8 +122,16 @@
     through injector wells in order to favorably manipulate the permeability and/or pressure within the filed,
     whose aging means the plunging of pressure and oil saturation.
 
-    Controlling the reservoir often requires knowledge and prediction of subsurface dynamics and rock properties.
+    Controlling the reservoir often requires modeling and prediction of subsurface dynamics and rock properties
+    (\cref{fig:wheelchart-context}).
     %
+    \begin{figure}[htbp]
+        \centering
+        \caption{Overview of informed reservoir management stages.}
+        \label{fig:wheelchart-context}
+        \input{figures/wheelchart-context.tikz}
+    \end{figure}
+    
     More specifically, 
     given the observations coming from an oil field (e.g., oil production total, pressure at a wellhead),
     and other geological information on the reservoir (e.g., porosity and permeability of a rock sample),
@@ -131,22 +139,67 @@
     %
     Parameters are physical properties of the reservoir that remain constant throughout its life,
     their main representatives being rock permeability and porosity. 
-    %
+
     Conversely, states are physical properties that vary throughout reservoir life,
     their main representatives being saturation and pressure
     \cite[section 4.1]{Emerick:2025}.
     %
     Once identified, parameters and states can be used to construct a model of the reservoir, 
-    which in turn can be deployed to generate predictions of its reference.
-
-    Processing data-space outputs of the field into estimates of model-space parameters is referred to 
-    as the inverse problem in this work.
+    which in turn can be deployed to generate predictions of its reference (\cref{fig:diagram-inverse-problem}).
     %
-    As the following subsection shows, the inverse problem is ill-posed in practice, 
-    and while great progress has been done in improving subsurface simulations and the data inversion process,
-    repeated model simulations remain a cost to be mitigated. 
+    \begin{figure}[htbp]
+        \centering
+        \caption{Illustration of the inverse problem.}
+        \label{fig:diagram-inverse-problem}
+        \input{figures/diagram-inverse-problem.tikz}
+    \end{figure}
 
+    Generally, inverse problems consist of calculating the causes of a phenomenum given observations of this phenomenum.
+    In the context of geological reservoirs, the inverse problem is typically ill-posed.
+    %
+    \citeonline{Hadamard:1902} postulates three properties a problem should satisfy in order to be deemed well-posed:
+    %
+    \begin{enumerate}
+        \item a solution to the equation exists (existence);
+        \item the solution is unique (uniqueness);
+        \item continuous changes in intial or boundary conditions cause continuous changes in the solution (stability).
+    \end{enumerate} 
 
+    A problem that does not satisfy the three criteria above is said ill-posed.
+    While Hadamard was concerned with partial differential equations in his work, 
+    the notion of well-posedness and ill-posedness is applicable to a wide range of applications,
+    including the inverse problem.
+
+    At its most stringent formulation, the inverse problem tries to find model parameters 
+    that would reproduce, exactly, the field observations.
+    %
+    However, since no modeling of dynamics is perfect, and field observations always come with uncertainty due to measurement noise,
+    this formulation of the problem either has no solution, or the solution is sensitive to noise.
+
+    Intuitively, one could relax the stringent formulation so that a model that ouptuts 
+    \emph{sufficiently} close matches to observations can be taken as a solution,
+    adopting the workflow illustrated in \cref{fig:flowchart-history-matching}.
+    %
+    \begin{figure}[htbp]
+        \centering 
+        \caption{Overview of the history matching workflow.}
+        \label{fig:flowchart-history-matching}
+        \input{figures/flowchart-history-matching.tikz}
+        \fonte{Self-elaboration.}
+    \end{figure}
+    %
+    This formulation the noise sensitivity, but the problem remains ill-posed in account of the uniqueness criterion.
+    Modern history matching processes adjust an ensemble of field models.
+    These models are often referred to as realizations, a term borrowed from Probability Theory 
+    denoting that the object (model) is an instance, or sampling, 
+    from the same probability distribution that the reference (field) comes from.
+
+    Using an ensemble of realizations allows for the quantification of uncertainty 
+    in exchange of requiring a great deal of subsurface simulations.
+    As the following subsection demonstrates,
+    repeated model simulations remains a cost to be mitigated
+    despite great progress done in making the history matching process computationally efficient.
+       
     \subsection{Literature review}
     \label{subsec:literature-review}
     \input{chapters/1_introduction-literature_review}

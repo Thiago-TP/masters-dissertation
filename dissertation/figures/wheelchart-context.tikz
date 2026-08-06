@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+    \wheelchart[
+        arc data=\WCvarB,
+        % arc data angle shift=7,
+        arc data expand=e,
+        arc data pos=0.5,
+        arc data style={text color=white},
+        data=,
+        gap=0.05,
+        radius={1}{2},
+        slices arrow={0.3}{0.0},
+        slices style=\WCvarA,
+        value=1,
+    ]{%
+        darkred/Predict,
+        azulunb/Control,
+        azulunb/Profit,
+        darkred/Model
+    }
+\end{tikzpicture}
