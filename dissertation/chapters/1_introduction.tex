@@ -27,7 +27,7 @@
     thereby avoiding repeated subsurface simulations.
     
     \citeonline{Lima:2020} introduced DSI-ESMDA, an extension of DSI that employs the 
-    Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
+    Ensemble Smoother with Multiple Data Assimilation (ESMDA) 
     \cite{Emerick:2013}
     to replace the Randomized Maximum Likelihood (RML) minimizations of the original formulation with an iterative Kalman-type update, 
     achieving significant computational efficiency while maintaining competitive posterior forecasts.
@@ -44,7 +44,7 @@
     and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
     
     Gated DSI-ESMDA acts as a stabilizing extension rather than a replacement, 
-    and can be applied to standard ensemble-based model-space inversion methods, including ES-MDA and related iterative smoothers.
+    and can be applied to standard ensemble-based model-space inversion methods, including ESMDA and related iterative smoothers.
     The power of this contribution is that it provides a simple yet effective mean of improving the robustness of ensemble-based inversion methods 
     without requiring additional simulations or complex modifications to existing workflows.
     
@@ -242,7 +242,7 @@
     %
     Although the present work focuses on DSI, the proposed formulation 
     is general and can be applied to standard ensemble-based model-space inversion methods, 
-    including ES-MDA and related iterative smoothers.
+    including ESMDA and related iterative smoothers.
     %
     The proposed method inherits the computational efficiency of DSI-ESMDA while providing a robust, 
     easily tunable mechanism for modulating posterior distribution variance,

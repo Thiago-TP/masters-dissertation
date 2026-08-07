@@ -261,7 +261,7 @@
 \begin{Abstract}
     Accurate prediction of reservoir performance under uncertainty is essential for decision-making in geological reservoir management.
     Data-Space Inversion (DSI) provides an attractive alternative to traditional history matching by updating ensemble forecasts directly in data space, thereby avoiding repeated subsurface simulations.
-    Recently, DSI-ESMDA was proposed. It is an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ES-MDA) to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, 
+    Recently, DSI-ESMDA was proposed. It is an extension of DSI that employs the Ensemble Smoother with Multiple Data Assimilation (ESMDA) to replace the Randomized Maximum Likelihood minimizations of the original formulation with an iterative Kalman-type update, 
     achieving significant computational efficiency while maintaining competitive posterior forecasts.
     %
     Despite these advantages, DSI-ESMDA, like other ensemble smoothers, remains susceptible to excessive variance loss, which can lead to underestimation of posterior uncertainty.
@@ -274,7 +274,7 @@
     %
     The gating methodology is inspired by adaptive filtering developed to mitigate actuator wear in
     closed-loop control systems.
-    Although the present work focuses on DSI, the proposed formulation is general and can be applied to standard ensemble-based model-space inversion methods, including ES-MDA and related iterative smoothers.
+    Although the present work focuses on DSI, the proposed formulation is general and can be applied to standard ensemble-based model-space inversion methods, including ESMDA and related iterative smoothers.
     The approach is evaluated on multiple synthetic reservoirs and one real field application using production rates from producers and injectors.
     Results show that innovation-gated DSI-ESMDA reduces variance loss during and produces more robust uncertainty envelopes in the prediction phase without degrading the data match.
     Furthermore, for moderate gating parameters, posterior forecasts remain close to those obtained with standard DSI-ESMDA, 
@@ -294,7 +294,7 @@
     evita repetir simulações de subsuperfície. 
     %
     Recentemente, foi introduzido o DSI-ESMDA, uma extensão do DSI que emprega 
-    o Ensemble Smoother with Multiple Data Assimilation (ES-MDA) 
+    o Ensemble Smoother with Multiple Data Assimilation (ESMDA) 
     para substituir as minimizações de Máxima Verossimilhança Aleatorizada (Randomized Maximum Likelihood) 
     no DSI original por uma atualização iterativa similar ao filtro de Kalman, 
     alcançando significativa eficiência computacional e mantendo previsões a posteriori competitivas. 
@@ -328,7 +328,7 @@
     %
     A formulação proposta é geral e pode ser aplicada 
     a métodos padrão de inversão no espaço do modelo baseados em ensemble, 
-    incluindo o ES-MDA e suavizadores correlatos. 
+    incluindo o ESMDA e suavizadores correlatos. 
     %
     A abordagem é avaliada em reservatórios sintéticos e em uma aplicação em campo real 
     utilizando taxas de produção de poços produtores e injetores. 
