@@ -114,8 +114,10 @@
 % ---
 % Define cores da UnB
 \RequirePackage[dvipsnames]{xcolor}
-\definecolor{verdeunb}{cmyk}{1,0,1,0.2}
-\definecolor{azulunb}{cmyk}{1,0.65,0,0.35}
+% \definecolor{verdeunb}{cmyk}{1,0,1,0.2}
+\definecolor{verdeunb}{RGB}{0, 130, 46}
+% \definecolor{azulunb}{cmyk}{1,0.65,0,0.35}
+\definecolor{azulunb}{RGB}{0, 58, 122}
 % Cores nos títulos
 \renewcommand{\tocheadstart}{}
 \renewcommand{\ABNTEXchapterfont}{\bfseries\color{verdeunb}\sffamily}

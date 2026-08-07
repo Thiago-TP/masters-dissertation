@@ -1,0 +1,40 @@
+\begin{tikzpicture}[
+    nodes = {concept},
+    level 1 concept/.append style = {font = \normalsize},
+    level 2 concept/.append style = {font = \normalsize},
+    level 3 concept/.append style = {font = \normalsize}
+]
+    \path [mindmap, concept color=verdeunb]
+    node [font=\normalsize, text=white, text width=2cm] 
+        {Reservoir Prediction Methods}
+        child [grow=0, concept color=highlight!25] {
+            node {Model Space}
+                child [grow=30] {
+                    node {Kalman Filter}
+                }
+                child [grow=-30] {
+                    node [text width=1.85cm] {Ensemble Kalman Filter}
+                }
+                child [grow=-90, concept color=highlight!75] {
+                    node [text width=2cm] {Ensemble Smoother}
+                        child [grow=-90, text width=1.75cm] {
+                            node [yshift=-.5cm] {ESMDA}
+                        }
+                        child [grow=-45] {
+                            node {IES}
+                        }
+                }
+        }
+        child [grow=180, concept color=azulunb!25] {
+            node {Data Space}
+                child [grow=150] {
+                    node {PFA}
+                }
+                child [grow=-90, concept color=azulunb!75] {
+                    node [text=white] {DSI}
+                        child [grow=-90] {
+                            node [yshift=-.5cm, text=white, text width=1.75cm] {DSI ESMDA}
+                        }
+                }
+        };
+\end{tikzpicture}
