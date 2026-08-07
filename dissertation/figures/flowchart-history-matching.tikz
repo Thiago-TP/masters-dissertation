@@ -3,42 +3,25 @@
     \node [startstop] (start)
         {Start};
 
-    \node [io, below=0.5 of start] (data)
-    {
-        \begin{minipage}{2.25cm}\centering
-            Get field observations
-        \end{minipage}
-    };
+    \node [io, right=0.5 of start, text width=2.25cm] (data)
+        {Get field observations};
 
-    \node [process, below=.6 of data] (adjustment)
-    {
-        \begin{minipage}{2.5cm}\centering
-            Adjust model parameters
-        \end{minipage}
-    };
+    \node [process, right=.5 of data, text width=2.5cm] (adjustment)
+        {Adjust model parameters};
 
-    \node [process, right=1.5 of adjustment] (simulation)
-    {
-        \begin{minipage}{2.5cm}\centering
-            Run subsurface simulation
-        \end{minipage}
-    };
+    \node [process, above=1.5 of adjustment, text width=2cm] (simulation)
+        {Run simulation};
 
-    \node [process, below=1.65 of simulation] (comparison)
-    {
-        \begin{minipage}{3cm}\centering
-            Compare results with observations
-        \end{minipage}
-    };
+    \node [process, right=1 of simulation, text width=2.75cm] (comparison)
+        {Compare with observations};
 
-    \node [decision, below=0.75 of adjustment] (decision)
-    {
-        \begin{minipage}{2.5cm}\centering
-            Good enough match?
-        \end{minipage}
-    };
+    \node [below=2 of comparison] (aux1) {};
+    \node [right=2 of adjustment] (aux2) {};
+    \node [decision, text width=1.5cm] 
+        (decision) at (intersection of  comparison--aux1 and adjustment--aux2)
+        {Good match?};
     
-    \node [startstop, below=0.75 of decision] (stop)
+    \node [startstop, right=1 of decision] (stop)
         {Stop};
 
     % Arrows
@@ -47,6 +30,6 @@
     \draw [->] (adjustment) -- (simulation);
     \draw [->] (simulation) -- (comparison);
     \draw [->] (comparison) -- (decision);
-    \draw [->] (decision) -- (adjustment) node [midway, left] {No};
-    \draw [->] (decision) -- (stop) node [midway, left] {Yes};
+    \draw [->] (decision) -- (adjustment) node [midway, below, xshift=1mm] {No};
+    \draw [->] (decision) -- (stop) node [midway, below, xshift=-1mm] {Yes};
 \end{tikzpicture}
