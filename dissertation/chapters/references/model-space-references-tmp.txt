@@ -1,0 +1,173 @@
+# References by field
+## Kalman Filter
+228
+229
+
+## Ensemble Kalman Filter
+3
+33
+50
+81
+136
+197
+199
+200
+201
+236
+264
+313
+331
+338
+360
+418
+425
+464
+
+## Ensemble Smoother
+364
+400
+448
+
+## Iterative Ensemble Smoother (may repeat Ensemble Smoother)
+77
+78
+140
+142
+279
+354
+413
+480
+
+## Ensemble Smoother with Multiple Data Assimilation (may repeat ES, IES)
+129
+132
+133
+369
+
+## Other
+Seminal works (notation): 334, 428
+Simulators: 21, 29, 83, 261.
+
+## Total list
+3
+33
+50
+77
+78
+81
+129
+132
+133
+136
+140
+142
+200
+201
+236
+264
+279
+313
+331
+338
+354
+360
+364
+369
+400
+413
+418
+425
+448
+464
+480
+
+
+
+# References in context
+p.34
+Following
+the notation used in Tarantola [428] and Oliver et al. [334], in this book, we
+reserve m to denote the vector containing the model parameters.
+
+p.35
+A detailed discussion of the formulations and methods employed by these
+simulators is beyond the scope of this book. The literature on this topic is
+extensive and continually evolving; for further reading, see, e.g., [21, 83, 29,
+261].
+
+p.42
+Ensemble-based methods encompass a range of data assimilation techniques
+grounded in Monte Carlo formulations of the Kalman filter [228, 229].
+The ensemble Kalman filter (EnKF), introduced by Evensen [136], was
+the pioneering approach in this field. EnKF and its numerous variations
+have achieved notable success across various domains, including oceanog-
+raphy [33], atmospheric modeling [464], and numerical weather prediction
+[201, 338].
+The introduction of EnKF as a reservoir data assimilation method by
+Nævdal et al. [313] sparked significant research activity, leading to the pub-
+lication of numerous studies in subsequent years; see, e.g., [3, 331] and refer-
+ences therein. In its standard form, EnKF uses an ensemble of states of the
+dynamical system to represent the mean and covariance, which are updated
+sequentially over time.
+
+p.42-43
+An alternative approach is to apply the EnKF equations to update the en-
+tire history of observations simultaneously, a process known as the ensemble
+smoother (ES) [448, 400]. The batch update scheme of ES makes the method
+more appealing for reservoir applications, though it requires iterative strate-
+gies to ensure a reasonable match of the observations. This fact led to the
+development of several iterative forms of ES [77, 78, 132, 413, 279, 354].
+
+p.149
+While the EnKF was originally introduced in [136], the method
+was later refined in [50, 197],
+
+p.149
+The EnKF has found applications in several areas spanning
+disciplines such as oceanography [33, 236], atmospheric modeling [464, 200],
+numerical weather prediction [199, 425], hydrology [360, 81, 264, 418], and
+petroleum reservoir engineering [3, 331].
+
+p.152
+This procedure is known as perturbed observation
+scheme in the ensemble data assimilation literature and it was independently
+introduced by Burgers et al. [50] and Houtekamer and Mitchell [197] in the
+EnKF formulation.
+
+p.159
+Alter-
+natively, a more efficient strategy involves initiating simulations from time
+zero only when a large update in the state vector is detected. This method
+is commonly referred to as the half-iteration EnKF (HI-EnKF) Wang et al.
+[459].
+
+p.166
+However, the single update scheme of ES
+has proven insufficient for properly conditioning reservoir models to dynamic
+data [77, 132, 133]. This limitation has driven the development of iterative
+forms of ES [77, 78, 132, 413, 279, 354].
+
+p.167
+The superior performance of EnKF compared to ES in terms of data
+match quality can be explained by interpreting EnKF from a Gauss-Newton
+(GN) perspective [364].
+
+p.169
+This shortcoming
+has led to the proposal of various iterative forms of ES in the literature
+[77, 132, 78, 413, 279, 354, 140].
+
+p.170
+In fact, MDA was initially introduced in the context of EnKF to assimilate
+infrequent data, such as production logging and 4D seismic, as outlined in
+[129]. The inspiration for this approach was drawn from the ideas presented
+by Rommelse [369].
+
+p.202
+This chapter reviews two popular versions of iterative ES: the ensemble
+RML (EnRML) [77, 78] and the subspace iterative ES (SEIS) [354, 142].
+Other iterative forms of ES exist in the literature but are not discussed here.
+Notable examples include the iterative adaptive Gaussian mixture smoother
+(IAGS) [413], the regularized Levenberg-Marquardt for minimum-average-
+cost (RLM-MAC) [279], and the iterative local updating ensemble smoother
+(ILUES) [480].
