@@ -1,0 +1,77 @@
+\begin{tikzpicture}[xscale=1/2.65]
+    \def\startyear{1990}
+    % Time axis
+    \draw[-Latex, line width=1] (1990-\startyear, 0) -- (2030-\startyear, 0);
+    %% major ticks
+    \foreach \year in {1990, 2000, 2010, 2020, 2030}{
+        \draw (\year-\startyear, 0) --++ (0, -1) node [left, rotate=90] {\year};
+    }
+    %% minor ticks
+    \foreach \year in {1995, 2005, 2015, 2025}{
+        \draw (\year-\startyear, 0) --++ (0, -.5) node [left, rotate=90] {\year};
+    }
+    %% very minor tickes
+    \foreach \year in {
+        1991, 1992, 1993, 1994, 1996, 1997, 1998, 1999,
+        2001, 2002, 2003, 2004, 2006, 2007, 2008, 2009,
+        2011, 2012, 2013, 2014, 2016, 2017, 2018, 2019,
+        2021, 2022, 2023, 2024, 2026, 2027, 2028, 2029
+    }{
+        \draw (\year-\startyear, 0) --++ (0, -.25);
+    }
+    
+    % Place all nodes
+    \tikzstyle{papernode}[cyan]=[circle, minimum size=0.08, draw=black, fill=#1]
+    % \node [papernode={highlight!25}]                                        (Kalman:1960)             at (1960-\startyear, 0) {}; % KF
+    \node [papernode={highlight!25}]                                        (Evensen:1994)            at (1994-\startyear, 0) {}; % EnKF
+    \node [papernode={highlight!75}]                                        (Leeuwen:1996)            at (1996-\startyear, 0) {}; % ES
+    \node [papernode={highlight!25}]                                        (Geir:2002)               at (2002-\startyear, 0) {}; % EnKF
+    \node [papernode={highlight!25}]                                        (Chen:2006)               at (2006-\startyear, 0) {}; % EnKF
+    \node [papernode={highlight!75}]                                        (Whitaker:2008)           at (2008-\startyear, 0) {}; % ES
+    \node [papernode={highlight!25}]                                        (Aanonsen:2009)           at (2009-\startyear, 0) {}; % EnKF
+    \node [papernode={highlight!25}]                                        (Oliver:2011)             at (2011-\startyear, 0) {}; % EnKF
+    \node [papernode={highlight!75}, above=0.2 of Oliver:2011]              (Skjervheim:2011)         at (2011-\startyear, 0) {}; % ES
+    \node [papernode={highlight!75}]                                        (Chen:2012)               at (2012-\startyear, 0) {}; % IES
+    \node [papernode={highlight!75}, above=0.2 of Chen:2012]                (Emerick:2012)            at (2012-\startyear, 0) {}; % ESMDA
+    \node [papernode={highlight!75}]                                        (Chen:2013)               at (2013-\startyear, 0) {}; % IES
+    \node [papernode={highlight!75}, above=0.2 of Chen:2013]                (Emerick-2013-CompGeosci) at (2013-\startyear, 0) {}; % ESMDA
+    \node [papernode={highlight!75}, above=0.2 of Emerick-2013-CompGeosci]  (Emerick:2013:SPE)        at (2013-\startyear, 0) {}; % ESMDA
+    \node [papernode={highlight!75}]                                        (Luo:2015)                at (2015-\startyear, 0) {}; % IES
+    \node [papernode={azulunb!25}, above=0.2 of Luo:2015]                   (Satija:2015)             at (2015-\startyear, 0) {}; % PFA
+    \node [papernode={azulunb!25}, above=0.2 of Scheidt:2015]               (Scheidt:2015)            at (2015-\startyear, 0) {}; % PFA
+    \node [papernode={highlight!25}]                                        (Sun:2016)                at (2016-\startyear, 0) {}; % EnKF
+    \node [papernode={azulunb!25}]                                          (Satija:2017)             at (2017-\startyear, 0) {}; % PFA
+    \node [papernode={azulunb!25}, above=0.2 of Satija:2017]                (Sun-2017-A)              at (2017-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!25}, above=0.2 of Sun-2017-A]                 (Sun-2017-B)              at (2017-\startyear, 0) {}; % DSI
+    \node [papernode={highlight!75}]                                        (Evensen:2018)            at (2018-\startyear, 0) {}; % IES
+    \node [papernode={highlight!75}, above=0.2 of Evensen:2018]             (Zhang:2018)              at (2018-\startyear, 0) {}; % IES
+    \node [papernode={highlight!75}]                                        (Raanes:2019)             at (2019-\startyear, 0) {}; % IES
+    \node [papernode={highlight!75}, above=0.2 of Raanes:2019]              (Grana:2019)              at (2019-\startyear, 0) {}; % ESMDA
+    \node [papernode={azulunb!25}, above=0.2 of Grana:2019]                 (Sun:2019)                at (2019-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!25}]                                          (Jiang:2020)              at (2020-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!75}, above=0.2 of Jian:2020]                  (Lima:2020)               at (2020-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={highlight!75}]                                        (Neto:2021)               at (2021-\startyear, 0) {}; % ESMDA
+    \node [papernode={azulunb!25}, above=0.2 of Neto:2021]                  (Liu:2021)                at (2021-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!75}, above=0.2 of Liu:2021]                   (Jiang-2021-CompSci)      at (2021-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}, above=0.2 of Jiang-2021-CompSci]         (Jiang-2021-Frontiers)    at (2021-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}, above=0.2 of Jiang-2021-Frontiers]       (Jiang-2021-Hydrology)    at (2021-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!25}]                                          (Xiao:2022)               at (2022-\startyear, 0) {}; % ML/DL 
+    \node [papernode={azulunb!75}, above=0.2 of Xiao:2022]                  (Szklarz:2022)            at (2022-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}, above=0.2 of Szklarz:2022]               (Abbate:2022)             at (2022-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={highlight!75}]                                        (Evensen:2023)            at (2023-\startyear, 0) {}; % IES
+    \node [papernode={azulunb!25}, above=0.2 of Evensen:2023]               (Liu:2023)                at (2023-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!25}, above=0.2 of Liu:2023]                   (Xiao-2023-GeoSci-230)    at (2023-\startyear, 0) {}; % ML/DL
+    \node [papernode={azulunb!75}, above=0.2 of Xiao-2023-GeoSci-230]       (Lin:2023)                at (2023-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}, above=0.2 of Lin:2023]                   (Xiao-2023-Computers)     at (2023-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}, above=0.2 of Xiao-2023-Computers]        (Xiao-2023-GeoSci-224)    at (2023-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={highlight!75}]                                        (Maschio:2024)            at (2024-\startyear, 0) {}; % IES
+    \node [papernode={highlight!75}, above=0.2 of Maschio:2024]             (Xiao:2024)               at (2024-\startyear, 0) {}; % ESMDA
+    \node [papernode={azulunb!25}, above=0.2 of Xiao:2024]                  (Zhan:2024)               at (2024-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!75}, above=0.2 of Zhan:2024]                  (Jiang:2024)              at (2024-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={highlight!75}]                                        (Tao:2025)                at (2025-\startyear, 0) {}; % ESMDA
+    \node [papernode={azulunb!25}, above=0.2 of Tao:2025]                   (Beer:2025)               at (2025-\startyear, 0) {}; % DSI
+    \node [papernode={azulunb!25}, above=0.2 of Beer:2025]                  (Kim:2025)                at (2025-\startyear, 0) {}; % ML/DL
+    \node [papernode={azulunb!75}, above=0.2 of Kim:2025]                   (Singh:2025)              at (2025-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}, above=0.2 of Singh:2025]                 (Barros:2025)             at (2025-\startyear, 0) {}; % DSI-ESMDA
+    \node [papernode={azulunb!75}]                                          (He:2026)                 at (2026-\startyear, 0) {}; % DSI-ESMDA
+\end{tikzpicture}
