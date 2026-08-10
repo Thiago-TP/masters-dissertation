@@ -36,9 +36,11 @@
     \tikzstyle{paper}[cyan]=[circle, minimum size=\d, draw=black, fill=#1, inner sep=0pt, outer sep=0pt]
     \node [paper={enkf}]                                            (Evensen-1994)            at (1994-\startyear, 0) {};
     \node [paper={es}]                                              (Leeuwen-1996)            at (1996-\startyear, 0) {};
+    \node [paper={enkf}]                                            (Burgers-1998)            at (1998-\startyear, 0) {};
+    \node [paper={enkf}, above=0 of Burgers-1998]                   (Houtekamer-1998)                                 {};
     \node [paper={enkf}]                                            (Geir-2002)               at (2002-\startyear, 0) {};
     \node [paper={enkf}]                                            (Chen-2006)               at (2006-\startyear, 0) {};
-    \node [paper={es}]                                              (Whitaker-2008)           at (2008-\startyear, 0) {};
+    \node [paper={enkf}]                                            (Whitaker-2008)           at (2008-\startyear, 0) {};
     \node [paper={enkf}]                                            (Aanonsen-2009)           at (2009-\startyear, 0) {};
     \node [paper={enkf}]                                            (Oliver-2011)             at (2011-\startyear, 0) {};
     \node [paper={es},       above=0 of Oliver-2011]                (Skjervheim-2011)                                 {};
@@ -89,6 +91,8 @@
     % Labels each work
     \draw [dashdotted, gray] (Evensen-1994)            --++ (0,-.75) node [rotate=90, left] {\tiny\citeonline{Evensen:1994}};
     \draw [dashdotted, gray] (Leeuwen-1996)            --++ (0,-.75) node [rotate=90, left] {\tiny\citeonline{Leeuwen:1996}};
+    \draw [dashdotted, gray] (Burgers-1998)            --++ (0,-.75) node [rotate=90, left] {\tiny\citeonline{Burgers:1998}};
+    \draw [dashdotted, gray] (Houtekamer-1998)         to [out=90, in=180]++ (1, .5) node [right] {\tiny\citeonline{Houtekamer:1998}};
     \draw [dashdotted, gray] (Geir-2002)               --++ (0,-.75) node [rotate=90, left] {\tiny\citeonline{Geir:2002}};
     \draw [dashdotted, gray] (Chen-2006)               --++ (0,-.75) node [rotate=90, left] {\tiny\citeonline{Chen:2006}};
     \draw [dashdotted, gray] (Whitaker-2008)           --++ (0,-.75) node [rotate=90, left] {\tiny\citeonline{Whitaker:2008}};

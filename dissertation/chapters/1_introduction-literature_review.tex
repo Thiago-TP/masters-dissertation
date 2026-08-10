@@ -1,6 +1,6 @@
-Most reservoir prediction methods are conceptually linked to the Kalman Filter 
+Most reservoir prediction methods are conceptually linked to the Kalman Filter (KF)
 \cite{Kalman:1960} 
-as they attempt to improve a probability distribution given observations of the reservoir
+as they attempt to, through the Bayesian theorem, improve a probability distribution given observations of the reservoir
 using linear update(s). 
 %
 The distribution \emph{a priori} to data assimilation is called the prior distribution,
@@ -19,7 +19,8 @@ At the extreme, machine learning (ML) and deep learning (DL) methods can be appl
 resulting in a posterior distribution not conceptually related to the Kalman update.
 %
 Among model-space approaches, DL is also becoming increasingly popular due to its ability to estimate a model's simulation outputs,
-effectively proxying the simulator and consequently speeding up the history matching process.
+effectively proxying the simulator and consequently speeding up the history matching process
+(e.g., \citeonline{Xiao:2024, Tao:2025}).
 
 Ultimately, a reservoir prediction method is concerned with bringing the posterior of predictions 
 as close as possible to reservoir observations without underestimating uncertainty.
@@ -53,47 +54,134 @@ data-space methods (\cref{subsec:data-space-methods}).
 \subsection{Model-Space Methods}
 \label{subsec:model-space-methods}
 
-The cradle of modern model-space methods is the Ensemble Kalman Filter (EnKF)
-introduced by \citeonline{Evensen:1994}.
-
 \subsubsection{Ensemble Kalman Filter}
-    \citeonline{Kalman:1960}
-    \citeonline{Evensen:1994}
-    \citeonline{Burgers:1998}
-    \citeonline{Geir:2002}
-    \citeonline{Reichle:2002}
-    \citeonline{Keppenne:2003}
-    \citeonline{Bertino:2003}
-    \citeonline{Szunyogh:2005}
-    \citeonline{Chen:2006}
-    \citeonline{Liu:2008}
-    \citeonline{Aanonsen:2009}
-    \citeonline{Oliver:2011}
-    \citeonline{Houtekamer:2016}
-    \citeonline{Otsuka:2016}
-    \citeonline{Sun:2016}
+
+The cradle of modern model-space methods is the Ensemble Kalman Filter (EnKF)
+introduced by \citeonline{Evensen:1994}, which in turn is an adaptation of KF.
+
+KF is an optimal estimator for variables of a linear system \cite[section 4.1]{Emerick:2025}
+that updates its estimation iteratively with each data assimilation.
+%
+The result of a data assimilation step is the mean and covariance of the target variables posterior distribution.
+%
+Its update equation, which can be derived from Bayes' theorem, 
+consists of adding a correction to the mean.
+%
+This correction is proportional to the difference
+between observed data and the prior distribution, commonly referred to as innovation.
+%
+The proportionality constant, referred to as the Kalman gain, 
+depends on the noise in observations as well as the prior's covariance%
+\footnote{%
+    The posterior of an assimilation becomes the prior for the next assimilation,
+    updating the Kalman gain.
+}.
+
+In the context of history matching, 
+the system is a reservoir, 
+the variables being estimated are model parameters,
+and the system outputs are reservoir states and flow rates.
+%
+KF can't be directly applied to the inverse problem on acocunt of 
+(i) the nonlinear relationship between system variables and outputs, and 
+(ii) the size of the posterior covariance (trillions of entries if finer gridblocks are used)%
+\footnote{%
+    Knowledge on measurement noise is also a limitation of KF, albeit not particular to reservoir prediction.
+}.
+
+The first limitation can be addressed by running simulations of the reservoir model, 
+substituting the linear relationship with a nonlinear function.
+EnKF addresses the second limitations by deploying an ensemble of model realizations. 
+%
+Instead of updating a single vector of model parameters, 
+EnKF updates each paramater vector in the ensemble, approximating the prior covariance with the prior ensemble. 
+%
+Since the number of realizations is usually much smaller than the number of parameters (hundreds versus millions),
+this approximation is computationally feasible.
+
+More precisely, EnKF estimates model parameters and reservoir states simultaneously, 
+and its current formulation also applies perturbations to innovations in order to avoid underestimating uncertainty 
+\cite{Burgers:1998,Houtekamer:1998}.
+%
+While EnKF has been a influential tool for reservoir prediction \cite{Aanonsen:2009, Oliver:2011}, 
+specially after the work of \citeonline{Geir:2002},
+its framework is general and has been successfully applied in many fields, such as
+oceanography \cite{Bertino:2003, Keppenne:2003}, 
+atmospheric modeling \cite{Whitaker:2008,Houtekamer:2016},
+numerical weather prediction \cite{Houtekamer:2005:Monthly,Houtekamer:2005:Quaterly,Szunyogh:2005,Otsuka:2016}, 
+and hydrology \cite{Reichle:2002, Chen:2006, Liu:2008, Sun:2016}.
 
 \subsubsection{Iterative Ensemble Smoother}
-    \citeonline{Leeuwen:1996}
-    \citeonline{Whitaker:2008}
-    \citeonline{Skjervheim:2011}
-    \citeonline{Chen:2012}
-    \citeonline{Chen:2013}
-    \citeonline{Luo:2015}
-    \citeonline{Evensen:2018}
-    \citeonline{Zhang:2018}
-    \citeonline{Raanes:2019}
-    \citeonline{Evensen:2023}
-    \citeonline{Maschio:2024}
+
+In the EnKF framework, data assimilations occur one time step at a time,
+a process referred to as Sequential Data Assimilation (SDA).
+%
+For systems with complicated relationships between estimated variables and system outputs,
+SDA means spending a great deal of time extracting these outputs.
+
+This is case of geological reservoirs.
+Furthermore, EnKF estimates reservoir states and model parameters jointly,
+and might produce inconsistent reservoir states estimates.
+% 
+The Ensemble Smoother (ES) tackles these limitations by substituting SDA 
+with a single data assimilation that considers all data points at once to obtain a posterior of model parameters.
+
+ES was introduced by \citeonline{Leeuwen:1996}, 
+and \citeonline{Skjervheim:2011} were the first to apply it to reservoir models.
+Implementation wise, ES is effectively a single EnKF update on each model realization 
+that uses all available observations at once.
+
+Their success spurred researchers to develop similarly batching assimilations.
+Particularly, it was seen that the single ES update often produced data matches of insufficient quality,
+which lead to the development of iterative formulations of ES (IES).
+%
+IES methods run the model update rule until convergence conditions have been satisfied, 
+or a given number of iterations has been met.
+%
+It is important to note that while IES iterations do require reservoir simulations, 
+the number of iterations is usually much smaller than the number of time steps,
+which effectively guarantees computational time will be smaller than EnKF approaches.
+
+Ensemble RML \cite{Chen:2012}, 
+and its subsequent Levenberg-Marquardt \cite{Chen:2013}
+were some of the first IES algorithms to be formulated.
+%
+Since then, IES has remained an active research and study topic in history matching literature
+\cite{Luo:2015, Zhang:2018, Raanes:2019, Maschio:2024}.
+For more details on IES methods, the reader is referred to 
+\citeonline{Evensen:2018, Evensen:2023}.
 
 \subsubsection{Ensemble Smoother with Multiple Data Assimilation}
-    \citeonline{Emerick:2012}
-    \citeonline{Emerick:2013:CompGeosci}
-    \citeonline{Emerick:2013:SPE}
-    \citeonline{Grana:2019}
-    \citeonline{Neto:2021}
-    \citeonline{Xiao:2024}
-    \citeonline{Tao:2025}
+
+Of the proposed IES methods, the most influential is perhaps the 
+Ensemble Smoother with Multiple Data Assimilation (ESMDA) 
+introduced by \citeonline{Emerick:2013:CompGeosci, Emerick:2013:SPE}.
+
+The Multiple Data Assimilation (MDA) mechanism was 
+first developed to improve EnKF data assimilations
+\cite{Emerick:2012}.
+%
+In a word, MDA repeats the data assimilation step, but with perturbed observations.
+The covariance of the perturbation is inflated so that the greater the number of repetitions,
+the greater the covariance%
+\footnote{%
+    As such, ESMDA with a single MDA iteration reduces to ES.
+}
+
+By doing so, MDA improves the conditioning to data while usually avoiding underestimating uncertainty,
+specially in nonlinear model-data relationships.
+%
+Therefore, ESMDA enjoys the computational speed of ES while also offering a 
+straightforward mechanism through which one can mitigate the drawbacks of ES.
+%
+However, MDA inflation coefficients and number of iterations must be defined in advance,
+and finding their optimal values remain open research topics
+\cite[subsection 5.3.5]{Emerick:2025}.
+
+ESMDA's track record and simplicity of implementation make it
+a solid history matching algorithm that is 
+amply employed both in industry and in research
+\cite{Grana:2019, Neto:2021, Tao:2025}.
 
 \subsection{Data-Space Methods}
 \label{subsec:data-space-methods}
