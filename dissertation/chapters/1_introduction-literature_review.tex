@@ -1,6 +1,38 @@
+Most reservoir prediction methods are conceptually linked to the Kalman Filter 
+\cite{Kalman:1960} 
+as they attempt to improve a probability distribution given observations of the reservoir
+using linear update(s). 
+%
+The distribution \emph{a priori} to data assimilation is called the prior distribution,
+and represents the belief one holds for the expected distribution.
+Conversely, the distribution \emph{a posteriori} to data assimilation is called the posterior distribution.
+
+The main difference between a model-space method and a data-space method is the distribution being updated.
+Model-space methods apply the Kalman-like update to an ensemble of model realizations, targeting distributions of model parameters.
+Subsurface simulations of the adjusted models are then performed to obtain predictions on reservoir states and flow rates.
+% 
+Data-space methods apply the Kalman-like update to an ensemble of predictions, targeting distributions of reservoir states and flow rates directly.
+Compared to model-space methods, the number of subsurface simulations is greatly reduced (only being required to establish the initial distribution),
+but do not offer insights to causes to reservoir behavior.
+
+At the extreme, machine learning (ML) and deep learning (DL) methods can be applied directly to the ensemble of predictions,
+resulting in a posterior distribution not conceptually related to the Kalman update.
+%
+Among model-space approaches, DL is also becoming increasingly popular due to its ability to estimate a model's simulation outputs,
+effectively proxying the simulator and consequently speeding up the history matching process.
+
+Ultimately, a reservoir prediction method is concerned with bringing the posterior of predictions 
+as close as possible to reservoir observations without underestimating uncertainty.
+%
+This section provides a brief literature review of these methods, which are split in two major groups:
+model-space methods (\cref{subsec:model-space-methods}) and 
+data-space methods (\cref{subsec:data-space-methods}).
+\Cref{fig:graph-literature} mindmaps the main approaches mentioned in this section, and
+\cref{fig:timeline-literature} timelines most of the works discussed here.
+
 \begin{figure}[htbp]
     \centering
-    \caption{Graph of semantic connections between reservoir prediction methods in literature}
+    \caption{Mindmap of reservoir prediction methods}
     \label{fig:graph-literature}
     \scalebox{0.9}{%
         \input{figures/graph-literature.tikz}
@@ -20,6 +52,9 @@
 
 \subsection{Model-Space Methods}
 \label{subsec:model-space-methods}
+
+The cradle of modern model-space methods is the Ensemble Kalman Filter (EnKF)
+introduced by \citeonline{Evensen:1994}.
 
 \subsubsection{Ensemble Kalman Filter}
     \citeonline{Kalman:1960}
