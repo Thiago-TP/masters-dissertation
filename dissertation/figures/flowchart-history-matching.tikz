@@ -1,4 +1,4 @@
-\begin{tikzpicture}[> = latex]
+\begin{tikzpicture}[> = Latex]
     % Blocks
     \node [startstop] (start)
         {Start};
@@ -9,16 +9,10 @@
     \node [process, right=.5 of data, text width=2.5cm] (adjustment)
         {Adjust model parameters};
 
-    \node [process, above=1.5 of adjustment, text width=2cm] (simulation)
+    \node [process, right=.5 of adjustment, text width=2cm] (simulation)
         {Run simulation};
-
-    \node [process, right=1 of simulation, text width=2.75cm] (comparison)
-        {Compare with observations};
-
-    \node [below=2 of comparison] (aux1) {};
-    \node [right=2 of adjustment] (aux2) {};
-    \node [decision, text width=1.5cm] 
-        (decision) at (intersection of  comparison--aux1 and adjustment--aux2)
+        
+    \node [decision, text width=1.5cm, right=0.5 of simulation] (decision)
         {Good match?};
     
     \node [startstop, right=1 of decision] (stop)
@@ -28,8 +22,8 @@
     \draw [->] (start) -- (data);
     \draw [->] (data) -- (adjustment);
     \draw [->] (adjustment) -- (simulation);
-    \draw [->] (simulation) -- (comparison);
-    \draw [->] (comparison) -- (decision);
-    \draw [->] (decision) -- (adjustment) node [midway, below, xshift=1mm] {No};
-    \draw [->] (decision) -- (stop) node [midway, below, xshift=-1mm] {Yes};
+    \draw [->] (simulation) -- (decision);
+    \draw [->] (decision.north) --++ (0, .5) -| (adjustment);
+    \node [above=1.35 of simulation] {No};
+    \draw [->] (decision) -- (stop) node [midway, above, xshift=-1mm] {Yes};
 \end{tikzpicture}
