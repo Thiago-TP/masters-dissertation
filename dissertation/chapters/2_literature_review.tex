@@ -1,3 +1,15 @@
+\chapter{Literature review}
+\label{chap:literature-review}
+
+\chapteroutline{%
+    This section provides a brief literature review of these methods, which are split in two major groups:
+    model-space methods (\cref{sec:model-space-methods}) and 
+    data-space methods (\cref{sec:data-space-methods}).
+    %
+    Details are kept as short as possible, specially in \cref{sec:model-space-methods},
+    and mathematical formulations omitted.
+}
+
 Most reservoir prediction methods are conceptually linked to the Kalman Filter (KF)
 \cite{Kalman:1960} 
 as they attempt to, through the Bayesian theorem, improve a probability distribution given observations of the reservoir
@@ -25,9 +37,6 @@ effectively proxying the simulator and consequently speeding up the history matc
 Ultimately, a reservoir prediction method is concerned with bringing the posterior of predictions 
 as close as possible to reservoir observations without underestimating uncertainty.
 %
-This section provides a brief literature review of these methods, which are split in two major groups:
-model-space methods (\cref{subsec:model-space-methods}) and 
-data-space methods (\cref{subsec:data-space-methods}).
 \Cref{fig:graph-literature} mindmaps the main approaches mentioned in this section, and
 \cref{fig:timeline-literature} timelines most of the works discussed here.
 
@@ -51,10 +60,10 @@ data-space methods (\cref{subsec:data-space-methods}).
     \fonte{Self-elaboration}
 \end{figure}
 
-\subsection{Model-space methods}
-\label{subsec:model-space-methods}
+\section{Model-space methods}
+\label{sec:model-space-methods}
 
-\subsubsection{Ensemble Kalman Filter}
+\subsection{Ensemble Kalman Filter}
 
 The cradle of modern model-space methods is the Ensemble Kalman Filter (EnKF)
 introduced by \citeonline{Evensen:1994}, which in turn is an adaptation of KF.
@@ -111,7 +120,7 @@ atmospheric modeling \cite{Whitaker:2008,Houtekamer:2016},
 numerical weather prediction \cite{Houtekamer:2005:Monthly,Houtekamer:2005:Quaterly,Szunyogh:2005,Otsuka:2016}, 
 and hydrology \cite{Reichle:2002, Chen:2006, Liu:2008, Sun:2016}.
 
-\subsubsection{Iterative Ensemble Smoother}
+\subsection{Iterative Ensemble Smoother}
 
 In the EnKF framework, data assimilations occur one time step at a time,
 a process referred to as Sequential Data Assimilation (SDA).
@@ -151,7 +160,7 @@ Since then, IES has remained an active research and study topic in history match
 For more details on IES methods, the reader is referred to 
 \citeonline{Evensen:2018, Evensen:2023}.
 
-\subsubsection{Ensemble Smoother with Multiple Data Assimilation}
+\subsection{Ensemble Smoother with Multiple Data Assimilation}
 
 Of the proposed IES methods, the most influential is perhaps the 
 Ensemble Smoother with Multiple Data Assimilation (ESMDA) 
@@ -183,10 +192,10 @@ a solid history matching algorithm that is
 amply employed both in industry and in research
 \cite{Grana:2019, Neto:2021, Tao:2025}.
 
-\subsection{Data-space methods}
-\label{subsec:data-space-methods} 
+\section{Data-space methods}
+\label{sec:data-space-methods} 
 
-\subsubsection{Prediction Focused Analysis}
+\subsection{Prediction Focused Analysis}
     Data-space methods for reservoir prediction are relatively new in literature, 
     but have been gaining momentum with the Artificial Intelligence boom.
     %
@@ -212,14 +221,14 @@ amply employed both in industry and in research
     \cite{Satija:2015, Satija:2017},
     the method saw limited application in reservoir prediction.
 
-\subsubsection{Data Space Inversion}
+\subsection{Data Space Inversion}
     \citeonline{Sun:2017:A} introduce the Data-Space Inversion (DSI) algorithm, 
     the first data-space method to allow for uncertainty quantification 
     while also scalinng reasonably with data dimension. 
 
     Similarly to PFA, DSI obtains a posterior distribution of data by sampling from a lower-dimensional space.
     While the mapping remains nonlinear, smooth and bijective, 
-    the conceptual difference from PFA is that the parameterization vector 
+    the conceptual difference from PFA is that the parameterization vector (or latent vector)
     is a random vector with fixed probability distribution.
 
     For each realization in the prior ensemble, 
@@ -251,27 +260,113 @@ amply employed both in industry and in research
     
     \citeonline{Beer:2025} decomposed the DSI mapping 
     in a way that makes sampling the posterior direct, avoiding the RML optimization. 
-    Their work has shown promising results, but lack applications on real fields.
+    Their work has shown promising results, but lack applications on non-synthetic reservoirs.
     
-\subsubsection{Data Space Inversion with Ensemble Smoother with Multiple Data Assimilation}
-    \citeonline{Lima:2020}
-    \citeonline{Jiang:2021:CompSci}
-    \citeonline{Jiang:2021:Frontiers}
-    \citeonline{Jiang:2021:Hydrology}
-    \citeonline{Szklarz:2022}
-    \citeonline{Abbate:2022}
-    \citeonline{Lin:2023}
-    \citeonline{Xiao:2023:Computers}
-    \citeonline{Xiao:2023:GeoSci:224}
-    \citeonline{Jiang:2024}
-    \citeonline{Singh:2025}
-    \citeonline{Barros:2025}
-    \citeonline{He:2026}
+\subsection{Data Space Inversion with ESMDA}
+    DSI's biggest bottleneck is the sampling of the latent variable, which is usually done with RML. 
+    In a method referred to as Data Space Inversion with ESMDA (DSI-ESMDA)%
+    \footnote{%
+        In this abbreviation, DSI refers to the fact that the method acts directly on the data space.
+        DSI-ESMDA and the DSI proposed by \cite{Sun:2017:A} are not conceptually linked.
+    },
+    \citeonline{Lima:2020} apply the ESMDA framework directly to data space, 
+    doing away with the requirements of RML.
+    %
+    Since MDA iterations are much faster to compute, DSI-ESMDA enjoys faster performance than DSI.
+    DSI-ESMDA's posteriors were seen to be competitive against, if not better than,
+    the posteriors given by DSI and ESMDA.
+    %
+    The use of a model-space framework applied directly to data space had profound effects on data-space methods. 
 
-\subsubsection{Machine Learning and Deep Learning}
-    \citeonline{Xiao:2022}
-    \citeonline{Xiao:2023:GeoSci:230}
-    \citeonline{Kim:2025}
+    Shortly after, \citeonline{Jiang:2021:CompSci} would reformulate the original DSI approach in two fronts:
+    first, DL algorithms would be used to compute the prior ensemble of latent variables;
+    second, the ensemble of latent variables would be updated using ESMDA,
+    or more precisely, the ESMDA rule applied to data space.
+    %
+    The reformulated DSI, referred in this work as DSI with DL,
+    presented good results on synthetic case studies, 
+    and was later put to the test on a complex real field 
+    \cite{Jiang:2021:Frontiers}, with good results.
+    %
+    \citeonline{Jiang:2021:Hydrology} introduced a new ensemble of latent variables 
+    to quantify model uncertainty in the distribution of data, 
+    presenting excelent results in synthetic reservoir case studies.
+    
+    \citeonline{Jiang:2024} refined the DL procedure used for finding the latent variables in DSI with DL,
+    lending the method better for forecasting of reservoir states (e.g., field's pressure and saturation).
+    %
+    \citeonline{He:2026} expands the range of applications of DSI by deploying the aforementioned refined framework 
+    to forecast pressure, strain and stress fields in carbon storage problems.
 
-% \subsubsection{Other data-space methods}
-    % \citeonline{Delottier:2023}
+    In an approach similar to DSIVC,
+    \citeonline{Szklarz:2022} 
+    apply DSI with DL on two synthetic problems:
+    first, forecasting of carbon storage; 
+    second, optimization of water injection rates of a hydrocarbon reservoir.
+    %
+    The authors 
+    would later broaden the application of DSI with DL to 
+    optimize well placement in a realistic hydrocarbon reservoir
+    \cite{Barros:2025}. 
+    %
+    Parallelly, \citeonline{Singh:2025} apply DSI with DL to optimize water injection rates of an oil field.
+
+    \citeonline{Abbate:2022} use DSI-ESMDA as a basis for proposing a new method in forecasting carbon storage.
+    The authors develop an IES tailor-made for this problem, and results were comparable to standard model-space approaches. 
+    
+    \citeonline{Lin:2023} compare the performance of DSI-ESMDA against 
+    the original DSI algorithm and a logarithmic fit to data \cite{Duong:2010}
+    in the forecast of two shale reservoir case studies.
+    %
+    DSI-ESMDA presented both high robustness and high computational efficiency 
+    when compared to the other methods, validating the algorithm. 
+
+    Some of these authors would move on to swap the Kalman-like gain in the DSI-ESMDA update 
+    for a DL algorithm, making the update nonlinear with respect to the innovation vector
+    \citeonline{Xiao:2023:GeoSci:224}%
+    \footnote{%
+        Confunsingly enough, authors also called this approach ``DSI with DL''.
+    }.
+    %
+    The proposed reformulation was teste on a few synthetic case studies of carbon storage problems, with good results.
+
+    \citeonline{Xiao:2023:Computers} expanded their approach to develop a shale reservoir control strategy.
+    The proposed approach, named DSI with varying refracturing (DSIVRF),
+    uses a DSI-ESMDA-like rule to obtain a posterior ensemble of reservoir predictions,
+    and optimizes controls based on estimates of reservoir pressure. 
+    %
+    To avoid subsurface simulations, a DL algorithm is developed to approximate pressure distributions.  
+    
+\subsection{Machine Learning and Deep Learning}
+    By now, it should have been clear to the reader that data-space is fertile soil for the development and application
+    of ML and DL methods.
+    %
+    While this review has so far presented them as auxiliary tools for DSI and DSI-ESMDA, 
+    the direct application of ML/DL algorithms is also possible.
+    %
+    In this case, the posterior is not obtained via an iterative update, as was the case with DSI-ESMDA,
+    nor does it require RML sampling, as was the case with the original DSI,
+    but via the inference process of a deep neural network.
+    
+    Detailing ML/DL algorithms is beyond the scope of this dissertation,
+    but for examples of works in this line, the reader is referred to
+    \citeonline{Xiao:2022},
+    \citeonline{Xiao:2023:GeoSci:230}, and
+    \citeonline{Kim:2025}.
+
+\chaptersummary{%
+    This chapter has presented an overview of model-space and data-space methods for reservoir prediction,
+    with a slight focus to data-space methods.
+    %
+    Model-space methods are conceptually linked to the Kalman Filter,
+    and developments in this area have historically focused on speeding up the data assimilation process.
+    The state of the art in model-space methods are iterative ensemble smoothers, 
+    of which ESMDA is the most influential algorithm.
+    Machine and deep learning algorithms are also often deployed as proxy models in this context.
+    %
+    Data-space methods vary in their conceptual origins, but dimention-reduction tools are widely utilized.
+    %
+    The state of the art in data-space methods consists of a synergy between 
+    deep learning algorithms for nonlinear estimation of an ensemble of latent variables, 
+    and ESMDA-like iterations to update this ensemble.
+}
