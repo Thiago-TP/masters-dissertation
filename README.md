@@ -1,4 +1,4 @@
-# Master Thesis — Project Files
+# Master Dissertation
 
 This repository contains the LaTeX source, figures, tables and build artifacts for my master's dissertation and accompanying presentation.
 
@@ -8,17 +8,17 @@ This repository contains the LaTeX source, figures, tables and build artifacts f
 
 **Project Overview**
 - **Purpose:** Source files and assets for the author's master's dissertation (LaTeX) and a Beamer presentation.
-- **Main output:** A compiled PDF of the thesis (usually produced as `main.pdf` from `dissertation/main.tex`) and `presentation.pdf` from the `presentation` folder.
+- **Main output:** A compiled PDF of the dissertation (usually produced as `main.pdf` from `dissertation/main.tex`) and `presentation.pdf` from the `presentation` folder.
 
 **Repository Structure**
-- **dissertation/**: Primary thesis source.
+- **dissertation/**: Primary dissertation source.
 	- `main.tex`: Root LaTeX document for the dissertation.
-	- `abntex2-modified.cls`, `unbtex.cls`: Local/custom class files used by the thesis.
+	- `abntex2-modified.cls`, `unbtex.cls`: Local/custom class files used by the dissertation.
 	- `chapters/`: Individual chapter source files (`1_introduction.tex`, `2_literature_review.tex`, ...).
-	- `figures/`: TikZ figures and image assets used in the thesis.
+	- `figures/`: TikZ figures and image assets used in the dissertation.
 	- `tables/`: LaTeX table fragments and results tables included by chapters.
 	- `unbtexcite/`, `unbtexcover/`: Custom bibliography and cover templates/styles.
-	- `references/`: BibTeX or bibliography-related files referenced by the thesis.
+	- `references/`: BibTeX or bibliography-related files referenced by the dissertation.
 
 - **presentation/**: Beamer presentation source and theme files.
 	- `presentation.tex`: Root Beamer file for slides.
