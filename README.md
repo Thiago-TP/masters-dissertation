@@ -43,7 +43,7 @@ Or, for the presentation:
 ```
 cd presentation
 pdflatex presentation.tex
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
+bibtex presentation
+pdflatex presentation.tex
+pdflatex presentation.tex
 ```
